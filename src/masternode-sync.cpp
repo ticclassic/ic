@@ -131,19 +131,19 @@ void CMasternodeSync::GetNextAsset()
         case(MASTERNODE_SYNC_INITIAL):
         case(MASTERNODE_SYNC_FAILED): // should never be used here actually, use Reset() instead
             ClearFulfilledRequest();
-            printf("MASTERNODE_SYNC_SPORKS\n");
+            LogPrintf("MASTERNODE_SYNC_SPORKS\n");
             RequestedMasternodeAssets = MASTERNODE_SYNC_SPORKS;
             break;
         case(MASTERNODE_SYNC_SPORKS):
-            printf("MASTERNODE_SYNC_LIST\n");
+            LogPrintf("MASTERNODE_SYNC_LIST\n");
             RequestedMasternodeAssets = MASTERNODE_SYNC_LIST;
             break;
         case(MASTERNODE_SYNC_LIST):
-            printf("MASTERNODE_SYNC_MNW\n");
+            LogPrintf("MASTERNODE_SYNC_MNW\n");
             RequestedMasternodeAssets = MASTERNODE_SYNC_MNW;
             break;
         case(MASTERNODE_SYNC_MNW):
-            printf("MASTERNODE_SYNC_BUDGET\n");
+            LogPrintf("MASTERNODE_SYNC_BUDGET\n");
             RequestedMasternodeAssets = MASTERNODE_SYNC_BUDGET;
             break;
         case(MASTERNODE_SYNC_BUDGET):
