@@ -23,9 +23,9 @@ class CBudgetManager;
 class CFinalizedBudgetBroadcast;
 class CFinalizedBudget;
 class CFinalizedBudgetVote;
-class CBudgetProposal;
-class CBudgetProposalBroadcast;
-class CBudgetVote;
+class CGovernanceObject;
+class CGovernanceObjectBroadcast;
+class CGovernanceVote;
 class CTxBudgetPayment;
 
 #define VOTE_ABSTAIN  0
@@ -36,10 +36,10 @@ static const CAmount BUDGET_FEE_TX = (5*COIN);
 static const int64_t BUDGET_FEE_CONFIRMATIONS = 6;
 static const int64_t BUDGET_VOTE_UPDATE_MIN = 60*60;
 
-extern std::vector<CBudgetProposalBroadcast> vecImmatureBudgetProposals;
+extern std::vector<CGovernanceObjectBroadcast> vecImmatureBudgetProposals;
 extern std::vector<CFinalizedBudgetBroadcast> vecImmatureFinalizedBudgets;
 
-extern CBudgetManager budget;
+extern CBudgetManager budgetman;
 void DumpBudgets();
 
 //Check the collateral transaction for the budget proposal/finalized budget
@@ -86,12 +86,12 @@ public:
     mutable CCriticalSection cs;
     
     // keep track of the scanning errors I've seen
-    map<uint256, CBudgetProposal> mapProposals;
+    map<uint256, CGovernanceObject> mapProposals;
     map<uint256, CFinalizedBudget> mapFinalizedBudgets;
 
-    std::map<uint256, CBudgetProposalBroadcast> mapSeenMasternodeBudgetProposals;
-    std::map<uint256, CBudgetVote> mapSeenMasternodeBudgetVotes;
-    std::map<uint256, CBudgetVote> mapOrphanMasternodeBudgetVotes;
+    std::map<uint256, CGovernanceObjectBroadcast> mapSeenMasternodeBudgetProposals;
+    std::map<uint256, CGovernanceVote> mapSeenMasternodeBudgetVotes;
+    std::map<uint256, CGovernanceVote> mapOrphanMasternodeBudgetVotes;
     std::map<uint256, CFinalizedBudgetBroadcast> mapSeenFinalizedBudgets;
     std::map<uint256, CFinalizedBudgetVote> mapSeenFinalizedBudgetVotes;
     std::map<uint256, CFinalizedBudgetVote> mapOrphanFinalizedBudgetVotes;
@@ -127,22 +127,22 @@ public:
 
     void ProcessMessage(CNode* pfrom, std::string& strCommand, CDataStream& vRecv);
     void NewBlock();
-    CBudgetProposal *FindProposal(const std::string &strProposalName);
-    CBudgetProposal *FindProposal(uint256 nHash);
+    CGovernanceObject *FindProposal(const std::string &strProposalName);
+    CGovernanceObject *FindProposal(uint256 nHash);
     CFinalizedBudget *FindFinalizedBudget(uint256 nHash);
     std::pair<std::string, std::string> GetVotes(std::string strProposalName);
 
     CAmount GetTotalBudget(int nHeight);
-    std::vector<CBudgetProposal*> GetBudget();
-    std::vector<CBudgetProposal*> GetAllProposals();
+    std::vector<CGovernanceObject*> GetBudget();
+    std::vector<CGovernanceObject*> GetAllProposals();
     std::vector<CFinalizedBudget*> GetFinalizedBudgets();
     bool IsBudgetPaymentBlock(int nBlockHeight);
-    bool AddProposal(CBudgetProposal& budgetProposal);
+    bool AddProposal(CGovernanceObject& budgetProposal);
     bool AddFinalizedBudget(CFinalizedBudget& finalizedBudget);
     void SubmitFinalBudget();
     bool HasNextFinalizedBudget();
 
-    bool UpdateProposal(CBudgetVote& vote, CNode* pfrom, std::string& strError);
+    bool UpdateProposal(CGovernanceVote& vote, CNode* pfrom, std::string& strError);
     bool UpdateFinalizedBudget(CFinalizedBudgetVote& vote, CNode* pfrom, std::string& strError);
     bool PropExists(uint256 nHash);
     bool IsTransactionValid(const CTransaction& txNew, int nBlockHeight);
@@ -393,11 +393,30 @@ public:
 
 };
 
+enum GovernanceObjectType {
+    None,
+    Proposal,
+    Contract,
+    Setting,
+    Switch
+};
+
+std::string GovernanceTypeToString(GovernanceObjectType type) {
+    std::string s = "";
+    if(type == None) s = "None";
+    if(type == Proposal) s = "Proposal";
+    if(type == Contract) s = "Contract";
+    if(type == Setting) s = "Setting";
+    if(type == Switch) s = "Switch";
+    return s;
+};
+
 //
-// Budget Proposal : Contains the masternode votes for each budget
+// Budget Object : Contains the masternode votes for each budget
+//      This could be a Proposal, Contract, Setting or Switch
 //
 
-class CBudgetProposal
+class CGovernanceObject
 {
 private:
     // critical section to protect the inner data structures
@@ -412,6 +431,9 @@ public:
         json object with name, short-description, long-description, pdf-url and any other info
         This allows the proposal website to stay 100% decentralized
     */
+    
+    GovernanceObjectType nObjectType;
+
     std::string strURL;
     int nBlockStart;
     int nBlockEnd;
@@ -420,19 +442,22 @@ public:
     int64_t nTime;
     uint256 nFeeTXHash;
 
-    map<uint256, CBudgetVote> mapVotes;
+    map<uint256, CGovernanceVote> mapVotes;
     //cache object
 
-    CBudgetProposal();
-    CBudgetProposal(const CBudgetProposal& other);
-    CBudgetProposal(std::string strProposalNameIn, std::string strURLIn, int nPaymentCount, CScript addressIn, CAmount nAmountIn, int nBlockStartIn, uint256 nFeeTXHashIn);
+    CGovernanceObject();
+    CGovernanceObject(const CGovernanceObject& other);
+    CGovernanceObject(GovernanceObjectType nObjectTypeIn, std::string strProposalNameIn, std::string strURLIn, int nPaymentCount, CScript addressIn, CAmount nAmountIn, int nBlockStartIn, uint256 nFeeTXHashIn);
 
-    bool AddOrUpdateVote(CBudgetVote& vote, std::string& strError);
+    bool AddOrUpdateVote(CGovernanceVote& vote, std::string& strError);
     bool HasMinimumRequiredSupport();
     std::pair<std::string, std::string> GetVotes();
 
     bool IsValid(const CBlockIndex* pindex, std::string& strError, bool fCheckCollateral=true);
     bool IsEstablished();
+
+    int GetValidStartTimestamp();
+    int GetValidEndTimestamp();
 
     std::string GetName() {return strProposalName; }
     std::string GetURL() {return strURL; }
@@ -490,21 +515,22 @@ public:
 };
 
 // Proposals are cast then sent to peers with this object, which leaves the votes out
-class CBudgetProposalBroadcast : public CBudgetProposal
+class CGovernanceObjectBroadcast : public CGovernanceObject
 {
 public:
-    CBudgetProposalBroadcast() : CBudgetProposal(){}
-    CBudgetProposalBroadcast(const CBudgetProposal& other) : CBudgetProposal(other){}
-    CBudgetProposalBroadcast(const CBudgetProposalBroadcast& other) : CBudgetProposal(other){}
-    CBudgetProposalBroadcast(std::string strProposalNameIn, std::string strURLIn, int nPaymentCount, CScript addressIn, CAmount nAmountIn, int nBlockStartIn, uint256 nFeeTXHashIn) {}
+    CGovernanceObjectBroadcast() : CGovernanceObject(){}
+    CGovernanceObjectBroadcast(const CGovernanceObject& other) : CGovernanceObject(other){}
+    CGovernanceObjectBroadcast(const CGovernanceObjectBroadcast& other) : CGovernanceObject(other){}
+    CGovernanceObjectBroadcast(GovernanceObjectType nObjectTypeIn, std::string strProposalNameIn, std::string strURLIn, int nPaymentCount, CScript addressIn, CAmount nAmountIn, int nBlockStartIn, uint256 nFeeTXHashIn) {}
 
-    void swap(CBudgetProposalBroadcast& first, CBudgetProposalBroadcast& second) // nothrow
+    void swap(CGovernanceObjectBroadcast& first, CGovernanceObjectBroadcast& second) // nothrow
     {
         // enable ADL (not necessary in our case, but good practice)
         using std::swap;
 
         // by swapping the members of two classes,
         // the two classes are effectively swapped
+        swap(first.nObjectType, second.nObjectType);
         swap(first.strProposalName, second.strProposalName);
         swap(first.nBlockStart, second.nBlockStart);
         swap(first.strURL, second.strURL);
@@ -516,7 +542,7 @@ public:
         first.mapVotes.swap(second.mapVotes);
     }
 
-    CBudgetProposalBroadcast& operator=(CBudgetProposalBroadcast from)
+    CGovernanceObjectBroadcast& operator=(CGovernanceObjectBroadcast from)
     {
         swap(*this, from);
         return *this;
@@ -530,6 +556,7 @@ public:
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
         //for syncing with other clients
 
+        READWRITE(nObjectType);
         READWRITE(LIMITED_STRING(strProposalName, 20));
         READWRITE(LIMITED_STRING(strURL, 64));
         READWRITE(nTime);
@@ -542,10 +569,10 @@ public:
 };
 
 //
-// CBudgetVote - Allow a masternode node to vote and broadcast throughout the network
+// CGovernanceVote - Allow a masternode node to vote and broadcast throughout the network
 //
 
-class CBudgetVote
+class CGovernanceVote
 {
 public:
     bool fValid; //if the vote is currently valid / counted
@@ -555,9 +582,10 @@ public:
     int nVote;
     int64_t nTime;
     std::vector<unsigned char> vchSig;
+    CGovernanceObject* pParent;
 
-    CBudgetVote();
-    CBudgetVote(CTxIn vin, uint256 nProposalHash, int nVoteIn);
+    CGovernanceVote();
+    CGovernanceVote(CGovernanceObject* pBudgetObjectParent, CTxIn vin, uint256 nProposalHash, int nVoteIn);
 
     bool Sign(CKey& keyMasternode, CPubKey& pubKeyMasternode);
     bool IsValid(bool fSignatureCheck);

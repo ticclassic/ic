@@ -218,7 +218,7 @@ bool IsBlockValueValid(const CBlock& block, CAmount nExpectedValue){
         }
         
         if(nHeight >= Params().GetConsensus().nBudgetPaymentsStartBlock &&
-            budget.IsBudgetPaymentBlock(nHeight)){
+            budgetman.IsBudgetPaymentBlock(nHeight)){
             //the value of the block is evaluated in CheckBlock
             return true;
         } else {
@@ -238,8 +238,8 @@ bool IsBlockPayeeValid(const CTransaction& txNew, int nBlockHeight)
 
     //check if it's a budget block
     if(IsSporkActive(SPORK_13_ENABLE_SUPERBLOCKS)){
-        if(budget.IsBudgetPaymentBlock(nBlockHeight)){
-            if(budget.IsTransactionValid(txNew, nBlockHeight)){
+        if(budgetman.IsBudgetPaymentBlock(nBlockHeight)){
+            if(budgetman.IsTransactionValid(txNew, nBlockHeight)){
                 return true;
             } else {
                 LogPrintf("Invalid budget payment detected %s\n", txNew.ToString());
@@ -276,8 +276,8 @@ void FillBlockPayee(CMutableTransaction& txNew, CAmount nFees)
     AssertLockHeld(cs_main);
     if(!chainActive.Tip()) return;
 
-    if(IsSporkActive(SPORK_13_ENABLE_SUPERBLOCKS) && budget.IsBudgetPaymentBlock(chainActive.Tip()->nHeight+1)){
-        budget.FillBlockPayee(txNew, nFees);
+    if(IsSporkActive(SPORK_13_ENABLE_SUPERBLOCKS) && budgetman.IsBudgetPaymentBlock(chainActive.Tip()->nHeight+1)){
+        budgetman.FillBlockPayee(txNew, nFees);
     } else {
         mnpayments.FillBlockPayee(txNew, nFees);
     }
@@ -285,8 +285,8 @@ void FillBlockPayee(CMutableTransaction& txNew, CAmount nFees)
 
 std::string GetRequiredPaymentsString(int nBlockHeight)
 {
-    if(IsSporkActive(SPORK_13_ENABLE_SUPERBLOCKS) && budget.IsBudgetPaymentBlock(nBlockHeight)){
-        return budget.GetRequiredPaymentsString(nBlockHeight);
+    if(IsSporkActive(SPORK_13_ENABLE_SUPERBLOCKS) && budgetman.IsBudgetPaymentBlock(nBlockHeight)){
+        return budgetman.GetRequiredPaymentsString(nBlockHeight);
     } else {
         return mnpayments.GetRequiredPaymentsString(nBlockHeight);
     }
@@ -693,7 +693,7 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
 
     CMasternodePaymentWinner newWinner(activeMasternode.vin);
 
-    if(budget.IsBudgetPaymentBlock(nBlockHeight)){
+    if(budgetman.IsBudgetPaymentBlock(nBlockHeight)){
         //is budget payment block -- handled by the budgeting software
     } else {
         LogPrintf("CMasternodePayments::ProcessBlock() Start nHeight %d - vin %s. \n", nBlockHeight, activeMasternode.vin.ToString());

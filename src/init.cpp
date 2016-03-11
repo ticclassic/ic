@@ -1828,7 +1828,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     uiInterface.InitMessage(_("Loading budget cache..."));
 
     CBudgetDB budgetdb;
-    CBudgetDB::ReadResult readResult2 = budgetdb.Read(budget);
+    CBudgetDB::ReadResult readResult2 = budgetdb.Read(budgetman);
 
     if (readResult2 == CBudgetDB::FileError)
         LogPrintf("Missing budget cache - budget.dat, will try to recreate\n");
@@ -1842,8 +1842,8 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     }
 
     //flag our cached items so we send them to our peers
-    budget.ResetSync();
-    budget.ClearSeen();
+    budgetman.ResetSync();
+    budgetman.ClearSeen();
 
     uiInterface.InitMessage(_("Loading masternode payment cache..."));
 
@@ -1950,7 +1950,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     // GetMainSignals().UpdatedBlockTip(chainActive.Tip());
     darkSendPool.UpdatedBlockTip(chainActive.Tip());
     mnpayments.UpdatedBlockTip(chainActive.Tip());
-    budget.UpdatedBlockTip(chainActive.Tip());
+    budgetman.UpdatedBlockTip(chainActive.Tip());
     masternodeSync.UpdatedBlockTip(chainActive.Tip());
 
     // start dash-darksend thread

@@ -109,8 +109,8 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "setban", 2 },
     { "setban", 3 },
     { "spork", 1 },
-    { "mnbudgetvoteraw", 1 },
-    { "mnbudgetvoteraw", 4 },
+    { "budgetvoteraw", 1 },
+    { "budgetvoteraw", 4 },
 };
 
 class CRPCConvertTable

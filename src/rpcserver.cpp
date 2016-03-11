@@ -336,10 +336,10 @@ static const CRPCCommand vRPCCommands[] =
     /* Dash features */
     { "dash",               "masternode",             &masternode,             true  },
     { "dash",               "masternodelist",         &masternodelist,         true  },
-    { "dash",               "mnbudget",               &mnbudget,               true  },
-    { "dash",               "mnbudgetvoteraw",        &mnbudgetvoteraw,        true  },
-    { "dash",               "mnfinalbudget",          &mnfinalbudget,          true  },
-    { "dash",               "mnsync",                 &mnsync,                 true  },
+    { "dash",               "budget",                 &budget,               true  },
+    { "dash",               "budgetvoteraw",          &budgetvoteraw,        true  },
+    { "dash",               "finalbudget",            &finalbudget,          true  },
+    { "dash",               "sync",                   &sync,                 true  },
     { "dash",               "spork",                  &spork,                  true  },
     { "dash",               "getpoolinfo",            &getpoolinfo,            true  },
 #ifdef ENABLE_WALLET
