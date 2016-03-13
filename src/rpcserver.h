@@ -258,7 +258,7 @@ extern UniValue masternode(const UniValue& params, bool fHelp);
 extern UniValue masternodelist(const UniValue& params, bool fHelp);
 extern UniValue budget(const UniValue& params, bool fHelp);
 extern UniValue budgetvoteraw(const UniValue& params, bool fHelp);
-extern UniValue finalbudget(const UniValue& params, bool fHelp);
+extern UniValue superblock(const UniValue& params, bool fHelp);
 extern UniValue sync(const UniValue& params, bool fHelp);
 
 extern UniValue getblockcount(const UniValue& params, bool fHelp); // in rpcblockchain.cpp

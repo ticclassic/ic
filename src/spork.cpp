@@ -133,7 +133,7 @@ int64_t GetSporkValue(int nSporkID)
 void ExecuteSpork(int nSporkID, int nValue)
 {
     if(nSporkID == SPORK_11_RESET_BUDGET && nValue == 1){
-        budgetman.Clear();
+        governance.Clear();
     }
 
     //correct fork via spork technology

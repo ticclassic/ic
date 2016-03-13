@@ -4420,37 +4420,26 @@ bool static AlreadyHave(const CInv& inv) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
     */
     case MSG_MASTERNODE_WINNER:
         if(mnpayments.mapMasternodePayeeVotes.count(inv.hash)) {
-            //masternodeSync.AddedMasternodeWinner(inv.hash);
             return true;
         }
         return false;
     case MSG_GOVERNANCE_VOTE:
-        if(budgetman.mapSeenMasternodeBudgetVotes.count(inv.hash)) {
-            //masternodeSync.AddedBudgetItem(inv.hash);
+        if(governance.mapSeenGovernanceVotes.count(inv.hash)) {
             return true;
         }
         return false;
     case MSG_GOVERNANCE_OBJECT:
-        if(budgetman.mapSeenMasternodeBudgetProposals.count(inv.hash)) {
-            //masternodeSync.AddedBudgetItem(inv.hash);
-            return true;
-        }
-        return false;
-    case MSG_GOVERNANCE_FINALIZED_VOTE:
-        if(budgetman.mapSeenFinalizedBudgetVotes.count(inv.hash)) {
-            //masternodeSync.AddedBudgetItem(inv.hash);
+        if(governance.mapSeenMasternodeBudgetProposals.count(inv.hash)) {
             return true;
         }
         return false;
     case MSG_GOVERNANCE_FINALIZED:
-        if(budgetman.mapSeenFinalizedBudgets.count(inv.hash)) {
-            //masternodeSync.AddedBudgetItem(inv.hash);
+        if(governance.mapSeenFinalizedBudgets.count(inv.hash)) {
             return true;
         }
         return false;
     case MSG_MASTERNODE_ANNOUNCE:
         if(mnodeman.mapSeenMasternodeBroadcast.count(inv.hash)) {
-            //masternodeSync.AddedMasternodeList(inv.hash);
             return true;
         }
         return false;
@@ -4614,40 +4603,30 @@ void static ProcessGetData(CNode* pfrom, const Consensus::Params& consensusParam
                     }
                 }
                 if (!pushed && inv.type == MSG_GOVERNANCE_VOTE) {
-                    if(budgetman.mapSeenMasternodeBudgetVotes.count(inv.hash)){
+                    if(governance.mapSeenGovernanceVotes.count(inv.hash)){
                         CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
                         ss.reserve(1000);
-                        ss << budgetman.mapSeenMasternodeBudgetVotes[inv.hash];
+                        ss << governance.mapSeenGovernanceVotes[inv.hash];
                         pfrom->PushMessage(NetMsgType::MNBUDGETVOTE, ss);
                         pushed = true;
                     }
                 }
 
                 if (!pushed && inv.type == MSG_GOVERNANCE_OBJECT) {
-                    if(budgetman.mapSeenMasternodeBudgetProposals.count(inv.hash)){
+                    if(governance.mapSeenMasternodeBudgetProposals.count(inv.hash)){
                         CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
                         ss.reserve(1000);
-                        ss << budgetman.mapSeenMasternodeBudgetProposals[inv.hash];
+                        ss << governance.mapSeenMasternodeBudgetProposals[inv.hash];
                         pfrom->PushMessage(NetMsgType::MNBUDGETPROPOSAL, ss);
                         pushed = true;
                     }
                 }
 
-                if (!pushed && inv.type == MSG_GOVERNANCE_FINALIZED_VOTE) {
-                    if(budgetman.mapSeenFinalizedBudgetVotes.count(inv.hash)){
-                        CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
-                        ss.reserve(1000);
-                        ss << budgetman.mapSeenFinalizedBudgetVotes[inv.hash];
-                        pfrom->PushMessage(NetMsgType::MNBUDGETFINALVOTE, ss);
-                        pushed = true;
-                    }
-                }
-
                 if (!pushed && inv.type == MSG_GOVERNANCE_FINALIZED) {
-                    if(budgetman.mapSeenFinalizedBudgets.count(inv.hash)){
+                    if(governance.mapSeenFinalizedBudgets.count(inv.hash)){
                         CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
                         ss.reserve(1000);
-                        ss << budgetman.mapSeenFinalizedBudgets[inv.hash];
+                        ss << governance.mapSeenFinalizedBudgets[inv.hash];
                         pfrom->PushMessage(NetMsgType::MNBUDGETFINAL, ss);
                         pushed = true;
                     }
@@ -5719,7 +5698,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
             //probably one the extensions
             darkSendPool.ProcessMessageDarksend(pfrom, strCommand, vRecv);
             mnodeman.ProcessMessage(pfrom, strCommand, vRecv);
-            budgetman.ProcessMessage(pfrom, strCommand, vRecv);
+            governance.ProcessMessage(pfrom, strCommand, vRecv);
             mnpayments.ProcessMessageMasternodePayments(pfrom, strCommand, vRecv);
             ProcessMessageInstantX(pfrom, strCommand, vRecv);
             ProcessSpork(pfrom, strCommand, vRecv);

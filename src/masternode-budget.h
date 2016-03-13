@@ -19,10 +19,9 @@ using namespace std;
 
 extern CCriticalSection cs_budget;
 
-class CBudgetManager;
+class CGovernanceManager;
 class CFinalizedBudgetBroadcast;
 class CFinalizedBudget;
-class CFinalizedBudgetVote;
 class CGovernanceObject;
 class CGovernanceObjectBroadcast;
 class CGovernanceVote;
@@ -39,7 +38,34 @@ static const int64_t BUDGET_VOTE_UPDATE_MIN = 60*60;
 extern std::vector<CGovernanceObjectBroadcast> vecImmatureBudgetProposals;
 extern std::vector<CFinalizedBudgetBroadcast> vecImmatureFinalizedBudgets;
 
-extern CBudgetManager budgetman;
+
+/*
+    These are the possible governance objects.
+    
+    Voting Mechanism
+
+    CGovernanceVote
+        Proposal, Contract, Setting, Switch, FinalizedBudget
+
+    Object Classes
+
+    CGovernanceObject
+        Proposal, Contract, Setting, Switch
+    CFinalizedBudget
+        FinalizedBudget
+*/
+
+enum GovernanceObjectType {
+    Error = -1,
+    None,
+    Proposal,
+    Contract,
+    Setting,
+    Switch,
+    FinalizedBudget = 88
+};
+
+extern CGovernanceManager governance;
 void DumpBudgets();
 
 //Check the collateral transaction for the budget proposal/finalized budget
@@ -64,15 +90,15 @@ public:
     };
 
     CBudgetDB();
-    bool Write(const CBudgetManager &objToSave);
-    ReadResult Read(CBudgetManager& objToLoad, bool fDryRun = false);
+    bool Write(const CGovernanceManager &objToSave);
+    ReadResult Read(CGovernanceManager& objToLoad, bool fDryRun = false);
 };
 
 
 //
 // Budget Manager : Contains all proposals for the budget
 //
-class CBudgetManager
+class CGovernanceManager
 {
 private:
 
@@ -90,32 +116,29 @@ public:
     map<uint256, CFinalizedBudget> mapFinalizedBudgets;
 
     std::map<uint256, CGovernanceObjectBroadcast> mapSeenMasternodeBudgetProposals;
-    std::map<uint256, CGovernanceVote> mapSeenMasternodeBudgetVotes;
+    std::map<uint256, CGovernanceVote> mapSeenGovernanceVotes;
     std::map<uint256, CGovernanceVote> mapOrphanMasternodeBudgetVotes;
     std::map<uint256, CFinalizedBudgetBroadcast> mapSeenFinalizedBudgets;
-    std::map<uint256, CFinalizedBudgetVote> mapSeenFinalizedBudgetVotes;
-    std::map<uint256, CFinalizedBudgetVote> mapOrphanFinalizedBudgetVotes;
 
-    CBudgetManager() {
+    CGovernanceManager() {
         mapProposals.clear();
         mapFinalizedBudgets.clear();
     }
 
     void ClearSeen() {
         mapSeenMasternodeBudgetProposals.clear();
-        mapSeenMasternodeBudgetVotes.clear();
+        mapSeenGovernanceVotes.clear();
         mapSeenFinalizedBudgets.clear();
-        mapSeenFinalizedBudgetVotes.clear();
     }
 
     int CountProposalInventoryItems()
     {
-        return mapSeenMasternodeBudgetProposals.size() + mapSeenMasternodeBudgetVotes.size();
+        return mapSeenMasternodeBudgetProposals.size() + mapSeenGovernanceVotes.size();
     }
 
     int CountFinalizedInventoryItems()
     {
-        return mapSeenFinalizedBudgets.size() + mapSeenFinalizedBudgetVotes.size();
+        return mapSeenFinalizedBudgets.size();
     }
 
     int sizeFinalized() {return (int)mapFinalizedBudgets.size();}
@@ -127,10 +150,11 @@ public:
 
     void ProcessMessage(CNode* pfrom, std::string& strCommand, CDataStream& vRecv);
     void NewBlock();
-    CGovernanceObject *FindProposal(const std::string &strProposalName);
-    CGovernanceObject *FindProposal(uint256 nHash);
+    CGovernanceObject *FindGovernanceObject(const std::string &strProposalName);
+    CGovernanceObject *FindGovernanceObject(uint256 nHash);
     CFinalizedBudget *FindFinalizedBudget(uint256 nHash);
     std::pair<std::string, std::string> GetVotes(std::string strProposalName);
+    GovernanceObjectType GetGovernanceTypeByHash(uint256 nHash);
 
     CAmount GetTotalBudget(int nHeight);
     std::vector<CGovernanceObject*> GetBudget();
@@ -142,8 +166,8 @@ public:
     void SubmitFinalBudget();
     bool HasNextFinalizedBudget();
 
-    bool UpdateProposal(CGovernanceVote& vote, CNode* pfrom, std::string& strError);
-    bool UpdateFinalizedBudget(CFinalizedBudgetVote& vote, CNode* pfrom, std::string& strError);
+    bool UpdateGovernanceObjectVotes(CGovernanceVote& vote, CNode* pfrom, std::string& strError);
+
     bool PropExists(uint256 nHash);
     bool IsTransactionValid(const CTransaction& txNew, int nBlockHeight);
     std::string GetRequiredPaymentsString(int nBlockHeight);
@@ -157,11 +181,9 @@ public:
         mapProposals.clear();
         mapFinalizedBudgets.clear();
         mapSeenMasternodeBudgetProposals.clear();
-        mapSeenMasternodeBudgetVotes.clear();
+        mapSeenGovernanceVotes.clear();
         mapSeenFinalizedBudgets.clear();
-        mapSeenFinalizedBudgetVotes.clear();
         mapOrphanMasternodeBudgetVotes.clear();
-        mapOrphanFinalizedBudgetVotes.clear();
     }
     void CheckAndRemove();
     std::string ToString() const;
@@ -172,11 +194,9 @@ public:
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
         READWRITE(mapSeenMasternodeBudgetProposals);
-        READWRITE(mapSeenMasternodeBudgetVotes);
+        READWRITE(mapSeenGovernanceVotes);
         READWRITE(mapSeenFinalizedBudgets);
-        READWRITE(mapSeenFinalizedBudgetVotes);
         READWRITE(mapOrphanMasternodeBudgetVotes);
-        READWRITE(mapOrphanFinalizedBudgetVotes);
 
         READWRITE(mapProposals);
         READWRITE(mapFinalizedBudgets);
@@ -227,7 +247,7 @@ public:
     std::string strBudgetName;
     int nBlockStart;
     std::vector<CTxBudgetPayment> vecBudgetPayments;
-    map<uint256, CFinalizedBudgetVote> mapVotes;
+    map<uint256, CGovernanceVote> mapVotes;
     uint256 nFeeTXHash;
     int64_t nTime;
 
@@ -235,7 +255,7 @@ public:
     CFinalizedBudget(const CFinalizedBudget& other);
 
     void CleanAndRemove(bool fSignatureCheck);
-    bool AddOrUpdateVote(CFinalizedBudgetVote& vote, std::string& strError);
+    bool AddOrUpdateVote(CGovernanceVote& vote, std::string& strError);
     double GetScore();
     bool HasMinimumRequiredSupport();
 
@@ -352,62 +372,14 @@ public:
     }
 };
 
-//
-// CFinalizedBudgetVote - Allow a masternode node to vote and broadcast throughout the network
-//
-
-class CFinalizedBudgetVote
-{
-public:
-    bool fValid; //if the vote is currently valid / counted
-    bool fSynced; //if we've sent this to our peers
-    CTxIn vin;
-    uint256 nBudgetHash;
-    int64_t nTime;
-    std::vector<unsigned char> vchSig;
-
-    CFinalizedBudgetVote();
-    CFinalizedBudgetVote(CTxIn vinIn, uint256 nBudgetHashIn);
-
-    bool Sign(CKey& keyMasternode, CPubKey& pubKeyMasternode);
-    bool IsValid(bool fSignatureCheck);
-    void Relay();
-
-    uint256 GetHash(){
-        CHashWriter ss(SER_GETHASH, PROTOCOL_VERSION);
-        ss << vin;
-        ss << nBudgetHash;
-        ss << nTime;
-        return ss.GetHash();
-    }
-
-    ADD_SERIALIZE_METHODS;
-
-    template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
-        READWRITE(vin);
-        READWRITE(nBudgetHash);
-        READWRITE(nTime);
-        READWRITE(vchSig);
-    }
-
-};
-
-enum GovernanceObjectType {
-    None,
-    Proposal,
-    Contract,
-    Setting,
-    Switch
-};
-
 std::string GovernanceTypeToString(GovernanceObjectType type) {
     std::string s = "";
-    if(type == None) s = "None";
+    if(type == Error) s = "Error";
     if(type == Proposal) s = "Proposal";
     if(type == Contract) s = "Contract";
     if(type == Setting) s = "Setting";
     if(type == Switch) s = "Switch";
+    if(type == FinalizedBudget) s = "FinalizedBudget";
     return s;
 };
 
@@ -432,7 +404,7 @@ public:
         This allows the proposal website to stay 100% decentralized
     */
     
-    GovernanceObjectType nObjectType;
+    int nGovernanceType;
 
     std::string strURL;
     int nBlockStart;
@@ -447,17 +419,18 @@ public:
 
     CGovernanceObject();
     CGovernanceObject(const CGovernanceObject& other);
-    CGovernanceObject(GovernanceObjectType nObjectTypeIn, std::string strProposalNameIn, std::string strURLIn, int nPaymentCount, CScript addressIn, CAmount nAmountIn, int nBlockStartIn, uint256 nFeeTXHashIn);
+    CGovernanceObject(GovernanceObjectType nGovernanceTypeIn, std::string strProposalNameIn, std::string strURLIn, int nPaymentCount, CScript addressIn, CAmount nAmountIn, int nBlockStartIn, uint256 nFeeTXHashIn);
 
     bool AddOrUpdateVote(CGovernanceVote& vote, std::string& strError);
     bool HasMinimumRequiredSupport();
     std::pair<std::string, std::string> GetVotes();
+    GovernanceObjectType GetGovernanceType();
 
     bool IsValid(const CBlockIndex* pindex, std::string& strError, bool fCheckCollateral=true);
     bool IsEstablished();
 
-    int GetValidStartTimestamp();
-    int GetValidEndTimestamp();
+    int64_t GetValidStartTimestamp();
+    int64_t GetValidEndTimestamp();
 
     std::string GetName() {return strProposalName; }
     std::string GetURL() {return strURL; }
@@ -521,7 +494,7 @@ public:
     CGovernanceObjectBroadcast() : CGovernanceObject(){}
     CGovernanceObjectBroadcast(const CGovernanceObject& other) : CGovernanceObject(other){}
     CGovernanceObjectBroadcast(const CGovernanceObjectBroadcast& other) : CGovernanceObject(other){}
-    CGovernanceObjectBroadcast(GovernanceObjectType nObjectTypeIn, std::string strProposalNameIn, std::string strURLIn, int nPaymentCount, CScript addressIn, CAmount nAmountIn, int nBlockStartIn, uint256 nFeeTXHashIn) {}
+    CGovernanceObjectBroadcast(GovernanceObjectType nGovernanceTypeIn, std::string strProposalNameIn, std::string strURLIn, int nPaymentCount, CScript addressIn, CAmount nAmountIn, int nBlockStartIn, uint256 nFeeTXHashIn) {}
 
     void swap(CGovernanceObjectBroadcast& first, CGovernanceObjectBroadcast& second) // nothrow
     {
@@ -530,7 +503,7 @@ public:
 
         // by swapping the members of two classes,
         // the two classes are effectively swapped
-        swap(first.nObjectType, second.nObjectType);
+        swap(first.nGovernanceType, second.nGovernanceType);
         swap(first.strProposalName, second.strProposalName);
         swap(first.nBlockStart, second.nBlockStart);
         swap(first.strURL, second.strURL);
@@ -556,7 +529,7 @@ public:
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
         //for syncing with other clients
 
-        READWRITE(nObjectType);
+        READWRITE(nGovernanceType);
         READWRITE(LIMITED_STRING(strProposalName, 20));
         READWRITE(LIMITED_STRING(strURL, 64));
         READWRITE(nTime);
@@ -575,17 +548,18 @@ public:
 class CGovernanceVote
 {
 public:
+    int nGovernanceType; //GovernanceObjectType
     bool fValid; //if the vote is currently valid / counted
     bool fSynced; //if we've sent this to our peers
     CTxIn vin;
-    uint256 nProposalHash;
+    uint256 nHash;
     int nVote;
     int64_t nTime;
     std::vector<unsigned char> vchSig;
     CGovernanceObject* pParent;
 
     CGovernanceVote();
-    CGovernanceVote(CGovernanceObject* pBudgetObjectParent, CTxIn vin, uint256 nProposalHash, int nVoteIn);
+    CGovernanceVote(CGovernanceObject* pBudgetObjectParent, CTxIn vin, uint256 nHashIn, int nVoteIn);
 
     bool Sign(CKey& keyMasternode, CPubKey& pubKeyMasternode);
     bool IsValid(bool fSignatureCheck);
@@ -600,8 +574,9 @@ public:
 
     uint256 GetHash(){
         CHashWriter ss(SER_GETHASH, PROTOCOL_VERSION);
+        ss << nGovernanceType;
         ss << vin;
-        ss << nProposalHash;
+        ss << nHash;
         ss << nVote;
         ss << nTime;
         return ss.GetHash();
@@ -611,8 +586,9 @@ public:
 
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
+        READWRITE(nGovernanceType);
         READWRITE(vin);
-        READWRITE(nProposalHash);
+        READWRITE(nHash);
         READWRITE(nVote);
         READWRITE(nTime);
         READWRITE(vchSig);

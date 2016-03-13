@@ -338,7 +338,7 @@ static const CRPCCommand vRPCCommands[] =
     { "dash",               "masternodelist",         &masternodelist,         true  },
     { "dash",               "budget",                 &budget,               true  },
     { "dash",               "budgetvoteraw",          &budgetvoteraw,        true  },
-    { "dash",               "finalbudget",            &finalbudget,          true  },
+    { "dash",               "superblock",             &superblock,           true  },
     { "dash",               "sync",                   &sync,                 true  },
     { "dash",               "spork",                  &spork,                  true  },
     { "dash",               "getpoolinfo",            &getpoolinfo,            true  },

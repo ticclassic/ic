@@ -97,8 +97,8 @@ void CMasternodeSync::AddedMasternodeWinner(uint256 hash)
 
 void CMasternodeSync::AddedBudgetItem(uint256 hash)
 {
-    if(budgetman.mapSeenMasternodeBudgetProposals.count(hash) || budgetman.mapSeenMasternodeBudgetVotes.count(hash) ||
-        budgetman.mapSeenFinalizedBudgets.count(hash) || budgetman.mapSeenFinalizedBudgetVotes.count(hash)) {
+    if(governance.mapSeenMasternodeBudgetProposals.count(hash) || governance.mapSeenGovernanceVotes.count(hash) ||
+        governance.mapSeenFinalizedBudgets.count(hash)) {
         lastBudgetItem = GetTime();
         mapSeenSyncBudget[hash]++;
     } else {
@@ -370,9 +370,9 @@ void CMasternodeSync::Process()
                 // shall we move onto the next asset
                 if(countBudgetItemProp > 0 && countBudgetItemFin)
                 {
-                    if(budgetman.CountProposalInventoryItems() >= (sumBudgetItemProp / countBudgetItemProp)*0.9)
+                    if(governance.CountProposalInventoryItems() >= (sumBudgetItemProp / countBudgetItemProp)*0.9)
                     {
-                        if(budgetman.CountFinalizedInventoryItems() >= (sumBudgetItemFin / countBudgetItemFin)*0.9)
+                        if(governance.CountFinalizedInventoryItems() >= (sumBudgetItemFin / countBudgetItemFin)*0.9)
                         {
                             GetNextAsset();
                             return;

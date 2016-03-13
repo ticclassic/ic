@@ -124,7 +124,7 @@ The following new RPC commands are supported:
  - get                - Show current masternode proposal
  - check              - Scan proposals and remove invalid
 ￼
-- finalbudget "command"... ( "passphrase" )
+- vote "command"... ( "passphrase" )
  - vote-many   - Vote on a finalized budget
  - vote        - Vote on a finalized budget
  - show        - Show existing finalized budgets
