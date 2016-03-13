@@ -123,3 +123,8 @@ share/BitcoindComparisonTool.jar
 
 libbitcoinconsensus.pc
 src/qt/dash-qt.bash
+
+#development symlinks
+dash-cli
+dashd
+dash-qt
