@@ -19,7 +19,7 @@
 #include "init.h"
 #include "instantx.h"
 #include "darksend.h"
-#include "masternode-budget.h"
+#include "masternode-governance.h"
 #include "masternode-payments.h"
 #include "masternode-sync.h"
 #include "masternodeman.h"

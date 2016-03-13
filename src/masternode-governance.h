@@ -150,10 +150,10 @@ public:
 
     void ProcessMessage(CNode* pfrom, std::string& strCommand, CDataStream& vRecv);
     void NewBlock();
-    CGovernanceObject *FindGovernanceObject(const std::string &strProposalName);
+    CGovernanceObject *FindGovernanceObject(const std::string &strName);
     CGovernanceObject *FindGovernanceObject(uint256 nHash);
     CFinalizedBudget *FindFinalizedBudget(uint256 nHash);
-    std::pair<std::string, std::string> GetVotes(std::string strProposalName);
+    std::pair<std::string, std::string> GetVotes(std::string strName);
     GovernanceObjectType GetGovernanceTypeByHash(uint256 nHash);
 
     CAmount GetTotalBudget(int nHeight);
@@ -384,7 +384,7 @@ std::string GovernanceTypeToString(GovernanceObjectType type) {
 };
 
 //
-// Budget Object : Contains the masternode votes for each budget
+// Governance Object (Base) : Contains the masternode votes for each budget
 //      This could be a Proposal, Contract, Setting or Switch
 //
 
@@ -397,7 +397,7 @@ private:
 
 public:
     bool fValid;
-    std::string strProposalName;
+    std::string strName;
 
     /*
         json object with name, short-description, long-description, pdf-url and any other info
@@ -419,7 +419,15 @@ public:
 
     CGovernanceObject();
     CGovernanceObject(const CGovernanceObject& other);
-    CGovernanceObject(GovernanceObjectType nGovernanceTypeIn, std::string strProposalNameIn, std::string strURLIn, int nPaymentCount, CScript addressIn, CAmount nAmountIn, int nBlockStartIn, uint256 nFeeTXHashIn);
+
+    void SetNull();
+    
+    // creation functions
+    void CreateProposalOrContract(GovernanceObjectType nTypeIn, std::string strNameIn, std::string strURLIn, int nPaymentCount, CScript addressIn, CAmount nAmountIn, int nBlockStartIn, uint256 nFeeTXHashIn);
+    void CreateProposal(std::string strNameIn, std::string strURLIn, int nPaymentCount, CScript addressIn, CAmount nAmountIn, int nBlockStartIn, uint256 nFeeTXHashIn);
+    void CreateContract(std::string strNameIn, std::string strURLIn, int nPaymentCount, CScript addressIn, CAmount nAmountIn, int nBlockStartIn, uint256 nFeeTXHashIn);
+    void CreateSwitch(std::string strNameIn, std::string strURLIn, uint256 nFeeTXHashIn);
+    void CreateSetting(std::string strNameIn, std::string strURLIn, uint256 nFeeTXHashIn);
 
     bool AddOrUpdateVote(CGovernanceVote& vote, std::string& strError);
     bool HasMinimumRequiredSupport();
@@ -432,7 +440,7 @@ public:
     int64_t GetValidStartTimestamp();
     int64_t GetValidEndTimestamp();
 
-    std::string GetName() {return strProposalName; }
+    std::string GetName() {return strName; }
     std::string GetURL() {return strURL; }
     int GetBlockStart() {return nBlockStart;}
     int GetBlockEnd() {return nBlockEnd;}
@@ -455,7 +463,7 @@ public:
 
     uint256 GetHash(){
         CHashWriter ss(SER_GETHASH, PROTOCOL_VERSION);
-        ss << strProposalName;
+        ss << strName;
         ss << strURL;
         ss << nBlockStart;
         ss << nBlockEnd;
@@ -471,7 +479,7 @@ public:
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
         //for syncing with other clients
-        READWRITE(LIMITED_STRING(strProposalName, 20));
+        READWRITE(LIMITED_STRING(strName, 20));
         READWRITE(LIMITED_STRING(strURL, 64));
         READWRITE(nTime);
         READWRITE(nBlockStart);
@@ -494,7 +502,7 @@ public:
     CGovernanceObjectBroadcast() : CGovernanceObject(){}
     CGovernanceObjectBroadcast(const CGovernanceObject& other) : CGovernanceObject(other){}
     CGovernanceObjectBroadcast(const CGovernanceObjectBroadcast& other) : CGovernanceObject(other){}
-    CGovernanceObjectBroadcast(GovernanceObjectType nGovernanceTypeIn, std::string strProposalNameIn, std::string strURLIn, int nPaymentCount, CScript addressIn, CAmount nAmountIn, int nBlockStartIn, uint256 nFeeTXHashIn) {}
+    CGovernanceObjectBroadcast(GovernanceObjectType nGovernanceTypeIn, std::string strNameIn, std::string strURLIn, int nPaymentCount, CScript addressIn, CAmount nAmountIn, int nBlockStartIn, uint256 nFeeTXHashIn) {}
 
     void swap(CGovernanceObjectBroadcast& first, CGovernanceObjectBroadcast& second) // nothrow
     {
@@ -504,7 +512,7 @@ public:
         // by swapping the members of two classes,
         // the two classes are effectively swapped
         swap(first.nGovernanceType, second.nGovernanceType);
-        swap(first.strProposalName, second.strProposalName);
+        swap(first.strName, second.strName);
         swap(first.nBlockStart, second.nBlockStart);
         swap(first.strURL, second.strURL);
         swap(first.nBlockEnd, second.nBlockEnd);
@@ -530,7 +538,7 @@ public:
         //for syncing with other clients
 
         READWRITE(nGovernanceType);
-        READWRITE(LIMITED_STRING(strProposalName, 20));
+        READWRITE(LIMITED_STRING(strName, 20));
         READWRITE(LIMITED_STRING(strURL, 64));
         READWRITE(nTime);
         READWRITE(nBlockStart);

@@ -333,14 +333,20 @@ static const CRPCCommand vRPCCommands[] =
     { "hidden",             "resendwallettransactions", &resendwallettransactions, true},
 #endif
 
-    /* Dash features */
+    /* Dash Governance Features */
+    { "dash",               "budget",                 &budget,                 true  },
+    { "dash",               "proposal",               &proposal,               true  },
+    { "dash",               "contract",               &contract,               true  },
+    // { "dash",               "switch",                 &switch,                 true  },
+    // { "dash",               "setting",                &setting,                true  },
+    { "dash",               "vote",                   &vote,                   true  },
+    { "dash",               "superblock",             &superblock,             true  },
+    { "dash",               "spork",                  &spork,                  true  }, //deprecated
+
+    /* Dash Misc */
     { "dash",               "masternode",             &masternode,             true  },
     { "dash",               "masternodelist",         &masternodelist,         true  },
-    { "dash",               "budget",                 &budget,               true  },
-    { "dash",               "budgetvoteraw",          &budgetvoteraw,        true  },
-    { "dash",               "superblock",             &superblock,           true  },
-    { "dash",               "sync",                   &sync,                 true  },
-    { "dash",               "spork",                  &spork,                  true  },
+    { "dash",               "sync",                   &sync,                   true  },
     { "dash",               "getpoolinfo",            &getpoolinfo,            true  },
 #ifdef ENABLE_WALLET
     { "dash",               "darksend",               &darksend,               false },

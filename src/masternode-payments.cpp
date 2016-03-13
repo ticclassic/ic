@@ -3,7 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "masternode-payments.h"
-#include "masternode-budget.h"
+#include "masternode-governance.h"
 #include "masternode-sync.h"
 #include "masternodeman.h"
 #include "darksend.h"

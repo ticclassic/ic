@@ -6,7 +6,7 @@
 #include "main.h"
 #include "init.h"
 
-#include "masternode-budget.h"
+#include "masternode-governance.h"
 #include "masternode.h"
 #include "darksend.h"
 #include "masternodeman.h"
@@ -463,7 +463,7 @@ CFinalizedBudget *CGovernanceManager::FindFinalizedBudget(uint256 nHash)
     return NULL;
 }
 
-CGovernanceObject *CGovernanceManager::FindGovernanceObject(const std::string &strProposalName)
+CGovernanceObject *CGovernanceManager::FindGovernanceObject(const std::string &strName)
 {
     //find the prop with the highest yes count
 
@@ -472,7 +472,7 @@ CGovernanceObject *CGovernanceManager::FindGovernanceObject(const std::string &s
 
     std::map<uint256, CGovernanceObject>::iterator it = mapProposals.begin();
     while(it != mapProposals.end()){
-        if((*it).second.strProposalName == strProposalName && (*it).second.GetYesCount() > nYesCount){
+        if((*it).second.strName == strName && (*it).second.GetYesCount() > nYesCount){
             pbudgetProposal = &((*it).second);
             nYesCount = pbudgetProposal->GetYesCount();
         }
@@ -651,7 +651,7 @@ std::vector<CGovernanceObject*> CGovernanceManager::GetBudget()
         CGovernanceObject* pbudgetProposal = (*it2).first;
 
 
-        printf("-> Budget Name : %s\n", pbudgetProposal->strProposalName.c_str());
+        printf("-> Budget Name : %s\n", pbudgetProposal->strName.c_str());
         printf("------- nBlockStart : %d\n", pbudgetProposal->nBlockStart);
         printf("------- nBlockEnd : %d\n", pbudgetProposal->nBlockEnd);
         printf("------- nBlockStart2 : %d\n", nBlockStart);
@@ -1244,7 +1244,7 @@ bool CGovernanceManager::UpdateGovernanceObjectVotes(CGovernanceVote& vote, CNod
         return mapFinalizedBudgets[vote.nHash].AddOrUpdateVote(vote, strError);
     }
 
-        // is this a proposal? 
+    // is this a proposal? 
     if(vote.nGovernanceType == Proposal)
     {
         if(!mapProposals.count(vote.nHash)){
@@ -1269,11 +1269,12 @@ bool CGovernanceManager::UpdateGovernanceObjectVotes(CGovernanceVote& vote, CNod
         return mapProposals[vote.nHash].AddOrUpdateVote(vote, strError);
     }
 
+    return false;
 }
 
 CGovernanceObject::CGovernanceObject()
 {
-    strProposalName = "unknown";
+    strName = "unknown";
     nBlockStart = 0;
     nBlockEnd = 0;
     nAmount = 0;
@@ -1283,7 +1284,7 @@ CGovernanceObject::CGovernanceObject()
 
 CGovernanceObject::CGovernanceObject(const CGovernanceObject& other)
 {
-    strProposalName = other.strProposalName;
+    strName = other.strName;
     strURL = other.strURL;
     nBlockStart = other.nBlockStart;
     nBlockEnd = other.nBlockEnd;
@@ -1293,24 +1294,6 @@ CGovernanceObject::CGovernanceObject(const CGovernanceObject& other)
     nFeeTXHash = other.nFeeTXHash;
     mapVotes = other.mapVotes;
     fValid = true;
-}
-
-CGovernanceObject::CGovernanceObject(GovernanceObjectType nGovernanceTypeIn, std::string strProposalNameIn, std::string strURLIn, int nPaymentCount, CScript addressIn, CAmount nAmountIn, int nBlockStartIn, uint256 nFeeTXHashIn)
-{
-    nGovernanceType = (int)nGovernanceTypeIn;
-    strProposalName = strProposalNameIn;
-    strURL = strURLIn;
-
-    nBlockStart = nBlockStartIn;
-
-    int nPaymentsStart = nBlockStart - nBlockStart % Params().GetConsensus().nBudgetPaymentsCycleBlocks;
-    //calculate the end of the cycle for this vote, add half a cycle (vote will be deleted after that block)
-    nBlockEnd = nPaymentsStart + Params().GetConsensus().nBudgetPaymentsCycleBlocks * nPaymentCount;
-
-    address = addressIn;
-    nAmount = nAmountIn;
-
-    nFeeTXHash = nFeeTXHashIn;
 }
 
 bool CGovernanceObject::IsValid(const CBlockIndex* pindex, std::string& strError, bool fCheckCollateral)
@@ -1352,12 +1335,12 @@ bool CGovernanceObject::IsValid(const CBlockIndex* pindex, std::string& strError
         return false;
     }
 
-    if(strProposalName.size() > 20) {
+    if(strName.size() > 20) {
         strError = "Invalid proposal name, limit of 20 characters.";
         return false;
     }
 
-    if(strProposalName != SanitizeString(strProposalName)) {
+    if(strName != SanitizeString(strName)) {
         strError = "Invalid proposal name, unsafe characters found.";
         return false;
     }
@@ -1542,7 +1525,7 @@ int CGovernanceObject::GetTotalPaymentCount()
 int CGovernanceObject::GetRemainingPaymentCount(int nBlockHeight)
 {
     int nPayments = 0;
-    // printf("-> Budget Name : %s\n", strProposalName.c_str());
+    // printf("-> Budget Name : %s\n", strName.c_str());
     // printf("------- nBlockStart : %d\n", nBlockStart);
     // printf("------- nBlockEnd : %d\n", nBlockEnd);
     while(nBlockHeight + Params().GetConsensus().nBudgetPaymentsCycleBlocks < GetBlockEndCycle())
@@ -2009,6 +1992,8 @@ int64_t CGovernanceObject::GetValidStartTimestamp()
 
     //Contracts have a two week voting period, afterwhich is locked in
     if(nGovernanceType == Contract) return nTime - (60*60); //an hour earlier than when this was created
+
+    return 0;
 }
 
 int64_t CGovernanceObject::GetValidEndTimestamp()
@@ -2018,6 +2003,8 @@ int64_t CGovernanceObject::GetValidEndTimestamp()
 
     //Contracts have a two week voting period, afterwhich is locked in
     if(nGovernanceType == Contract) return nTime + (60*60*24*14); //two week window
+
+    return 32503680000;
 }
 
 GovernanceObjectType CGovernanceManager::GetGovernanceTypeByHash(uint256 nHash)
@@ -2036,4 +2023,72 @@ GovernanceObjectType CGovernanceManager::GetGovernanceTypeByHash(uint256 nHash)
 GovernanceObjectType CGovernanceObject::GetGovernanceType()
 {
     return (GovernanceObjectType)nGovernanceType;   
+}
+
+void CGovernanceObject::SetNull()
+{
+    fValid = false;
+    strName = "unknown";
+    nGovernanceType = -1;
+    
+    strURL = "";
+    nBlockStart = 0;
+    nBlockEnd = 576*365*100;
+    nAmount = 0;
+    nTime = 0;
+    nFeeTXHash.SetNull();
+}
+
+void CGovernanceObject::CreateProposalOrContract(GovernanceObjectType nTypeIn, std::string strNameIn, std::string strURLIn, int nPaymentCount, CScript addressIn, CAmount nAmountIn, int nBlockStartIn, uint256 nFeeTXHashIn)
+{
+    nGovernanceType = (int)nTypeIn;
+
+    strName = strNameIn;
+    strURL = strURLIn;
+
+    nBlockStart = nBlockStartIn;
+
+    int nPaymentsStart = nBlockStart - nBlockStart % Params().GetConsensus().nBudgetPaymentsCycleBlocks;
+    //calculate the end of the cycle for this vote, add half a cycle (vote will be deleted after that block)
+    nBlockEnd = nPaymentsStart + Params().GetConsensus().nBudgetPaymentsCycleBlocks * nPaymentCount;
+
+    address = addressIn;
+    nAmount = nAmountIn;
+
+    nFeeTXHash = nFeeTXHashIn;
+}
+
+
+void CGovernanceObject::CreateProposal(std::string strNameIn, std::string strURLIn, int nPaymentCount, CScript addressIn, CAmount nAmountIn, int nBlockStartIn, uint256 nFeeTXHashIn)
+{
+    //they are exactly the same parameter wise, all changed are in enforcement of the voting window and budgeting logic
+    CreateProposalOrContract(Proposal, strNameIn, strURLIn, nPaymentCount, addressIn, nAmountIn, nBlockStartIn, nFeeTXHashIn);
+}
+
+void CGovernanceObject::CreateContract(std::string strNameIn, std::string strURLIn, int nPaymentCount, CScript addressIn, CAmount nAmountIn, int nBlockStartIn, uint256 nFeeTXHashIn)
+{
+    //they are exactly the same parameter wise, all changed are in enforcement of the voting window and budgeting logic
+    CreateProposalOrContract(Contract, strNameIn, strURLIn, nPaymentCount, addressIn, nAmountIn, nBlockStartIn, nFeeTXHashIn);
+}
+
+void CGovernanceObject::CreateSwitch(std::string strNameIn, std::string strURLIn, uint256 nFeeTXHashIn)
+{
+    GovernanceObjectType nType = Switch;
+    nGovernanceType = (int)nType;
+
+    strURL = strURLIn; //url where the argument for activation is
+
+    strName = strNameIn;
+    nFeeTXHash = nFeeTXHashIn;
+}
+
+void CGovernanceObject::CreateSetting(std::string strNameIn, std::string strURLIn, uint256 nFeeTXHashIn)
+{
+    GovernanceObjectType nType = Setting;
+    nGovernanceType = (int)nType;
+
+    strURL = strURLIn; //url where the argument for activation is
+
+    strName = strNameIn; 
+    nFeeTXHash = nFeeTXHashIn;
 }

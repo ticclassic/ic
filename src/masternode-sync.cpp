@@ -6,7 +6,7 @@
 #include "activemasternode.h"
 #include "masternode-sync.h"
 #include "masternode-payments.h"
-#include "masternode-budget.h"
+#include "masternode-governance.h"
 #include "masternode.h"
 #include "masternodeman.h"
 #include "spork.h"

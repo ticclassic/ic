@@ -122,7 +122,7 @@ BITCOIN_CORE_H = \
   main.h \
   masternode.h \
   masternode-payments.h \
-  masternode-budget.h \
+  masternode-governance.h \
   masternode-sync.h \
   masternodeman.h \
   masternodeconfig.h \
@@ -254,7 +254,7 @@ libbitcoin_wallet_a_SOURCES = \
   darksend-relay.cpp \
   instantx.cpp \
   masternode.cpp \
-  masternode-budget.cpp \
+  masternode-governance.cpp \
   masternode-payments.cpp \
   masternode-sync.cpp \
   masternodeconfig.cpp \

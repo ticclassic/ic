@@ -34,7 +34,7 @@
 #include "ui_interface.h"
 #include "util.h"
 #include "activemasternode.h"
-#include "masternode-budget.h"
+#include "masternode-governance.h"
 #include "masternode-payments.h"
 #include "masternode-sync.h"
 #include "masternodeman.h"

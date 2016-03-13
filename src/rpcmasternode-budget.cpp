@@ -6,7 +6,7 @@
 #include "db.h"
 #include "init.h"
 #include "activemasternode.h"
-#include "masternode-budget.h"
+#include "masternode-governance.h"
 #include "masternode-payments.h"
 #include "masternode-sync.h"
 #include "masternodeconfig.h"
@@ -29,8 +29,7 @@ UniValue vote(const UniValue& params, bool fHelp)
         strCommand = params[0].get_str();
 
     if (fHelp  ||
-        (strCommand != "vote-many" && strCommand != "vote-alias" && strCommand != "prepare" && strCommand != "submit" &&
-         strCommand != "vote" && strCommand != "getvotes" && strCommand != "get" && strCommand != "gethash" && strCommand != "list"))
+        (strCommand != "many" && strCommand != "alias" && strCommand != "get" && strCommand != "one"))
         throw runtime_error(
                 "vote \"command\"...\n"
                 "Vote on proposals, contracts, switches or settings\n"
@@ -40,6 +39,7 @@ UniValue vote(const UniValue& params, bool fHelp)
                 "  one           - Vote on a governance object by single masternode (using dash.conf setup)\n"
                 "  many          - Vote on a governance object by all masternodes (using masternode.conf setup)\n"
                 "  alias         - Vote on a governance object by alias\n"
+                "  raw           - Submit raw governance object vote (used in trustless governance implementations)\n"
                 );
 
 
@@ -336,6 +336,65 @@ UniValue vote(const UniValue& params, bool fHelp)
         return returnObj;
     }
 
+    if(strCommand == "raw")
+    {
+        if (fHelp || params.size() != 6)
+            throw runtime_error(
+                    "vote raw <masternode-tx-hash> <masternode-tx-index> <proposal-hash> <yes|no> <time> <vote-sig>\n"
+                    "Compile and relay a governance object vote with provided external signature instead of signing vote internally\n"
+                    );
+
+        uint256 hashMnTx = ParseHashV(params[1], "mn tx hash");
+        int nMnTxIndex = boost::lexical_cast<int>(params[2].get_str());
+
+        CTxIn vin = CTxIn(hashMnTx, nMnTxIndex);
+
+        uint256 hashProposal = ParseHashV(params[3], "Governance hash");
+        std::string strVote = params[4].get_str();
+
+        if(strVote != "yes" && strVote != "no") return "You can only vote 'yes' or 'no'";
+        int nVote = VOTE_ABSTAIN;
+        if(strVote == "yes") nVote = VOTE_YES;
+        if(strVote == "no") nVote = VOTE_NO;
+
+        int64_t nTime = boost::lexical_cast<int64_t>(params[5].get_str());
+        std::string strSig = params[6].get_str();
+        bool fInvalid = false;
+        vector<unsigned char> vchSig = DecodeBase64(strSig.c_str(), &fInvalid);
+
+        if (fInvalid)
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Malformed base64 encoding");
+
+        CMasternode* pmn = mnodeman.Find(vin);
+        if(pmn == NULL)
+        {
+            return "Failure to find masternode in list : " + vin.ToString();
+        }
+
+        CGovernanceObject* goParent = governance.FindGovernanceObject(hashProposal);
+        if(!goParent)
+        {
+            return "Couldn't find governance obj";
+        }
+
+        CGovernanceVote vote(goParent, vin, hashProposal, nVote);
+        vote.nTime = nTime;
+        vote.vchSig = vchSig;
+
+        if(!vote.IsValid(true)){
+            return "Failure to verify vote.";
+        }
+
+        std::string strError = "";
+        if(governance.UpdateGovernanceObjectVotes(vote, NULL, strError)){
+            governance.mapSeenGovernanceVotes.insert(make_pair(vote.GetHash(), vote));
+            vote.Relay();
+            return "Voted successfully";
+        } else {
+            return "Error voting : " + strError;
+        }
+    }
+
 
     return NullUniValue;
 }
@@ -373,7 +432,7 @@ UniValue proposal(const UniValue& params, bool fHelp)
         std::vector<CMasternodeConfig::CMasternodeEntry> mnEntries;
         mnEntries = masternodeConfig.getEntries();
 
-        std::string strProposalName = SanitizeString(params[1].get_str());
+        std::string strName = SanitizeString(params[1].get_str());
         std::string strURL = SanitizeString(params[2].get_str());
         int nPaymentCount = params[3].get_int();
         int nBlockStart = params[4].get_int();
@@ -395,7 +454,7 @@ UniValue proposal(const UniValue& params, bool fHelp)
         //*************************************************************************
 
         // create transaction 15 minutes into the future, to allow for confirmation time
-        CGovernanceObjectBroadcast budgetProposalBroadcast(Proposal, strProposalName, strURL, nPaymentCount, scriptPubKey, nAmount, nBlockStart, uint256());
+        CGovernanceObjectBroadcast budgetProposalBroadcast(Proposal, strName, strURL, nPaymentCount, scriptPubKey, nAmount, nBlockStart, uint256());
 
         std::string strError = "";
         if(!budgetProposalBroadcast.IsValid(pindex, strError, false))
@@ -437,7 +496,7 @@ UniValue proposal(const UniValue& params, bool fHelp)
         std::vector<CMasternodeConfig::CMasternodeEntry> mnEntries;
         mnEntries = masternodeConfig.getEntries();
 
-        std::string strProposalName = SanitizeString(params[1].get_str());
+        std::string strName = SanitizeString(params[1].get_str());
         std::string strURL = SanitizeString(params[2].get_str());
         int nPaymentCount = params[3].get_int();
         int nBlockStart = params[4].get_int();
@@ -458,7 +517,7 @@ UniValue proposal(const UniValue& params, bool fHelp)
         uint256 hash = ParseHashV(params[7], "Proposal hash");
 
         //create the proposal incase we're the first to make it
-        CGovernanceObjectBroadcast budgetProposalBroadcast(Proposal, strProposalName, strURL, nPaymentCount, scriptPubKey, nAmount, nBlockStart, hash);
+        CGovernanceObjectBroadcast budgetProposalBroadcast(Proposal, strName, strURL, nPaymentCount, scriptPubKey, nAmount, nBlockStart, hash);
 
         std::string strError = "";
 
@@ -593,9 +652,9 @@ UniValue proposal(const UniValue& params, bool fHelp)
         if (params.size() != 2)
             throw runtime_error("Correct usage is 'proposal gethash <proposal-name>'");
 
-        std::string strProposalName = SanitizeString(params[1].get_str());
+        std::string strName = SanitizeString(params[1].get_str());
 
-        CGovernanceObject* pbudgetProposal = governance.FindGovernanceObject(strProposalName);
+        CGovernanceObject* pbudgetProposal = governance.FindGovernanceObject(strName);
 
         if(pbudgetProposal == NULL) return "Unknown proposal";
 
@@ -604,7 +663,7 @@ UniValue proposal(const UniValue& params, bool fHelp)
         std::vector<CGovernanceObject*> winningProps = governance.GetAllProposals();
         BOOST_FOREACH(CGovernanceObject* pbudgetProposal, winningProps)
         {
-            if(pbudgetProposal->GetName() != strProposalName) continue;
+            if(pbudgetProposal->GetName() != strName) continue;
             if(!pbudgetProposal->fValid) continue;
 
             CTxDestination address1;
@@ -654,7 +713,7 @@ UniValue contract(const UniValue& params, bool fHelp)
         std::vector<CMasternodeConfig::CMasternodeEntry> mnEntries;
         mnEntries = masternodeConfig.getEntries();
 
-        std::string strProposalName = SanitizeString(params[1].get_str());
+        std::string strName = SanitizeString(params[1].get_str());
         std::string strURL = SanitizeString(params[2].get_str());
         int nPaymentCount = params[3].get_int();
         int nBlockStart = params[4].get_int();
@@ -676,7 +735,7 @@ UniValue contract(const UniValue& params, bool fHelp)
         //*************************************************************************
 
         // create transaction 15 minutes into the future, to allow for confirmation time
-        CGovernanceObjectBroadcast budgetProposalBroadcast(Contract, strProposalName, strURL, nPaymentCount, scriptPubKey, nAmount, nBlockStart, uint256());
+        CGovernanceObjectBroadcast budgetProposalBroadcast(Contract, strName, strURL, nPaymentCount, scriptPubKey, nAmount, nBlockStart, uint256());
 
         std::string strError = "";
         if(!budgetProposalBroadcast.IsValid(pindex, strError, false))
@@ -718,7 +777,7 @@ UniValue contract(const UniValue& params, bool fHelp)
         std::vector<CMasternodeConfig::CMasternodeEntry> mnEntries;
         mnEntries = masternodeConfig.getEntries();
 
-        std::string strProposalName = SanitizeString(params[1].get_str());
+        std::string strName = SanitizeString(params[1].get_str());
         std::string strURL = SanitizeString(params[2].get_str());
         int nPaymentCount = params[3].get_int();
         int nBlockStart = params[4].get_int();
@@ -739,7 +798,7 @@ UniValue contract(const UniValue& params, bool fHelp)
         uint256 hash = ParseHashV(params[7], "Proposal hash");
 
         //create the contract incase we're the first to make it
-        CGovernanceObjectBroadcast budgetProposalBroadcast(Contract, strProposalName, strURL, nPaymentCount, scriptPubKey, nAmount, nBlockStart, hash);
+        CGovernanceObjectBroadcast budgetProposalBroadcast(Contract, strName, strURL, nPaymentCount, scriptPubKey, nAmount, nBlockStart, hash);
 
         std::string strError = "";
 
@@ -874,9 +933,9 @@ UniValue contract(const UniValue& params, bool fHelp)
         if (params.size() != 2)
             throw runtime_error("Correct usage is 'proposal gethash <proposal-name>'");
 
-        std::string strProposalName = SanitizeString(params[1].get_str());
+        std::string strName = SanitizeString(params[1].get_str());
 
-        CGovernanceObject* pbudgetProposal = governance.FindGovernanceObject(strProposalName);
+        CGovernanceObject* pbudgetProposal = governance.FindGovernanceObject(strName);
 
         if(pbudgetProposal == NULL) return "Unknown proposal";
 
@@ -885,7 +944,7 @@ UniValue contract(const UniValue& params, bool fHelp)
         std::vector<CGovernanceObject*> winningProps = governance.GetAllProposals();
         BOOST_FOREACH(CGovernanceObject* pbudgetProposal, winningProps)
         {
-            if(pbudgetProposal->GetName() != strProposalName) continue;
+            if(pbudgetProposal->GetName() != strName) continue;
             if(!pbudgetProposal->fValid) continue;
 
             CTxDestination address1;
@@ -1036,65 +1095,6 @@ UniValue budget(const UniValue& params, bool fHelp)
     }
 
     return NullUniValue;
-}
-
-
-UniValue budgetvoteraw(const UniValue& params, bool fHelp)
-{
-    if (fHelp || params.size() != 6)
-        throw runtime_error(
-                "budgetvoteraw <masternode-tx-hash> <masternode-tx-index> <proposal-hash> <yes|no> <time> <vote-sig>\n"
-                "Compile and relay a proposal vote with provided external signature instead of signing vote internally\n"
-                );
-
-    uint256 hashMnTx = ParseHashV(params[0], "mn tx hash");
-    int nMnTxIndex = params[1].get_int();
-    CTxIn vin = CTxIn(hashMnTx, nMnTxIndex);
-
-    uint256 hashProposal = ParseHashV(params[2], "Proposal hash");
-    std::string strVote = params[3].get_str();
-
-    if(strVote != "yes" && strVote != "no") return "You can only vote 'yes' or 'no'";
-    int nVote = VOTE_ABSTAIN;
-    if(strVote == "yes") nVote = VOTE_YES;
-    if(strVote == "no") nVote = VOTE_NO;
-
-    int64_t nTime = params[4].get_int64();
-    std::string strSig = params[5].get_str();
-    bool fInvalid = false;
-    vector<unsigned char> vchSig = DecodeBase64(strSig.c_str(), &fInvalid);
-
-    if (fInvalid)
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Malformed base64 encoding");
-
-    CMasternode* pmn = mnodeman.Find(vin);
-    if(pmn == NULL)
-    {
-        return "Failure to find masternode in list : " + vin.ToString();
-    }
-
-    CGovernanceObject* goParent = governance.FindGovernanceObject(hashProposal);
-    if(!goParent)
-    {
-        return "Couldn't find governance obj";
-    }
-
-    CGovernanceVote vote(goParent, vin, hashProposal, nVote);
-    vote.nTime = nTime;
-    vote.vchSig = vchSig;
-
-    if(!vote.IsValid(true)){
-        return "Failure to verify vote.";
-    }
-
-    std::string strError = "";
-    if(governance.UpdateGovernanceObjectVotes(vote, NULL, strError)){
-        governance.mapSeenGovernanceVotes.insert(make_pair(vote.GetHash(), vote));
-        vote.Relay();
-        return "Voted successfully";
-    } else {
-        return "Error voting : " + strError;
-    }
 }
 
 UniValue superblock(const UniValue& params, bool fHelp)
