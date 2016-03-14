@@ -590,11 +590,13 @@ std::vector<CGovernanceObject*> CGovernanceManager::FindMatchingGovernanceObject
 
     std::vector<CGovernanceObject*> vBudgetProposalRet;
 
-    if(type == Proposal)
+    if(type == Proposal || type == Contract || type == Switch || type == Setting)
     {
         std::map<uint256, CGovernanceObject>::iterator it = mapGovernanceObjects.begin();
         while(it != mapGovernanceObjects.end())
         {
+            if((*it).second.GetGovernanceType() != type) continue;
+
             (*it).second.CleanAndRemove(false);
 
             CGovernanceObject* pbudgetProposal = &((*it).second);
@@ -602,22 +604,9 @@ std::vector<CGovernanceObject*> CGovernanceManager::FindMatchingGovernanceObject
 
             ++it;
         }    
-    }
+    }    
 
-    if(type == Proposal)
-    {
-        std::map<uint256, CGovernanceObject>::iterator it = mapGovernanceObjects.begin();
-        while(it != mapGovernanceObjects.end())
-        {
-            (*it).second.CleanAndRemove(false);
-
-            CGovernanceObject* pbudgetProposal = &((*it).second);
-            vBudgetProposalRet.push_back(pbudgetProposal);
-
-            ++it;
-        }    
-    }
-    
+    // Finalized Budgets should use
 
     return vBudgetProposalRet;
 }

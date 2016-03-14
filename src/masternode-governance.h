@@ -258,23 +258,11 @@ public:
     // **** Update ****
 
     bool AddOrUpdateVote(CGovernanceVote& vote, std::string& strError);
+    void AutoCheckSuperBlockVoting(); //check to see if we should vote on new superblock proposals
     void CleanAndRemove(bool fSignatureCheck); 
-    //check to see if we should vote on new superblock proposals
-    void AutoCheckSuperBlockVoting();
-    //vote on this finalized budget as a masternode
-    void SubmitVote();
+    void SubmitVote(); //vote on this finalized budget as a masternode
 
     // **** Statistics / Information ****
- 
-    uint256 GetHash(){
-        CHashWriter ss(SER_GETHASH, PROTOCOL_VERSION);
-        ss << strBudgetName;
-        ss << nBlockStart;
-        ss << vecBudgetPayments;
-
-        uint256 h1 = ss.GetHash();
-        return h1;
-    }
 
     int GetBlockStart() {return nBlockStart;}
     int GetBlockEnd() {return nBlockStart + (int)(vecBudgetPayments.size() - 1);}
@@ -288,6 +276,18 @@ public:
         payment = vecBudgetPayments[i];
         return true;
     }
+
+    uint256 GetHash(){
+        CHashWriter ss(SER_GETHASH, PROTOCOL_VERSION);
+        ss << strBudgetName;
+        ss << nBlockStart;
+        ss << vecBudgetPayments;
+
+        uint256 h1 = ss.GetHash();
+        return h1;
+    }
+
+    std::string GetName() {return strBudgetName; }
     bool GetPayeeAndAmount(int64_t nBlockHeight, CScript& payee, CAmount& nAmount)
     {
         LOCK(cs);
@@ -299,26 +299,20 @@ public:
         nAmount = vecBudgetPayments[i].nAmount;
         return true;
     }
-    
-    int GetVoteCount() {return (int)mapVotes.size();}
-    double GetScore();
-
-    //total dash paid out by this budget
-    CAmount GetTotalPayout();
-    std::string GetName() {return strBudgetName; }
     std::string GetProposals();
+    double GetScore();
+    string GetStatus();
+    CAmount GetTotalPayout(); //total dash paid out by this budget
+    int GetVoteCount() {return (int)mapVotes.size();}
+
     bool HasMinimumRequiredSupport();
     bool IsValid(const CBlockIndex* pindex, std::string& strError, bool fCheckCollateral=true);
     bool IsTransactionValid(const CTransaction& txNew, int nBlockHeight);
     
-    //checks the hashes to make sure we know about them
-    string GetStatus();
-
     // **** Serializer ****
 
     ADD_SERIALIZE_METHODS;
 
-    //for saving to the serialized db
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
         READWRITE(LIMITED_STRING(strBudgetName, 20));
@@ -368,10 +362,8 @@ public:
 
     ADD_SERIALIZE_METHODS;
 
-    //for propagating messages
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
-        //for syncing with other clients
         READWRITE(LIMITED_STRING(strBudgetName, 20));
         READWRITE(nBlockStart);
         READWRITE(vecBudgetPayments);
@@ -447,32 +439,18 @@ public:
 
     // **** Statistics / Information ****
     
-    std::pair<std::string, std::string> GetVotes();
-    GovernanceObjectType GetGovernanceType();
-
-    bool IsValid(const CBlockIndex* pindex, std::string& strError, bool fCheckCollateral=true);
-    bool IsEstablished();
-
-    int64_t GetValidStartTimestamp();
-    int64_t GetValidEndTimestamp();
-
-    std::string GetName() {return strName; }
-    std::string GetURL() {return strURL; }
-    int GetBlockStart() {return nBlockStart;}
-    int GetBlockEnd() {return nBlockEnd;}
-    CScript GetPayee() {return address;}
-    int GetTotalPaymentCount();
-    int GetRemainingPaymentCount(int nBlockHeight);
-    int GetBlockStartCycle();
-    int GetBlockCurrentCycle(const CBlockIndex* pindex);
-    int GetBlockEndCycle();
-    double GetRatio();
     int GetAbsoluteYesCount();
-    int GetYesCount();
-    int GetNoCount();
     int GetAbstainCount();
-    CAmount GetAmount() {return nAmount;}
     CAmount GetAllotted() {return nAlloted;}
+    CAmount GetAmount() {return nAmount;}
+    
+    int GetBlockCurrentCycle(const CBlockIndex* pindex);
+    int GetBlockEnd() {return nBlockEnd;}
+    int GetBlockEndCycle();
+    int GetBlockStart() {return nBlockStart;}
+    int GetBlockStartCycle();
+    
+    GovernanceObjectType GetGovernanceType();
 
     uint256 GetHash(){
         CHashWriter ss(SER_GETHASH, PROTOCOL_VERSION);
@@ -486,6 +464,21 @@ public:
 
         return h1;
     }
+
+    std::string GetName() {return strName; }
+    int GetNoCount();
+    int GetRemainingPaymentCount(int nBlockHeight);
+    double GetRatio();
+    CScript GetPayee() {return address;}
+    int GetTotalPaymentCount();
+    std::string GetURL() {return strURL; }
+    int64_t GetValidEndTimestamp();
+    int64_t GetValidStartTimestamp();
+    std::pair<std::string, std::string> GetVotes();
+    int GetYesCount();
+
+    bool IsValid(const CBlockIndex* pindex, std::string& strError, bool fCheckCollateral=true);
+    bool IsEstablished();
 
     // **** Serializer ****
 

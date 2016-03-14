@@ -969,14 +969,18 @@ UniValue budget(const UniValue& params, bool fHelp)
         strCommand = params[0].get_str();
 
     if (fHelp  ||
-        (strCommand != "check" && strCommand != "get" && strCommand != "projection" ))
+        (strCommand != "check" && strCommand != "get" && strCommand != "all" && 
+            strCommand != "valid" && strCommand != "extended" && strCommand != "projection"))
         throw runtime_error(
                 "budget \"command\"...\n"
                 "Manage proposals\n"
                 "\nAvailable commands:\n"
                 "  check              - Scan proposals and remove invalid from proposals list\n"
-                "  get                - Get all proposals\n"
-                "  projection         - Show the projection of which proposals will be paid the next cycle\n"
+                "  get                - Get a proposals|contract by hash\n"
+                "  all                - Get all proposals\n"
+                "  valid              - Get only valid proposals\n"
+                "  extended           - Get all proposals in extended form\n"
+                "  projection         - Show the projection of which proposals will be paid the next superblocks\n"
                 );
 
     if(strCommand == "check")
@@ -1035,13 +1039,41 @@ UniValue budget(const UniValue& params, bool fHelp)
         return resultObj;
     }
 
-    if(strCommand == "get")
+    if(strCommand == "all" || strCommand == "valid" || strCommand == "extended" || strCommand == "get")
     {
-        if (params.size() > 2)
-            throw runtime_error("Correct usage is 'budget get [valid]'");
+        uint256 nMatchHash = uint256();
+        std::string strMatchName = "";
+        bool fMissing = true;
 
-        std::string strShow = "valid";
-        if (params.size() == 2) strShow = params[1].get_str();
+        if(strCommand == "get" && params.size() == 2)
+        {
+
+            if (IsHex(params[1].get_str()))
+            {
+                nMatchHash = ParseHashV(params[1], "GovObj hash");
+            } else {
+                strMatchName = params[1].get_str();
+            }
+            fMissing = false;
+        }
+
+        // no command options
+        if(strCommand == "all" || strCommand == "valid" || strCommand == "extended") fMissing = false;
+
+        if(fMissing)
+        {
+            throw runtime_error(
+                    "budget (all|valid|extended|get)"
+                    "Show budget items in various ways\n"
+                    "\nAvailable commands:\n"
+                    "  all              - Scan proposals and remove invalid from proposals list\n"
+                    "  valid                - Get a proposals|contract by hash\n"
+                    "  all                - Get all proposals\n"
+                    "  valid              - Get only valid proposals\n"
+                    "  extended           - Get all proposals in extended form\n"
+                    "  projection         - Show the projection of which proposals will be paid the next superblocks\n"
+                    );
+        }
 
         CBlockIndex* pindex;
         {
@@ -1055,7 +1087,7 @@ UniValue budget(const UniValue& params, bool fHelp)
         std::vector<CGovernanceObject*> winningProps = governance.FindMatchingGovernanceObjects(Proposal);
         BOOST_FOREACH(CGovernanceObject* pbudgetProposal, winningProps)
         {
-            if(strShow == "valid" && !pbudgetProposal->fValid) continue;
+            if(strCommand == "valid" && !pbudgetProposal->fValid) continue;
 
             nTotalAllotted += pbudgetProposal->GetAllotted();
 
@@ -1065,28 +1097,40 @@ UniValue budget(const UniValue& params, bool fHelp)
 
             UniValue bObj(UniValue::VOBJ);
             bObj.push_back(Pair("Name",  pbudgetProposal->GetName()));
-            bObj.push_back(Pair("URL",  pbudgetProposal->GetURL()));
-            bObj.push_back(Pair("Hash",  pbudgetProposal->GetHash().ToString()));
-            bObj.push_back(Pair("FeeHash",  pbudgetProposal->nFeeTXHash.ToString()));
-            bObj.push_back(Pair("BlockStart",  (int64_t)pbudgetProposal->GetBlockStart()));
-            bObj.push_back(Pair("BlockEnd",    (int64_t)pbudgetProposal->GetBlockEnd()));
-            bObj.push_back(Pair("TotalPaymentCount",  (int64_t)pbudgetProposal->GetTotalPaymentCount()));
-            bObj.push_back(Pair("RemainingPaymentCount",  (int64_t)pbudgetProposal->GetRemainingPaymentCount(pindex->nHeight)));
-            bObj.push_back(Pair("PaymentAddress",   address2.ToString()));
-            bObj.push_back(Pair("Ratio",  pbudgetProposal->GetRatio()));
+            
+            if(strCommand == "extended")
+            {
+                bObj.push_back(Pair("URL",  pbudgetProposal->GetURL()));
+                bObj.push_back(Pair("Hash",  pbudgetProposal->GetHash().ToString()));
+                bObj.push_back(Pair("FeeHash",  pbudgetProposal->nFeeTXHash.ToString()));
+                bObj.push_back(Pair("BlockStart",  (int64_t)pbudgetProposal->GetBlockStart()));
+                bObj.push_back(Pair("BlockEnd",    (int64_t)pbudgetProposal->GetBlockEnd()));
+                bObj.push_back(Pair("TotalPaymentCount",  (int64_t)pbudgetProposal->GetTotalPaymentCount()));
+                bObj.push_back(Pair("RemainingPaymentCount",  (int64_t)pbudgetProposal->GetRemainingPaymentCount(pindex->nHeight)));
+                bObj.push_back(Pair("PaymentAddress",   address2.ToString()));
+                bObj.push_back(Pair("Ratio",  pbudgetProposal->GetRatio()));
+            }
+
             bObj.push_back(Pair("AbsoluteYesCount",  (int64_t)pbudgetProposal->GetYesCount()-(int64_t)pbudgetProposal->GetNoCount()));
             bObj.push_back(Pair("YesCount",  (int64_t)pbudgetProposal->GetYesCount()));
             bObj.push_back(Pair("NoCount",  (int64_t)pbudgetProposal->GetNoCount()));
-            bObj.push_back(Pair("AbstainCount",  (int64_t)pbudgetProposal->GetAbstainCount()));
-            bObj.push_back(Pair("TotalPayment",  ValueFromAmount(pbudgetProposal->GetAmount()*pbudgetProposal->GetTotalPaymentCount())));
-            bObj.push_back(Pair("MonthlyPayment",  ValueFromAmount(pbudgetProposal->GetAmount())));
+            
+            if(strCommand == "extended")
+            {
+                bObj.push_back(Pair("AbstainCount",  (int64_t)pbudgetProposal->GetAbstainCount()));
+                bObj.push_back(Pair("TotalPayment",  ValueFromAmount(pbudgetProposal->GetAmount()*pbudgetProposal->GetTotalPaymentCount())));
+            }
 
+            bObj.push_back(Pair("MonthlyPayment",  ValueFromAmount(pbudgetProposal->GetAmount())));
             bObj.push_back(Pair("IsEstablished",  pbudgetProposal->IsEstablished()));
 
-            std::string strError = "";
-            bObj.push_back(Pair("IsValid",  pbudgetProposal->IsValid(pindex, strError)));
-            bObj.push_back(Pair("IsValidReason",  strError.c_str()));
-            bObj.push_back(Pair("fValid",  pbudgetProposal->fValid));
+            if(strCommand == "extended")
+            {
+                std::string strError = "";
+                bObj.push_back(Pair("IsValid",  pbudgetProposal->IsValid(pindex, strError)));
+                bObj.push_back(Pair("IsValidReason",  strError.c_str()));
+                bObj.push_back(Pair("fValid",  pbudgetProposal->fValid));
+            }
 
             resultObj.push_back(Pair(pbudgetProposal->GetName(), bObj));
         }
