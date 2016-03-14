@@ -530,9 +530,9 @@ UniValue proposal(const UniValue& params, bool fHelp)
             return "Proposal FeeTX is not valid - " + hash.ToString() + " - " + strError;
         }
 
-        governance.mapSeenMasternodeBudgetProposals.insert(make_pair(budgetProposalBroadcast.GetHash(), budgetProposalBroadcast));
+        governance.mapSeenGovernanceObjects.insert(make_pair(budgetProposalBroadcast.GetHash(), budgetProposalBroadcast));
         budgetProposalBroadcast.Relay();
-        governance.AddProposal(budgetProposalBroadcast);
+        governance.AddGovernanceObject(budgetProposalBroadcast);
 
         return budgetProposalBroadcast.GetHash().ToString();
 
@@ -555,7 +555,7 @@ UniValue proposal(const UniValue& params, bool fHelp)
         UniValue resultObj(UniValue::VOBJ);
         int64_t nTotalAllotted = 0;
 
-        std::vector<CGovernanceObject*> winningProps = governance.GetAllProposals();
+        std::vector<CGovernanceObject*> winningProps = governance.FindMatchingGovernanceObjects(Proposal);
         BOOST_FOREACH(CGovernanceObject* pbudgetProposal, winningProps)
         {
             if(strShow == "valid" && !pbudgetProposal->fValid) continue;
@@ -660,7 +660,7 @@ UniValue proposal(const UniValue& params, bool fHelp)
 
         UniValue resultObj(UniValue::VOBJ);
 
-        std::vector<CGovernanceObject*> winningProps = governance.GetAllProposals();
+        std::vector<CGovernanceObject*> winningProps = governance.FindMatchingGovernanceObjects(Proposal);
         BOOST_FOREACH(CGovernanceObject* pbudgetProposal, winningProps)
         {
             if(pbudgetProposal->GetName() != strName) continue;
@@ -811,9 +811,9 @@ UniValue contract(const UniValue& params, bool fHelp)
             return "Proposal FeeTX is not valid - " + hash.ToString() + " - " + strError;
         }
 
-        governance.mapSeenMasternodeBudgetProposals.insert(make_pair(budgetProposalBroadcast.GetHash(), budgetProposalBroadcast));
+        governance.mapSeenGovernanceObjects.insert(make_pair(budgetProposalBroadcast.GetHash(), budgetProposalBroadcast));
         budgetProposalBroadcast.Relay();
-        governance.AddProposal(budgetProposalBroadcast);
+        governance.AddGovernanceObject(budgetProposalBroadcast);
 
         return budgetProposalBroadcast.GetHash().ToString();
 
@@ -836,7 +836,7 @@ UniValue contract(const UniValue& params, bool fHelp)
         UniValue resultObj(UniValue::VOBJ);
         int64_t nTotalAllotted = 0;
 
-        std::vector<CGovernanceObject*> winningProps = governance.GetAllProposals();
+        std::vector<CGovernanceObject*> winningProps = governance.FindMatchingGovernanceObjects(Proposal);
         BOOST_FOREACH(CGovernanceObject* pbudgetProposal, winningProps)
         {
             if(strShow == "valid" && !pbudgetProposal->fValid) continue;
@@ -941,7 +941,7 @@ UniValue contract(const UniValue& params, bool fHelp)
 
         UniValue resultObj(UniValue::VOBJ);
 
-        std::vector<CGovernanceObject*> winningProps = governance.GetAllProposals();
+        std::vector<CGovernanceObject*> winningProps = governance.FindMatchingGovernanceObjects(Proposal);
         BOOST_FOREACH(CGovernanceObject* pbudgetProposal, winningProps)
         {
             if(pbudgetProposal->GetName() != strName) continue;
@@ -1052,7 +1052,7 @@ UniValue budget(const UniValue& params, bool fHelp)
         UniValue resultObj(UniValue::VOBJ);
         int64_t nTotalAllotted = 0;
 
-        std::vector<CGovernanceObject*> winningProps = governance.GetAllProposals();
+        std::vector<CGovernanceObject*> winningProps = governance.FindMatchingGovernanceObjects(Proposal);
         BOOST_FOREACH(CGovernanceObject* pbudgetProposal, winningProps)
         {
             if(strShow == "valid" && !pbudgetProposal->fValid) continue;

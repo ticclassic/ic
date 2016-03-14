@@ -97,7 +97,7 @@ void CMasternodeSync::AddedMasternodeWinner(uint256 hash)
 
 void CMasternodeSync::AddedBudgetItem(uint256 hash)
 {
-    if(governance.mapSeenMasternodeBudgetProposals.count(hash) || governance.mapSeenGovernanceVotes.count(hash) ||
+    if(governance.mapSeenGovernanceObjects.count(hash) || governance.mapSeenGovernanceVotes.count(hash) ||
         governance.mapSeenFinalizedBudgets.count(hash)) {
         lastBudgetItem = GetTime();
         mapSeenSyncBudget[hash]++;

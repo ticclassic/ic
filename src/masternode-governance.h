@@ -96,10 +96,11 @@ public:
 
 
 //
-// Budget Manager : Contains all proposals for the budget
+// Governance Manager : Contains all proposals for the budget
 //
 class CGovernanceManager
-{
+{   // **** Objects and memory ****
+
 private:
 
     //hold txes until they mature enough to use
@@ -111,98 +112,96 @@ public:
     // critical section to protect the inner data structures
     mutable CCriticalSection cs;
     
-    // keep track of the scanning errors I've seen
-    map<uint256, CGovernanceObject> mapProposals;
+    // hold governance objects (proposals, contracts, settings and switches)
+    map<uint256, CGovernanceObject> mapGovernanceObjects;
+    // finalized budgets are kept in their own object
     map<uint256, CFinalizedBudget> mapFinalizedBudgets;
 
-    std::map<uint256, CGovernanceObjectBroadcast> mapSeenMasternodeBudgetProposals;
+    std::map<uint256, CGovernanceObjectBroadcast> mapSeenGovernanceObjects;
     std::map<uint256, CGovernanceVote> mapSeenGovernanceVotes;
-    std::map<uint256, CGovernanceVote> mapOrphanMasternodeBudgetVotes;
+    std::map<uint256, CGovernanceVote> mapOrphanGovernanceVotes;
     std::map<uint256, CFinalizedBudgetBroadcast> mapSeenFinalizedBudgets;
 
+    // **** Initialization ****
+
     CGovernanceManager() {
-        mapProposals.clear();
+        mapGovernanceObjects.clear();
         mapFinalizedBudgets.clear();
     }
 
-    void ClearSeen() {
-        mapSeenMasternodeBudgetProposals.clear();
-        mapSeenGovernanceVotes.clear();
-        mapSeenFinalizedBudgets.clear();
-    }
-
-    int CountProposalInventoryItems()
-    {
-        return mapSeenMasternodeBudgetProposals.size() + mapSeenGovernanceVotes.size();
-    }
-
-    int CountFinalizedInventoryItems()
-    {
-        return mapSeenFinalizedBudgets.size();
-    }
-
-    int sizeFinalized() {return (int)mapFinalizedBudgets.size();}
-    int sizeProposals() {return (int)mapProposals.size();}
-
-    void ResetSync();
-    void MarkSynced();
-    void Sync(CNode* node, uint256 nProp, bool fPartial=false);
-
-    void ProcessMessage(CNode* pfrom, std::string& strCommand, CDataStream& vRecv);
-    void NewBlock();
-    CGovernanceObject *FindGovernanceObject(const std::string &strName);
-    CGovernanceObject *FindGovernanceObject(uint256 nHash);
-    CFinalizedBudget *FindFinalizedBudget(uint256 nHash);
-    std::pair<std::string, std::string> GetVotes(std::string strName);
-    GovernanceObjectType GetGovernanceTypeByHash(uint256 nHash);
-
-    CAmount GetTotalBudget(int nHeight);
-    std::vector<CGovernanceObject*> GetBudget();
-    std::vector<CGovernanceObject*> GetAllProposals();
-    std::vector<CFinalizedBudget*> GetFinalizedBudgets();
-    bool IsBudgetPaymentBlock(int nBlockHeight);
-    bool AddProposal(CGovernanceObject& budgetProposal);
-    bool AddFinalizedBudget(CFinalizedBudget& finalizedBudget);
-    void SubmitFinalBudget();
-    bool HasNextFinalizedBudget();
-
-    bool UpdateGovernanceObjectVotes(CGovernanceVote& vote, CNode* pfrom, std::string& strError);
-
-    bool PropExists(uint256 nHash);
-    bool IsTransactionValid(const CTransaction& txNew, int nBlockHeight);
-    std::string GetRequiredPaymentsString(int nBlockHeight);
-    void FillBlockPayee(CMutableTransaction& txNew, CAmount nFees);
-
-    void CheckOrphanVotes();
     void Clear(){
         LOCK(cs);
 
-        LogPrintf("Budget object cleared\n");
-        mapProposals.clear();
+        LogPrintf("Governance object cleared\n");
+        mapGovernanceObjects.clear();
         mapFinalizedBudgets.clear();
-        mapSeenMasternodeBudgetProposals.clear();
+        mapSeenGovernanceObjects.clear();
         mapSeenGovernanceVotes.clear();
         mapSeenFinalizedBudgets.clear();
-        mapOrphanMasternodeBudgetVotes.clear();
+        mapOrphanGovernanceVotes.clear();
     }
-    void CheckAndRemove();
+
+    void ClearSeen() {
+        mapSeenGovernanceObjects.clear();
+        mapSeenGovernanceVotes.clear();
+        mapSeenFinalizedBudgets.clear();
+    }
+
+    void Sync(CNode* node, uint256 nProp, bool fPartial=false);
+    void ResetSync();
+    void MarkSynced();
+
+    // **** Statistics / Information ****
+
+    int CountProposalInventoryItems() { return mapSeenGovernanceObjects.size() + mapSeenGovernanceVotes.size(); }
+    int CountFinalizedInventoryItems() { return mapSeenFinalizedBudgets.size(); }
+
+    CAmount GetTotalBudget(int nHeight);
+    bool IsBudgetPaymentBlock(int nBlockHeight);
+    bool HasNextFinalizedBudget(); // Do we have the next finalized budget?
+    bool IsTransactionValid(const CTransaction& txNew, int nBlockHeight);
     std::string ToString() const;
 
+    // **** Update ****
+
+    bool AddFinalizedBudget(CFinalizedBudget& finalizedBudget);
+    bool AddGovernanceObject(CGovernanceObject& budgetProposal);
+    void CheckAndRemove();
+    void CheckOrphanVotes();
+    void FillBlockPayee(CMutableTransaction& txNew, CAmount nFees);
+    void NewBlock();
+    void SubmitFinalBudget();
+    void ProcessMessage(CNode* pfrom, std::string& strCommand, CDataStream& vRecv);
+    void UpdatedBlockTip(const CBlockIndex *pindex);
+    bool UpdateGovernanceObjectVotes(CGovernanceVote& vote, CNode* pfrom, std::string& strError);
+
+    // **** Search ****
+
+    CGovernanceObject *FindGovernanceObject(const std::string &strName);
+    CGovernanceObject *FindGovernanceObject(uint256 nHash);
+    CFinalizedBudget *FindFinalizedBudget(uint256 nHash);
+    GovernanceObjectType GetGovernanceTypeByHash(uint256 nHash);
+    std::pair<std::string, std::string> GetVotes(std::string strName);
+    std::vector<CGovernanceObject*> GetBudget();
+    std::vector<CGovernanceObject*> FindMatchingGovernanceObjects(GovernanceObjectType type);
+    std::vector<CFinalizedBudget*> GetFinalizedBudgets();
+    std::string GetRequiredPaymentsString(int nBlockHeight);
+
+    // **** Serializer ****
 
     ADD_SERIALIZE_METHODS;
 
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
-        READWRITE(mapSeenMasternodeBudgetProposals);
+        READWRITE(mapSeenGovernanceObjects);
         READWRITE(mapSeenGovernanceVotes);
         READWRITE(mapSeenFinalizedBudgets);
-        READWRITE(mapOrphanMasternodeBudgetVotes);
+        READWRITE(mapOrphanGovernanceVotes);
 
-        READWRITE(mapProposals);
+        READWRITE(mapGovernanceObjects);
         READWRITE(mapFinalizedBudgets);
     }
 
-    void UpdatedBlockTip(const CBlockIndex *pindex);
 };
 
 
@@ -235,7 +234,7 @@ public:
 //
 
 class CFinalizedBudget
-{
+{   // **** Objects and memory ****
 
 private:
     // critical section to protect the inner data structures
@@ -251,22 +250,34 @@ public:
     uint256 nFeeTXHash;
     int64_t nTime;
 
+    // **** Initialization ****
+ 
     CFinalizedBudget();
     CFinalizedBudget(const CFinalizedBudget& other);
+ 
+    // **** Update ****
 
-    void CleanAndRemove(bool fSignatureCheck);
     bool AddOrUpdateVote(CGovernanceVote& vote, std::string& strError);
-    double GetScore();
-    bool HasMinimumRequiredSupport();
+    void CleanAndRemove(bool fSignatureCheck); 
+    //check to see if we should vote on new superblock proposals
+    void AutoCheckSuperBlockVoting();
+    //vote on this finalized budget as a masternode
+    void SubmitVote();
 
-    bool IsValid(const CBlockIndex* pindex, std::string& strError, bool fCheckCollateral=true);
+    // **** Statistics / Information ****
+ 
+    uint256 GetHash(){
+        CHashWriter ss(SER_GETHASH, PROTOCOL_VERSION);
+        ss << strBudgetName;
+        ss << nBlockStart;
+        ss << vecBudgetPayments;
 
-    std::string GetName() {return strBudgetName; }
-    std::string GetProposals();
+        uint256 h1 = ss.GetHash();
+        return h1;
+    }
+
     int GetBlockStart() {return nBlockStart;}
     int GetBlockEnd() {return nBlockStart + (int)(vecBudgetPayments.size() - 1);}
-    int GetVoteCount() {return (int)mapVotes.size();}
-    bool IsTransactionValid(const CTransaction& txNew, int nBlockHeight);
     bool GetBudgetPaymentByBlock(int64_t nBlockHeight, CTxBudgetPayment& payment)
     {
         LOCK(cs);
@@ -288,26 +299,22 @@ public:
         nAmount = vecBudgetPayments[i].nAmount;
         return true;
     }
+    
+    int GetVoteCount() {return (int)mapVotes.size();}
+    double GetScore();
 
-    //check to see if we should vote on this
-    void AutoCheck();
     //total dash paid out by this budget
     CAmount GetTotalPayout();
-    //vote on this finalized budget as a masternode
-    void SubmitVote();
-
+    std::string GetName() {return strBudgetName; }
+    std::string GetProposals();
+    bool HasMinimumRequiredSupport();
+    bool IsValid(const CBlockIndex* pindex, std::string& strError, bool fCheckCollateral=true);
+    bool IsTransactionValid(const CTransaction& txNew, int nBlockHeight);
+    
     //checks the hashes to make sure we know about them
     string GetStatus();
 
-    uint256 GetHash(){
-        CHashWriter ss(SER_GETHASH, PROTOCOL_VERSION);
-        ss << strBudgetName;
-        ss << nBlockStart;
-        ss << vecBudgetPayments;
-
-        uint256 h1 = ss.GetHash();
-        return h1;
-    }
+    // **** Serializer ****
 
     ADD_SERIALIZE_METHODS;
 
@@ -324,7 +331,7 @@ public:
         READWRITE(mapVotes);
     }
 };
-
+ 
 // FinalizedBudget are cast then sent to peers with this object, which leaves the votes out
 class CFinalizedBudgetBroadcast : public CFinalizedBudget
 {
@@ -389,7 +396,8 @@ std::string GovernanceTypeToString(GovernanceObjectType type) {
 //
 
 class CGovernanceObject
-{
+{   // **** Objects and memory ****
+
 private:
     // critical section to protect the inner data structures
     mutable CCriticalSection cs;
@@ -415,22 +423,30 @@ public:
     uint256 nFeeTXHash;
 
     map<uint256, CGovernanceVote> mapVotes;
-    //cache object
+
+    // **** Initialization ****
 
     CGovernanceObject();
     CGovernanceObject(const CGovernanceObject& other);
 
-    void SetNull();
+    // **** Update ****
     
-    // creation functions
+    bool AddOrUpdateVote(CGovernanceVote& vote, std::string& strError);
+    
+    void CleanAndRemove(bool fSignatureCheck);
     void CreateProposalOrContract(GovernanceObjectType nTypeIn, std::string strNameIn, std::string strURLIn, int nPaymentCount, CScript addressIn, CAmount nAmountIn, int nBlockStartIn, uint256 nFeeTXHashIn);
     void CreateProposal(std::string strNameIn, std::string strURLIn, int nPaymentCount, CScript addressIn, CAmount nAmountIn, int nBlockStartIn, uint256 nFeeTXHashIn);
     void CreateContract(std::string strNameIn, std::string strURLIn, int nPaymentCount, CScript addressIn, CAmount nAmountIn, int nBlockStartIn, uint256 nFeeTXHashIn);
     void CreateSwitch(std::string strNameIn, std::string strURLIn, uint256 nFeeTXHashIn);
     void CreateSetting(std::string strNameIn, std::string strURLIn, uint256 nFeeTXHashIn);
-
-    bool AddOrUpdateVote(CGovernanceVote& vote, std::string& strError);
+    
     bool HasMinimumRequiredSupport();
+
+    void SetAllotted(CAmount nAllotedIn) {nAlloted = nAllotedIn;}
+    void SetNull();
+
+    // **** Statistics / Information ****
+    
     std::pair<std::string, std::string> GetVotes();
     GovernanceObjectType GetGovernanceType();
 
@@ -456,10 +472,7 @@ public:
     int GetNoCount();
     int GetAbstainCount();
     CAmount GetAmount() {return nAmount;}
-    void SetAllotted(CAmount nAllotedIn) {nAlloted = nAllotedIn;}
     CAmount GetAllotted() {return nAlloted;}
-
-    void CleanAndRemove(bool fSignatureCheck);
 
     uint256 GetHash(){
         CHashWriter ss(SER_GETHASH, PROTOCOL_VERSION);
@@ -473,6 +486,8 @@ public:
 
         return h1;
     }
+
+    // **** Serializer ****
 
     ADD_SERIALIZE_METHODS;
 
@@ -554,7 +569,8 @@ public:
 //
 
 class CGovernanceVote
-{
+{   // **** Objects and memory ****
+    
 public:
     int nGovernanceType; //GovernanceObjectType
     bool fValid; //if the vote is currently valid / counted
@@ -565,13 +581,19 @@ public:
     int64_t nTime;
     std::vector<unsigned char> vchSig;
     CGovernanceObject* pParent;
+    
+    // **** Initialization ****
 
     CGovernanceVote();
     CGovernanceVote(CGovernanceObject* pBudgetObjectParent, CTxIn vin, uint256 nHashIn, int nVoteIn);
 
+    // **** Update ****
+
     bool Sign(CKey& keyMasternode, CPubKey& pubKeyMasternode);
+    
+    // **** Statistics / Information ****
+    
     bool IsValid(bool fSignatureCheck);
-    void Relay();
 
     std::string GetVoteString() {
         std::string ret = "ABSTAIN";
@@ -589,6 +611,10 @@ public:
         ss << nTime;
         return ss.GetHash();
     }
+
+    void Relay();
+
+    // **** Serializer ****
 
     ADD_SERIALIZE_METHODS;
 

@@ -4429,11 +4429,11 @@ bool static AlreadyHave(const CInv& inv) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
         }
         return false;
     case MSG_GOVERNANCE_OBJECT:
-        if(governance.mapSeenMasternodeBudgetProposals.count(inv.hash)) {
+        if(governance.mapSeenGovernanceObjects.count(inv.hash)) {
             return true;
         }
         return false;
-    case MSG_GOVERNANCE_FINALIZED:
+    case MSG_GOVERNANCE_FINALIZED_BUDGET:
         if(governance.mapSeenFinalizedBudgets.count(inv.hash)) {
             return true;
         }
@@ -4613,16 +4613,16 @@ void static ProcessGetData(CNode* pfrom, const Consensus::Params& consensusParam
                 }
 
                 if (!pushed && inv.type == MSG_GOVERNANCE_OBJECT) {
-                    if(governance.mapSeenMasternodeBudgetProposals.count(inv.hash)){
+                    if(governance.mapSeenGovernanceObjects.count(inv.hash)){
                         CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
                         ss.reserve(1000);
-                        ss << governance.mapSeenMasternodeBudgetProposals[inv.hash];
+                        ss << governance.mapSeenGovernanceObjects[inv.hash];
                         pfrom->PushMessage(NetMsgType::MNBUDGETPROPOSAL, ss);
                         pushed = true;
                     }
                 }
 
-                if (!pushed && inv.type == MSG_GOVERNANCE_FINALIZED) {
+                if (!pushed && inv.type == MSG_GOVERNANCE_FINALIZED_BUDGET) {
                     if(governance.mapSeenFinalizedBudgets.count(inv.hash)){
                         CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
                         ss.reserve(1000);
