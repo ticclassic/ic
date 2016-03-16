@@ -273,7 +273,7 @@ void CMasternodeSync::Process()
                 int nMnCount = mnodeman.CountEnabled();
                 pnode->PushMessage(NetMsgType::MNWINNERSSYNC, nMnCount); //sync payees
                 uint256 n = uint256();
-                pnode->PushMessage(NetMsgType::MNBUDGETVOTESYNC, n); //sync masternode votes
+                pnode->PushMessage(NetMsgType::GOVERNANCE_VOTESYNC, n); //sync masternode votes
             } else {
                 RequestedMasternodeAssets = MASTERNODE_SYNC_FINISHED;
             }
@@ -331,7 +331,8 @@ void CMasternodeSync::Process()
 
             // MODE : MASTERNODE_SYNC_MNW
             if(RequestedMasternodeAssets == MASTERNODE_SYNC_MNW) {
-
+                GetNextAsset();
+                return;
                 // Shall we move onto the next asset?
                 // --
                 // This might take a lot longer than 2 minutes due to new blocks, but that's OK. It will eventually time out if needed
@@ -395,7 +396,7 @@ void CMasternodeSync::Process()
                 pnode->FulfilledRequest("busync");
 
                 uint256 n = uint256();
-                pnode->PushMessage(NetMsgType::MNBUDGETVOTESYNC, n); //sync masternode votes
+                pnode->PushMessage(NetMsgType::GOVERNANCE_VOTESYNC, n); //sync masternode votes
                 RequestedMasternodeAttempt++;
 
                 return; //this will cause each peer to get one request each six seconds for the various assets we need

@@ -873,7 +873,7 @@ void InitLogging()
     fLogIPs = GetBoolArg("-logips", DEFAULT_LOGIPS);
 
     LogPrintf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-    LogPrintf("Bitcoin version %s (%s)\n", FormatFullVersion(), CLIENT_DATE);
+    LogPrintf("Dash version %s (%s)\n", FormatFullVersion(), CLIENT_DATE);
 }
 
 /** Initialize dash.
@@ -1216,6 +1216,8 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
         if (!AppInitServers(threadGroup))
             return InitError(_("Unable to start HTTP server. See debug log for details."));
     }
+
+    cout << "init" << "\n";
 
     int64_t nStart;
 

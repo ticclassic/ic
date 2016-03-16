@@ -415,6 +415,7 @@ CMasternode *CMasternodeMan::Find(const CTxIn &vin)
 {
     LOCK(cs);
 
+    printf("Find: %s\n", vin.ToString().c_str());
     BOOST_FOREACH(CMasternode& mn, vMasternodes)
     {
         if(mn.vin.prevout == vin.prevout)

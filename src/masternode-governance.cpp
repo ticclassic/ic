@@ -595,7 +595,7 @@ std::vector<CGovernanceObject*> CGovernanceManager::FindMatchingGovernanceObject
         std::map<uint256, CGovernanceObject>::iterator it = mapGovernanceObjects.begin();
         while(it != mapGovernanceObjects.end())
         {
-            if((*it).second.GetGovernanceType() != type) continue;
+            if((*it).second.GetGovernanceType() != type) {++it; continue;}
 
             (*it).second.CleanAndRemove(false);
 
@@ -897,18 +897,18 @@ void CGovernanceManager::ProcessMessage(CNode* pfrom, std::string& strCommand, C
 
     LOCK(cs_budget);
 
-    if (strCommand == NetMsgType::MNBUDGETVOTESYNC) { //Masternode vote sync
+    if (strCommand == NetMsgType::GOVERNANCE_VOTESYNC) { //Masternode vote sync
         uint256 nProp;
         vRecv >> nProp;
 
         if(Params().NetworkIDString() == CBaseChainParams::MAIN){
             if(nProp == uint256()) {
-                if(pfrom->HasFulfilledRequest(NetMsgType::MNBUDGETVOTESYNC)) {
+                if(pfrom->HasFulfilledRequest(NetMsgType::GOVERNANCE_VOTESYNC)) {
                     LogPrintf("mnvs - peer already asked me for the list\n");
                     Misbehaving(pfrom->GetId(), 20);
                     return;
                 }
-                pfrom->FulfilledRequest(NetMsgType::MNBUDGETVOTESYNC);
+                pfrom->FulfilledRequest(NetMsgType::GOVERNANCE_VOTESYNC);
             }
         }
 
@@ -916,7 +916,8 @@ void CGovernanceManager::ProcessMessage(CNode* pfrom, std::string& strCommand, C
         LogPrintf("mnvs - Sent Masternode votes to %s\n", pfrom->addr.ToString());
     }
 
-    if (strCommand == NetMsgType::MNBUDGETPROPOSAL) { //Masternode Proposal
+    if (strCommand == NetMsgType::GOVERNANCE_OBJECT) { //Governance Object : Proposal, Contract, Switch, Setting (Finalized Budgets are elsewhere)
+
         CGovernanceObjectBroadcast budgetProposalBroadcast;
         vRecv >> budgetProposalBroadcast;
 
@@ -950,7 +951,7 @@ void CGovernanceManager::ProcessMessage(CNode* pfrom, std::string& strCommand, C
         CheckOrphanVotes();
     }
 
-    if (strCommand == NetMsgType::MNBUDGETVOTE) { //Masternode Vote
+    if (strCommand == NetMsgType::GOVERNANCE_VOTE) { //Masternode Vote
         CGovernanceVote vote;
         vRecv >> vote;
         vote.fValid = true;
@@ -967,12 +968,35 @@ void CGovernanceManager::ProcessMessage(CNode* pfrom, std::string& strCommand, C
             return;
         }
 
+        // setup the parent object for the vote
+        if(vote.GetGovernanceType() == FinalizedBudget)
+        {
+            CFinalizedBudget* obj = governance.FindFinalizedBudget(vote.nParentHash);
+            if(!obj)
+            {
+                LogPrint("mnbudget", "mvote - unknown finalized budget - hash: %s\n", vote.nParentHash.ToString());
+                governance.AddOrphanGovernanceVote(vote, pfrom);
+                return;
+            }
+            vote.SetParent(obj);
+        } else { // Proposal, Contract, Setting or Switch
+            CGovernanceObject* obj = governance.FindGovernanceObject(vote.nParentHash);
+            if(!obj)
+            {
+                LogPrint("mnbudget", "mvote - unknown finalized budget - hash: %s\n", vote.nParentHash.ToString());
+                governance.AddOrphanGovernanceVote(vote, pfrom);
+                return;
+            }
+            vote.SetParent(obj);
+        }
 
         mapSeenGovernanceVotes.insert(make_pair(vote.GetHash(), vote));
-        if(!vote.IsValid(true)){
-            LogPrintf("mvote - signature invalid\n");
+
+        std::string strReason = "";
+        if(!vote.IsValid(true, strReason)){
             if(masternodeSync.IsSynced()) Misbehaving(pfrom->GetId(), 20);
             // it could just be a non-synced masternode
+            LogPrint("mnbudget", "mvote - signature invalid - %s\n", strReason);
             mnodeman.AskForMN(pfrom, vote.vin);
             return;
         }
@@ -981,9 +1005,9 @@ void CGovernanceManager::ProcessMessage(CNode* pfrom, std::string& strCommand, C
         if(UpdateGovernanceObjectVotes(vote, pfrom, strError)) {
             vote.Relay();
             masternodeSync.AddedBudgetItem(vote.GetHash());
+            LogPrint("mnbudget", "mvote - new budget vote - %s\n", vote.GetHash().ToString());
         }
 
-        LogPrintf("mvote - new budget vote - %s\n", vote.GetHash().ToString());
     }
 
     if (strCommand == NetMsgType::MNBUDGETFINAL) { //Finalized Budget Suggestion
@@ -1007,6 +1031,7 @@ void CGovernanceManager::ProcessMessage(CNode* pfrom, std::string& strCommand, C
         mapSeenFinalizedBudgets.insert(make_pair(finalizedBudgetBroadcast.GetHash(), finalizedBudgetBroadcast));
 
         if(!finalizedBudgetBroadcast.IsValid(pCurrentBlockIndex, strError)) {
+            // This shouldn't be a debug message, it's important
             LogPrintf("fbs - invalid finalized budget - %s\n", strError);
             return;
         }
@@ -1040,8 +1065,15 @@ void CGovernanceManager::ProcessMessage(CNode* pfrom, std::string& strCommand, C
 
         mapSeenGovernanceVotes.insert(make_pair(vote.GetHash(), vote));
 
-        if(!vote.IsValid(true)){
+        std::string strReason = "";
+        if(!vote.IsValid(true, strReason)){
             if(masternodeSync.IsSynced()) Misbehaving(pfrom->GetId(), 20);
+
+            LogPrint("mnbudget", "fbvote - error: %s\n", strReason);
+
+            //TODO: This needs to somehow only ask if the error was related to a missing masternode
+            //      I would check for "unknown masternode" but the string includes the vin
+
             // it could just be a non-synced masternode
             mnodeman.AskForMN(pfrom, vote.vin);
             return;
@@ -1215,6 +1247,21 @@ void CGovernanceManager::Sync(CNode* pfrom, uint256 nProp, bool fPartial)
 
 }
 
+// we will ask for this governance object and hold the vote
+bool CGovernanceManager::AddOrphanGovernanceVote(CGovernanceVote& vote, CNode* pfrom)
+{
+    LogPrintf("CGovernanceManager::UpdateFinalizedBudget - Unknown Finalized Proposal %s, asking for source budget\n", vote.nParentHash.ToString());
+    mapOrphanGovernanceVotes[vote.nParentHash] = vote;
+
+    if(!askedForSourceProposalOrBudget.count(vote.nParentHash)){
+        pfrom->PushMessage(NetMsgType::GOVERNANCE_VOTESYNC, vote.nParentHash);
+        askedForSourceProposalOrBudget[vote.nParentHash] = GetTime();
+        return true;
+    }
+
+    return false;   
+}
+
 bool CGovernanceManager::UpdateGovernanceObjectVotes(CGovernanceVote& vote, CNode* pfrom, std::string& strError)
 {
     LOCK(cs);
@@ -1222,52 +1269,51 @@ bool CGovernanceManager::UpdateGovernanceObjectVotes(CGovernanceVote& vote, CNod
     // is this a proposal? 
     if(vote.nGovernanceType == FinalizedBudget)
     {
-        if(!mapFinalizedBudgets.count(vote.nHash)){
+        if(!mapFinalizedBudgets.count(vote.nParentHash)){
             if(pfrom){
                 // only ask for missing items after our syncing process is complete -- 
                 //   otherwise we'll think a full sync succeeded when they return a result
                 if(!masternodeSync.IsSynced()) return false;
 
-                LogPrintf("CGovernanceManager::UpdateFinalizedBudget - Unknown Finalized Proposal %s, asking for source budget\n", vote.nHash.ToString());
-                mapOrphanGovernanceVotes[vote.nHash] = vote;
-
-                if(!askedForSourceProposalOrBudget.count(vote.nHash)){
-                    pfrom->PushMessage(NetMsgType::MNBUDGETVOTESYNC, vote.nHash);
-                    askedForSourceProposalOrBudget[vote.nHash] = GetTime();
-                }
-
+                AddOrphanGovernanceVote(vote, pfrom);
             }
 
             strError = "Finalized Budget not found!";
             return false;
+        } else {
+            CFinalizedBudget* obj = &mapFinalizedBudgets[vote.nParentHash];
+            vote.SetParent(obj);
         }
 
-        return mapFinalizedBudgets[vote.nHash].AddOrUpdateVote(vote, strError);
+        return mapFinalizedBudgets[vote.nParentHash].AddOrUpdateVote(vote, strError);
     }
 
     // is this a proposal? 
     if(vote.nGovernanceType == Proposal)
     {
-        if(!mapGovernanceObjects.count(vote.nHash)){
+        if(!mapGovernanceObjects.count(vote.nParentHash)){
             if(pfrom){
                 // only ask for missing items after our syncing process is complete -- 
                 //   otherwise we'll think a full sync succeeded when they return a result
                 if(!masternodeSync.IsSynced()) return false;
 
-                LogPrintf("CGovernanceManager::UpdateProposal - Unknown proposal %d, asking for source proposal\n", vote.nHash.ToString());
-                mapOrphanGovernanceVotes[vote.nHash] = vote;
+                LogPrintf("CGovernanceManager::UpdateProposal - Unknown proposal %d, asking for source proposal\n", vote.nParentHash.ToString());
+                mapOrphanGovernanceVotes[vote.nParentHash] = vote;
 
-                if(!askedForSourceProposalOrBudget.count(vote.nHash)){
-                    pfrom->PushMessage(NetMsgType::MNBUDGETVOTESYNC, vote.nHash);
-                    askedForSourceProposalOrBudget[vote.nHash] = GetTime();
+                if(!askedForSourceProposalOrBudget.count(vote.nParentHash)){
+                    pfrom->PushMessage(NetMsgType::GOVERNANCE_VOTESYNC, vote.nParentHash);
+                    askedForSourceProposalOrBudget[vote.nParentHash] = GetTime();
                 }
             }
 
             strError = "Proposal not found!";
             return false;
+        } else {
+            CGovernanceObject* obj = &mapGovernanceObjects[vote.nParentHash];
+            vote.SetParent(obj);
         }
 
-        return mapGovernanceObjects[vote.nHash].AddOrUpdateVote(vote, strError);
+        return mapGovernanceObjects[vote.nParentHash].AddOrUpdateVote(vote, strError);
     }
 
     return false;
@@ -1428,7 +1474,8 @@ void CGovernanceObject::CleanAndRemove(bool fSignatureCheck)
     std::map<uint256, CGovernanceVote>::iterator it = mapVotes.begin();
 
     while(it != mapVotes.end()) {
-        (*it).second.fValid = (*it).second.IsValid(fSignatureCheck);
+        std::string strReason = "";
+        (*it).second.fValid = (*it).second.IsValid(fSignatureCheck, strReason);
         ++it;
     }
 }
@@ -1546,10 +1593,11 @@ void CGovernanceObjectBroadcast::Relay()
 
 CGovernanceVote::CGovernanceVote()
 {
-    pParent = NULL;
+    pParent1 = NULL;
+    pParent2 = NULL;
     nGovernanceType = 0;
     vin = CTxIn();
-    nHash = uint256();
+    nParentHash = uint256();
     nVote = VOTE_ABSTAIN;
     nTime = 0;
     fValid = true;
@@ -1557,12 +1605,12 @@ CGovernanceVote::CGovernanceVote()
     fSynced = false;
 }
 
-CGovernanceVote::CGovernanceVote(CGovernanceObject* pBudgetObjectParent, CTxIn vinIn, uint256 nHashIn, int nVoteIn)
+CGovernanceVote::CGovernanceVote(CGovernanceObject* pBudgetObjectParent, CTxIn vinIn, uint256 nParentHashIn, int nVoteIn)
 {
-    pParent = pBudgetObjectParent;
+    pParent1 = pBudgetObjectParent;
     nGovernanceType = (int)pBudgetObjectParent->GetGovernanceType();
     vin = vinIn;
-    nHash = nHashIn;
+    nParentHash = nParentHashIn;
     nVote = nVoteIn;
     nTime = GetAdjustedTime();
     fValid = true;
@@ -1582,7 +1630,7 @@ bool CGovernanceVote::Sign(CKey& keyMasternode, CPubKey& pubKeyMasternode)
     CKey keyCollateralAddress;
 
     std::string errorMessage;
-    std::string strMessage = vin.prevout.ToStringShort() + nHash.ToString() + boost::lexical_cast<std::string>(nVote) + boost::lexical_cast<std::string>(nTime);
+    std::string strMessage = vin.prevout.ToStringShort() + nParentHash.ToString() + boost::lexical_cast<std::string>(nVote) + boost::lexical_cast<std::string>(nTime);
 
     if(!darkSendSigner.SignMessage(strMessage, errorMessage, vchSig, keyMasternode)) {
         LogPrintf("CGovernanceVote::Sign - Error upon calling SignMessage");
@@ -1597,34 +1645,39 @@ bool CGovernanceVote::Sign(CKey& keyMasternode, CPubKey& pubKeyMasternode)
     return true;
 }
 
-bool CGovernanceVote::IsValid(bool fSignatureCheck)
+bool CGovernanceVote::IsValid(bool fSignatureCheck, std::string& strReason)
 {
     if(nTime > GetTime() + (60*60)){
-        LogPrint("mnbudget", "CGovernanceVote::IsValid() - vote is too far ahead of current time - %s - nTime %lli - Max Time %lli\n", GetHash().ToString(), nTime, GetTime() + (60*60));
+        strReason = strprintf("vote is too far ahead of current time - %s - nTime %lli - Max Time %lli %d", GetHash().ToString(), nTime, GetTime() + (60*60));
         return false;
     }
 
-    if(nTime < pParent->GetValidStartTimestamp() || nTime > pParent->GetValidEndTimestamp())
+    if(!pParent1 && !pParent2)
     {
-        LogPrint("mnbudget", "CGovernanceVote::IsValid() - vote time is out of range - %s - nTime %lli - Min/Max Time %lli, %lli\n", GetHash().ToString(), nTime, pParent->GetValidStartTimestamp(), pParent->GetValidEndTimestamp());
+        strReason = "Invalid pParent (it's null)";
         return false;
+    } else if (pParent1) {
+        if(nTime < GetValidStartTimestamp() || nTime > GetValidEndTimestamp())
+        {
+            strReason = strprintf("vote time is out of range - %s - nTime %lli - Min/Max Time %lli, %lli", GetHash().ToString(), nTime, GetValidStartTimestamp(), GetValidEndTimestamp());
+            return false;
+        }
     }
 
     CMasternode* pmn = mnodeman.Find(vin);
-
     if(pmn == NULL)
     {
-        LogPrint("mnbudget", "CGovernanceVote::IsValid() - Unknown Masternode - %s\n", vin.ToString());
+        strReason = "Unknown Masternode " + vin.ToString();
         return false;
     }
 
     if(!fSignatureCheck) return true;
 
     std::string errorMessage;
-    std::string strMessage = vin.prevout.ToStringShort() + nHash.ToString() + boost::lexical_cast<std::string>(nVote) + boost::lexical_cast<std::string>(nTime);
+    std::string strMessage = vin.prevout.ToStringShort() + nParentHash.ToString() + boost::lexical_cast<std::string>(nVote) + boost::lexical_cast<std::string>(nTime);
 
     if(!darkSendSigner.VerifyMessage(pmn->pubkey2, vchSig, strMessage, errorMessage)) {
-        LogPrintf("CGovernanceVote::IsValid() - Verify message failed - Error: %s\n", errorMessage);
+        strReason = strprintf("Verify message failed - Error: %s", errorMessage);
         return false;
     }
 
@@ -1761,7 +1814,8 @@ void CFinalizedBudget::CleanAndRemove(bool fSignatureCheck)
     std::map<uint256, CGovernanceVote>::iterator it = mapVotes.begin();
 
     while(it != mapVotes.end()) {
-        (*it).second.fValid = (*it).second.IsValid(fSignatureCheck);
+        std::string strReason = "";
+        (*it).second.fValid = (*it).second.IsValid(fSignatureCheck, strReason);
         ++it;
     }
 }
@@ -2092,4 +2146,14 @@ void CGovernanceObject::CreateSetting(std::string strNameIn, std::string strURLI
 
     strName = strNameIn; 
     nFeeTXHash = nFeeTXHashIn;
+}
+
+void CGovernanceVote::SetParent(CGovernanceObject* pGovObjectParent)
+{
+    pParent1 = pGovObjectParent;
+}
+
+void CGovernanceVote::SetParent(CFinalizedBudget* pGovObjectParent)
+{
+    pParent2 = pGovObjectParent;
 }

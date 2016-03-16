@@ -166,6 +166,7 @@ public:
 
     bool AddFinalizedBudget(CFinalizedBudget& finalizedBudget);
     bool AddGovernanceObject(CGovernanceObject& budgetProposal);
+    bool AddOrphanGovernanceVote(CGovernanceVote& vote, CNode* pfrom);
     void CheckAndRemove();
     void CheckOrphanVotes();
     void FillBlockPayee(CMutableTransaction& txNew, CAmount nFees);
@@ -263,7 +264,6 @@ public:
     void SubmitVote(); //vote on this finalized budget as a masternode
 
     // **** Statistics / Information ****
-
     int GetBlockStart() {return nBlockStart;}
     int GetBlockEnd() {return nBlockStart + (int)(vecBudgetPayments.size() - 1);}
     bool GetBudgetPaymentByBlock(int64_t nBlockHeight, CTxBudgetPayment& payment)
@@ -303,6 +303,8 @@ public:
     double GetScore();
     string GetStatus();
     CAmount GetTotalPayout(); //total dash paid out by this budget
+    int64_t GetValidEndTimestamp() {return 0;}
+    int64_t GetValidStartTimestamp() {return 32503680000;}
     int GetVoteCount() {return (int)mapVotes.size();}
 
     bool HasMinimumRequiredSupport();
@@ -315,6 +317,7 @@ public:
 
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
+        // TODO: Do we need names for these? I don't think so
         READWRITE(LIMITED_STRING(strBudgetName, 20));
         READWRITE(nFeeTXHash);
         READWRITE(nTime);
@@ -545,7 +548,6 @@ public:
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
         //for syncing with other clients
 
-        READWRITE(nGovernanceType);
         READWRITE(LIMITED_STRING(strName, 20));
         READWRITE(LIMITED_STRING(strURL, 64));
         READWRITE(nTime);
@@ -554,6 +556,12 @@ public:
         READWRITE(nAmount);
         READWRITE(*(CScriptBase*)(&address));
         READWRITE(nFeeTXHash);
+        
+        // if(nVersion == 1)
+        //     nGovernanceType = Proposal
+
+        // if(nVersion == 2)
+        //     READWRITE(nGovernanceType);
     }
 };
 
@@ -562,31 +570,55 @@ public:
 //
 
 class CGovernanceVote
-{   // **** Objects and memory ****
+{   // **** Objects and memory ****************************************************
     
 public:
     int nGovernanceType; //GovernanceObjectType
     bool fValid; //if the vote is currently valid / counted
     bool fSynced; //if we've sent this to our peers
     CTxIn vin;
-    uint256 nHash;
+    uint256 nParentHash;
     int nVote;
     int64_t nTime;
     std::vector<unsigned char> vchSig;
-    CGovernanceObject* pParent;
+
+    // Parent is one of these objects
+    CGovernanceObject* pParent1;
+    CFinalizedBudget* pParent2;
     
-    // **** Initialization ****
+    // **** Initialization ********************************************************
 
     CGovernanceVote();
-    CGovernanceVote(CGovernanceObject* pBudgetObjectParent, CTxIn vin, uint256 nHashIn, int nVoteIn);
+    CGovernanceVote(CGovernanceObject* pBudgetObjectParent, CTxIn vin, uint256 nParentHashIn, int nVoteIn);
 
-    // **** Update ****
+    // **** Update ****************************************************************
 
     bool Sign(CKey& keyMasternode, CPubKey& pubKeyMasternode);
+    void SetParent(CGovernanceObject* pGovObjectParent);
+    void SetParent(CFinalizedBudget* pGovObjectParent);
     
-    // **** Statistics / Information ****
+    // **** Statistics / Information **********************************************
+
+    GovernanceObjectType GetGovernanceType()
+    {
+        return (GovernanceObjectType)nGovernanceType;
+    }
     
-    bool IsValid(bool fSignatureCheck);
+    int64_t GetValidStartTimestamp()
+    {
+        if(pParent1) {return pParent1->GetValidStartTimestamp();}
+        if(pParent2) {return pParent2->GetValidStartTimestamp();}
+        return -1;
+    }
+
+    int64_t GetValidEndTimestamp()
+    {
+        if(pParent1) {return pParent1->GetValidEndTimestamp();}
+        if(pParent2) {return pParent2->GetValidEndTimestamp();}
+        return -1;
+    }
+
+    bool IsValid(bool fSignatureCheck, std::string& strReason);
 
     std::string GetVoteString() {
         std::string ret = "ABSTAIN";
@@ -599,7 +631,7 @@ public:
         CHashWriter ss(SER_GETHASH, PROTOCOL_VERSION);
         ss << nGovernanceType;
         ss << vin;
-        ss << nHash;
+        ss << nParentHash;
         ss << nVote;
         ss << nTime;
         return ss.GetHash();
@@ -607,18 +639,23 @@ public:
 
     void Relay();
 
-    // **** Serializer ****
+    // **** Serializer ************************************************************
 
     ADD_SERIALIZE_METHODS;
 
     template <typename Stream, typename Operation>
     inline void SerializationOp(Stream& s, Operation ser_action, int nType, int nVersion) {
-        READWRITE(nGovernanceType);
         READWRITE(vin);
-        READWRITE(nHash);
+        READWRITE(nParentHash);
         READWRITE(nVote);
         READWRITE(nTime);
         READWRITE(vchSig);
+
+        // TODO : For testnet version bump
+        //READWRITE(nGovernanceType);
+
+        // reverse compatabiity until we are in testnet
+        nGovernanceType = Proposal;
     }
 
 

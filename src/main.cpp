@@ -4607,7 +4607,7 @@ void static ProcessGetData(CNode* pfrom, const Consensus::Params& consensusParam
                         CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
                         ss.reserve(1000);
                         ss << governance.mapSeenGovernanceVotes[inv.hash];
-                        pfrom->PushMessage(NetMsgType::MNBUDGETVOTE, ss);
+                        pfrom->PushMessage(NetMsgType::GOVERNANCE_VOTE, ss);
                         pushed = true;
                     }
                 }
@@ -4617,7 +4617,7 @@ void static ProcessGetData(CNode* pfrom, const Consensus::Params& consensusParam
                         CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
                         ss.reserve(1000);
                         ss << governance.mapSeenGovernanceObjects[inv.hash];
-                        pfrom->PushMessage(NetMsgType::MNBUDGETPROPOSAL, ss);
+                        pfrom->PushMessage(NetMsgType::GOVERNANCE_OBJECT, ss);
                         pushed = true;
                     }
                 }

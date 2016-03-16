@@ -381,8 +381,9 @@ UniValue vote(const UniValue& params, bool fHelp)
         vote.nTime = nTime;
         vote.vchSig = vchSig;
 
-        if(!vote.IsValid(true)){
-            return "Failure to verify vote.";
+        std::string strReason;
+        if(!vote.IsValid(true, strReason)){
+            return "Failure to verify vote - " + strReason;
         }
 
         std::string strError = "";
@@ -1085,6 +1086,7 @@ UniValue budget(const UniValue& params, bool fHelp)
         int64_t nTotalAllotted = 0;
 
         std::vector<CGovernanceObject*> winningProps = governance.FindMatchingGovernanceObjects(Proposal);
+        
         BOOST_FOREACH(CGovernanceObject* pbudgetProposal, winningProps)
         {
             if(strCommand == "valid" && !pbudgetProposal->fValid) continue;
