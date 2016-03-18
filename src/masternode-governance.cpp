@@ -1327,6 +1327,7 @@ CGovernanceObject::CGovernanceObject()
     nAmount = 0;
     nTime = 0;
     fValid = true;
+    nGovernanceType = 0;
 }
 
 CGovernanceObject::CGovernanceObject(const CGovernanceObject& other)
@@ -1340,6 +1341,7 @@ CGovernanceObject::CGovernanceObject(const CGovernanceObject& other)
     nTime = other.nTime;
     nFeeTXHash = other.nFeeTXHash;
     mapVotes = other.mapVotes;
+    nGovernanceType = other.nGovernanceType;
     fValid = true;
 }
 

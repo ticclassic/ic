@@ -22,6 +22,11 @@
 
 using namespace std;
 
+// UniValue FindMatchingGovernanceObjects(GovernanceType& type)
+// {
+
+// }
+
 UniValue vote(const UniValue& params, bool fHelp)
 {
     string strCommand;
@@ -416,7 +421,7 @@ UniValue proposal(const UniValue& params, bool fHelp)
                 "\nAvailable commands:\n"
                 "  prepare            - Prepare proposal by signing and creating tx\n"
                 "  submit             - Submit proposal to network\n"
-                "  list               - List all proposals\n"
+                "  list               - List all proposals - (list valid|all|extended)\n"
                 "  get                - get proposal\n"
                 "  gethash            - Get proposal hash(es) by proposal name\n"
                 );
@@ -542,7 +547,7 @@ UniValue proposal(const UniValue& params, bool fHelp)
     if(strCommand == "list")
     {
         if (params.size() > 2)
-            throw runtime_error("Correct usage is 'proposal list [valid]'");
+            throw runtime_error("Correct usage is 'proposal list [valid|all|extended]'");
 
         std::string strShow = "valid";
         if (params.size() == 2) strShow = params[1].get_str();
@@ -569,28 +574,42 @@ UniValue proposal(const UniValue& params, bool fHelp)
 
             UniValue bObj(UniValue::VOBJ);
             bObj.push_back(Pair("Name",  pbudgetProposal->GetName()));
-            bObj.push_back(Pair("URL",  pbudgetProposal->GetURL()));
+
+            if(strShow == "extended") bObj.push_back(Pair("URL",  pbudgetProposal->GetURL()));
             bObj.push_back(Pair("Hash",  pbudgetProposal->GetHash().ToString()));
-            bObj.push_back(Pair("FeeHash",  pbudgetProposal->nFeeTXHash.ToString()));
-            bObj.push_back(Pair("BlockStart",  (int64_t)pbudgetProposal->GetBlockStart()));
-            bObj.push_back(Pair("BlockEnd",    (int64_t)pbudgetProposal->GetBlockEnd()));
-            bObj.push_back(Pair("TotalPaymentCount",  (int64_t)pbudgetProposal->GetTotalPaymentCount()));
-            bObj.push_back(Pair("RemainingPaymentCount",  (int64_t)pbudgetProposal->GetRemainingPaymentCount(pindex->nHeight)));
-            bObj.push_back(Pair("PaymentAddress",   address2.ToString()));
-            bObj.push_back(Pair("Ratio",  pbudgetProposal->GetRatio()));
+
+            if(strShow == "extended")
+            {
+                bObj.push_back(Pair("FeeHash",  pbudgetProposal->nFeeTXHash.ToString()));
+                bObj.push_back(Pair("BlockStart",  (int64_t)pbudgetProposal->GetBlockStart()));
+                bObj.push_back(Pair("BlockEnd",    (int64_t)pbudgetProposal->GetBlockEnd()));
+                bObj.push_back(Pair("TotalPaymentCount",  (int64_t)pbudgetProposal->GetTotalPaymentCount()));
+                bObj.push_back(Pair("RemainingPaymentCount",  (int64_t)pbudgetProposal->GetRemainingPaymentCount(pindex->nHeight)));
+                bObj.push_back(Pair("PaymentAddress",   address2.ToString()));
+                bObj.push_back(Pair("Ratio",  pbudgetProposal->GetRatio()));
+            }
+        
             bObj.push_back(Pair("AbsoluteYesCount",  (int64_t)pbudgetProposal->GetYesCount()-(int64_t)pbudgetProposal->GetNoCount()));
             bObj.push_back(Pair("YesCount",  (int64_t)pbudgetProposal->GetYesCount()));
             bObj.push_back(Pair("NoCount",  (int64_t)pbudgetProposal->GetNoCount()));
-            bObj.push_back(Pair("AbstainCount",  (int64_t)pbudgetProposal->GetAbstainCount()));
-            bObj.push_back(Pair("TotalPayment",  ValueFromAmount(pbudgetProposal->GetAmount()*pbudgetProposal->GetTotalPaymentCount())));
+            
+            if(strShow == "extended")
+            {
+                bObj.push_back(Pair("AbstainCount",  (int64_t)pbudgetProposal->GetAbstainCount()));
+                bObj.push_back(Pair("TotalPayment",  ValueFromAmount(pbudgetProposal->GetAmount()*pbudgetProposal->GetTotalPaymentCount())));
+            }
+
             bObj.push_back(Pair("MonthlyPayment",  ValueFromAmount(pbudgetProposal->GetAmount())));
 
-            bObj.push_back(Pair("IsEstablished",  pbudgetProposal->IsEstablished()));
+            if(strShow == "extended")
+            {
+                bObj.push_back(Pair("IsEstablished",  pbudgetProposal->IsEstablished()));
 
-            std::string strError = "";
-            bObj.push_back(Pair("IsValid",  pbudgetProposal->IsValid(pindex, strError)));
-            bObj.push_back(Pair("IsValidReason",  strError.c_str()));
-            bObj.push_back(Pair("fValid",  pbudgetProposal->fValid));
+                std::string strError = "";
+                bObj.push_back(Pair("IsValid",  pbudgetProposal->IsValid(pindex, strError)));
+                bObj.push_back(Pair("IsValidReason",  strError.c_str()));
+                bObj.push_back(Pair("fValid",  pbudgetProposal->fValid));
+            }
 
             resultObj.push_back(Pair(pbudgetProposal->GetName(), bObj));
         }
@@ -740,7 +759,7 @@ UniValue contract(const UniValue& params, bool fHelp)
 
         std::string strError = "";
         if(!budgetProposalBroadcast.IsValid(pindex, strError, false))
-            return "Proposal is not valid - " + budgetProposalBroadcast.GetHash().ToString() + " - " + strError;
+            return "Contract is not valid - " + budgetProposalBroadcast.GetHash().ToString() + " - " + strError;
 
         bool useIX = false; //true;
         // if (params.size() > 7) {
@@ -796,7 +815,7 @@ UniValue contract(const UniValue& params, bool fHelp)
         // Parse Dash address
         CScript scriptPubKey = GetScriptForDestination(address.Get());
         CAmount nAmount = AmountFromValue(params[6]);
-        uint256 hash = ParseHashV(params[7], "Proposal hash");
+        uint256 hash = ParseHashV(params[7], "Contract hash");
 
         //create the contract incase we're the first to make it
         CGovernanceObjectBroadcast budgetProposalBroadcast(Contract, strName, strURL, nPaymentCount, scriptPubKey, nAmount, nBlockStart, hash);
@@ -804,12 +823,12 @@ UniValue contract(const UniValue& params, bool fHelp)
         std::string strError = "";
 
         if(!budgetProposalBroadcast.IsValid(pindex, strError)){
-            return "Proposal is not valid - " + budgetProposalBroadcast.GetHash().ToString() + " - " + strError;
+            return "Contract is not valid - " + budgetProposalBroadcast.GetHash().ToString() + " - " + strError;
         }
 
         int nConf = 0;
         if(!IsBudgetCollateralValid(hash, budgetProposalBroadcast.GetHash(), strError, budgetProposalBroadcast.nTime, nConf)){
-            return "Proposal FeeTX is not valid - " + hash.ToString() + " - " + strError;
+            return "Contract FeeTX is not valid - " + hash.ToString() + " - " + strError;
         }
 
         governance.mapSeenGovernanceObjects.insert(make_pair(budgetProposalBroadcast.GetHash(), budgetProposalBroadcast));

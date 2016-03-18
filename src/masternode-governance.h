@@ -463,6 +463,7 @@ public:
         ss << nBlockEnd;
         ss << nAmount;
         ss << *(CScriptBase*)(&address);
+        //ss << nGovernanceType
         uint256 h1 = ss.GetHash();
 
         return h1;
@@ -503,6 +504,12 @@ public:
 
         //for saving to the serialized db
         READWRITE(mapVotes);
+
+        // TODO : For testnet version bump
+        //READWRITE(nGovernanceType);
+
+        // reverse compatabiity until we are in testnet
+        nGovernanceType = Proposal;
     }
 };
 
@@ -530,7 +537,8 @@ public:
         swap(first.nAmount, second.nAmount);
         swap(first.address, second.address);
         swap(first.nTime, second.nTime);
-        swap(first.nFeeTXHash, second.nFeeTXHash);        
+        swap(first.nFeeTXHash, second.nFeeTXHash);
+        swap(first.nGovernanceType, second.nGovernanceType);
         first.mapVotes.swap(second.mapVotes);
     }
 
@@ -557,11 +565,11 @@ public:
         READWRITE(*(CScriptBase*)(&address));
         READWRITE(nFeeTXHash);
         
-        // if(nVersion == 1)
-        //     nGovernanceType = Proposal
+        // TODO : For testnet version bump
+        //READWRITE(nGovernanceType);
 
-        // if(nVersion == 2)
-        //     READWRITE(nGovernanceType);
+        // reverse compatabiity until we are in testnet
+        nGovernanceType = Proposal;
     }
 };
 
@@ -634,6 +642,7 @@ public:
         ss << nParentHash;
         ss << nVote;
         ss << nTime;
+        //ss << nGovernanceType
         return ss.GetHash();
     }
 
