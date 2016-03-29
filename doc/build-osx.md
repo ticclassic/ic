@@ -1,6 +1,6 @@
 Mac OS X Build Instructions and Notes
 ====================================
-This guide will show you how to build dashd (headless client) for OSX.
+This guide will show you how to build braincoind (headless client) for OSX.
 
 Notes
 -----
@@ -58,19 +58,19 @@ The rest of these commands are run inside brew interactive mode:
 /private/tmp/berkeley-db4-UGpd0O $ exit
 ```
 
-After exiting, you'll get a warning that the install is keg-only, which means it wasn't symlinked to `/usr/local`.  You don't need it to link it to build dash, but if you want to, here's how:
+After exiting, you'll get a warning that the install is keg-only, which means it wasn't symlinked to `/usr/local`.  You don't need it to link it to build braincoin, but if you want to, here's how:
 
     $ brew link --force berkeley-db4
 
 
-### Building `dashd`
+### Building `braincoind`
 
 1. Clone the github tree to get the source code and go into the directory.
 
         git clone https://https://github.com/axelxod/braincoin.git
-        cd dash
+        cd braincoin
 
-2.  Build dashd:
+2.  Build braincoind:
 
         ./autogen.sh
         ./configure
@@ -80,7 +80,7 @@ After exiting, you'll get a warning that the install is keg-only, which means it
 
         make check
 
-4.  (Optional) You can also install dashd to your path:
+4.  (Optional) You can also install braincoind to your path:
 
         make install
 
@@ -92,7 +92,7 @@ Download Qt Creator from http://www.qt.io/download/. Download the "community edi
 1. Make sure you installed everything through homebrew mentioned above 
 2. Do a proper ./configure --with-gui=qt5 --enable-debug
 3. In Qt Creator do "New Project" -> Import Project -> Import Existing Project
-4. Enter "dash-qt" as project name, enter src/qt as location
+4. Enter "braincoin-qt" as project name, enter src/qt as location
 5. Leave the file selection as it is
 6. Confirm the "summary page"
 7. In the "Projects" tab select "Manage Kits..."
@@ -102,11 +102,11 @@ Download Qt Creator from http://www.qt.io/download/. Download the "community edi
 
 Creating a release build
 ------------------------
-You can ignore this section if you are building `dashd` for your own use.
+You can ignore this section if you are building `braincoind` for your own use.
 
-dashd/dash-cli binaries are not included in the Dash-Qt.app bundle.
+braincoind/braincoin-cli binaries are not included in the Braincoin-Qt.app bundle.
 
-If you are building `dashd` or `Dash-Qt` for others, your build machine should be set up
+If you are building `braincoind` or `Braincoin-Qt` for others, your build machine should be set up
 as follows for maximum compatibility:
 
 All dependencies should be compiled with these flags:
@@ -115,30 +115,30 @@ All dependencies should be compiled with these flags:
  -arch x86_64
  -isysroot $(xcode-select --print-path)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk
 
-Once dependencies are compiled, see release-process.md for how the Dash-Qt.app
+Once dependencies are compiled, see release-process.md for how the Braincoin-Qt.app
 bundle is packaged and signed to create the .dmg disk image that is distributed.
 
 Running
 -------
 
-It's now available at `./dashd`, provided that you are still in the `src`
+It's now available at `./braincoind`, provided that you are still in the `src`
 directory. We have to first create the RPC configuration file, though.
 
-Run `./dashd` to get the filename where it should be put, or just try these
+Run `./braincoind` to get the filename where it should be put, or just try these
 commands:
 
-    echo -e "rpcuser=dashrpc\nrpcpassword=$(xxd -l 16 -p /dev/urandom)" > "/Users/${USER}/Library/Application Support/Dash/dash.conf"
-    chmod 600 "/Users/${USER}/Library/Application Support/Dash/dash.conf"
+    echo -e "rpcuser=braincoinrpc\nrpcpassword=$(xxd -l 16 -p /dev/urandom)" > "/Users/${USER}/Library/Application Support/Braincoin/braincoin.conf"
+    chmod 600 "/Users/${USER}/Library/Application Support/Braincoin/braincoin.conf"
 
 The next time you run it, it will start downloading the blockchain, but it won't
 output anything while it's doing this. This process may take several hours;
 you can monitor its process by looking at the debug.log file, like this:
 
-    tail -f $HOME/Library/Application\ Support/Dash/debug.log
+    tail -f $HOME/Library/Application\ Support/Braincoin/debug.log
 
 Other commands:
 -------
 
-    ./dashd -daemon # to start the dash daemon.
-    ./dash-cli --help  # for a list of command-line options.
-    ./dash-cli help    # When the daemon is running, to get a list of RPC commands
+    ./braincoind -daemon # to start the braincoin daemon.
+    ./braincoin-cli --help  # for a list of command-line options.
+    ./braincoin-cli help    # When the daemon is running, to get a list of RPC commands

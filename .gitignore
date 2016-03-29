@@ -6,12 +6,12 @@ reset-files.bash
 *.tar.gz
 
 *.exe
-src/dash
-src/dashd
-src/dash-cli
-src/dash-tx
-src/test/test_dash
-src/qt/test/test_dash-qt
+src/braincoin
+src/braincoind
+src/braincoin-cli
+src/braincoin-tx
+src/test/test_braincoin
+src/qt/test/test_braincoin-qt
 
 # autoreconf
 Makefile.in
@@ -34,8 +34,8 @@ config.log
 config.status
 configure
 libtool
-src/config/dash-config.h
-src/config/dash-config.h.in
+src/config/braincoin-config.h
+src/config/braincoin-config.h.in
 src/config/stamp-h1
 share/setup.nsi
 share/qt/Info.plist
@@ -60,7 +60,7 @@ src/qt/test/moc*.cpp
 *.o
 *.o-*
 *.patch
-.dash
+.braincoin
 *.a
 *.pb.cc
 *.pb.h
@@ -79,12 +79,12 @@ src/qt/test/moc*.cpp
 # Compilation and Qt preprocessor part
 *.qm
 Makefile
-dash-qt
-Dash-Qt.app
+braincoin-qt
+Braincoin-Qt.app
 
 # Unit-tests
 Makefile.test
-dash-qt_test
+braincoin-qt_test
 src/test/buildenv.py
 
 # Resources cpp
@@ -100,7 +100,7 @@ build
 #lcov
 *.gcno
 /*.info
-test_dash.coverage/
+test_braincoin.coverage/
 total.coverage/
 coverage_percent.txt
 

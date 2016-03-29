@@ -93,7 +93,7 @@ public:
 };
 
 /**
- * Dash RPC command dispatcher.
+ * Braincoin RPC command dispatcher.
  */
 class CRPCTable
 {
