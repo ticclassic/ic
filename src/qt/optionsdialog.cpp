@@ -12,7 +12,7 @@
 #include "bitcoinunits.h"
 #include "guiutil.h"
 #include "optionsmodel.h"
-#include "darksend.h"
+#include "ramsend.h"
 
 #include "main.h" // for MAX_SCRIPTCHECK_THREADS
 #include "netbase.h"
@@ -207,8 +207,8 @@ void OptionsDialog::setMapper()
     mapper->addMapping(ui->thirdPartyTxUrls, OptionsModel::ThirdPartyTxUrls);
 
 
-    /* Darksend Rounds */
-    mapper->addMapping(ui->darksendRounds, OptionsModel::DarksendRounds);
+    /* Ramsend Rounds */
+    mapper->addMapping(ui->ramsendRounds, OptionsModel::RamsendRounds);
     mapper->addMapping(ui->anonymizeDarkcoin, OptionsModel::AnonymizeDarkcoinAmount);
 
 }

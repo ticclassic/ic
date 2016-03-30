@@ -741,7 +741,7 @@ Address: %4
         <translation>复制零钱</translation>
     </message>
     <message>
-        <source>Non-anonymized input selected. &lt;b&gt;Darksend will be disabled.&lt;/b&gt;&lt;br&gt;&lt;br&gt;If you still want to use Darksend, please deselect all non-nonymized inputs first and then check Darksend checkbox again.</source>
+        <source>Non-anonymized input selected. &lt;b&gt;Ramsend will be disabled.&lt;/b&gt;&lt;br&gt;&lt;br&gt;If you still want to use Ramsend, please deselect all non-nonymized inputs first and then check Ramsend checkbox again.</source>
         <translation>已选择非匿名输入. &lt;b&gt;匿名发送将会被禁用.&lt;/ b&gt;&lt;br&gt; &lt;br&gt;如果你仍然想使用匿名发送功能,请先取消所选的非匿名输入,然后再勾选匿名发送.</translation>
     </message>
     <message>
@@ -842,9 +842,9 @@ Address: %4
     </message>
 </context>
 <context>
-    <name>DarksendConfig</name>
+    <name>RamsendConfig</name>
     <message>
-        <source>Configure Darksend</source>
+        <source>Configure Ramsend</source>
         <translation>配置匿名发送</translation>
     </message>
     <message>
@@ -892,19 +892,19 @@ Address: %4
         <translation>此选项提供最慢速度但是却最安全的匿名服务。最多匿名化将花费</translation>
     </message>
     <message>
-        <source>Darksend Configuration</source>
+        <source>Ramsend Configuration</source>
         <translation>匿名发送配置</translation>
     </message>
     <message>
-        <source>Darksend was successfully set to basic (%1 and 2 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
+        <source>Ramsend was successfully set to basic (%1 and 2 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
         <translation>匿名发送已成功设置为一般(%1到2次循环)。可以通过打开达世币配置窗口来随时修改。</translation>
     </message>
     <message>
-        <source>Darksend was successfully set to high (%1 and 8 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
+        <source>Ramsend was successfully set to high (%1 and 8 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
         <translation>匿名发送已成功设置为高(%1到8次循环)。可以通过打开达世币配置窗口来随时修改。</translation>
     </message>
     <message>
-        <source>Darksend was successfully set to maximum (%1 and 16 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
+        <source>Ramsend was successfully set to maximum (%1 and 16 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
         <translation>匿名发送已成功设置为最高(%1到16次循环)。可以通过打开达世币配置窗口来随时修改。</translation>
     </message>
 </context>
@@ -1147,11 +1147,11 @@ Address: %4
         <translation>(0 = 自动, &lt;0 = 离开很多免费的核心)</translation>
     </message>
     <message>
-        <source>Darksend rounds to use</source>
+        <source>Ramsend rounds to use</source>
         <translation>匿名传送的循环次数</translation>
     </message>
     <message>
-        <source>This amount acts as a threshold to turn off Darksend once it's reached.</source>
+        <source>This amount acts as a threshold to turn off Ramsend once it's reached.</source>
         <translation>此金额为关闭匿名发送的极限.</translation>
     </message>
     <message>
@@ -1424,7 +1424,7 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>完成度:</translation>
     </message>
     <message>
-        <source>Darksend Balance:</source>
+        <source>Ramsend Balance:</source>
         <translation>匿名传送余额:</translation>
     </message>
     <message>
@@ -1444,7 +1444,7 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>n/a</translation>
     </message>
     <message>
-        <source>Darksend</source>
+        <source>Ramsend</source>
         <translation>匿名发送</translation>
     </message>
     <message>
@@ -1464,7 +1464,7 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>(最近一次信息)</translation>
     </message>
     <message>
-        <source>Try to manually submit a Darksend request.</source>
+        <source>Try to manually submit a Ramsend request.</source>
         <translation>尝试手动提交一次匿名化请求</translation>
     </message>
     <message>
@@ -1472,7 +1472,7 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>尝试混合</translation>
     </message>
     <message>
-        <source>Reset the current status of Darksend (can interrupt Darksend if it's in the process of Mixing, which can cost you money!)</source>
+        <source>Reset the current status of Ramsend (can interrupt Ramsend if it's in the process of Mixing, which can cost you money!)</source>
         <translation>重置目前匿名状态(此操作可能会影响您目前正在执行的混合过程，并且产生费用!)</translation>
     </message>
     <message>
@@ -1488,11 +1488,11 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>关闭</translation>
     </message>
     <message>
-        <source>Start Darksend Mixing</source>
+        <source>Start Ramsend Mixing</source>
         <translation>开始匿名化混合</translation>
     </message>
     <message>
-        <source>Stop Darksend Mixing</source>
+        <source>Stop Ramsend Mixing</source>
         <translation>关闭匿名化混合</translation>
     </message>
     <message>
@@ -1532,7 +1532,7 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>打开</translation>
     </message>
     <message>
-        <source>Last Darksend message:
+        <source>Last Ramsend message:
 </source>
         <translation>最后一次匿名信息:
 </translation>
@@ -1542,15 +1542,15 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>不可用</translation>
     </message>
     <message>
-        <source>Darksend was successfully reset.</source>
+        <source>Ramsend was successfully reset.</source>
         <translation>匿名化被成功重置。</translation>
     </message>
     <message>
-        <source>Darksend requires at least %1 to use.</source>
+        <source>Ramsend requires at least %1 to use.</source>
         <translation>匿名化要求至少 %1 以使用</translation>
     </message>
     <message>
-        <source>Wallet is locked and user declined to unlock. Disabling Darksend.</source>
+        <source>Wallet is locked and user declined to unlock. Disabling Ramsend.</source>
         <translation>钱包已锁定需要用户解锁。 正在关闭匿名化。</translation>
     </message>
 </context>
@@ -2361,7 +2361,7 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>添加收款人(&amp;R)</translation>
     </message>
     <message>
-        <source>Darksend</source>
+        <source>Ramsend</source>
         <translation>匿名发送</translation>
     </message>
     <message>
@@ -2413,7 +2413,7 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>匿名化金额</translation>
     </message>
     <message>
-        <source>(darksend requires this amount to be rounded up to the nearest %1).</source>
+        <source>(ramsend requires this amount to be rounded up to the nearest %1).</source>
         <translation>(匿名发送需要四舍五入此金额致最接近的值%1).</translation>
     </message>
     <message>
@@ -3009,7 +3009,7 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>收款来自</translation>
     </message>
     <message>
-        <source>Received via Darksend</source>
+        <source>Received via Ramsend</source>
         <translation>已通过匿名处理接收</translation>
     </message>
     <message>
@@ -3025,19 +3025,19 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>挖矿所得</translation>
     </message>
     <message>
-        <source>Darksend Denominate</source>
+        <source>Ramsend Denominate</source>
         <translation>匿名发送面额化</translation>
     </message>
     <message>
-        <source>Darksend Collateral Payment</source>
+        <source>Ramsend Collateral Payment</source>
         <translation>匿名发送附加费用</translation>
     </message>
     <message>
-        <source>Darksend Make Collateral Inputs</source>
+        <source>Ramsend Make Collateral Inputs</source>
         <translation>匿名发送会产生附加费用</translation>
     </message>
     <message>
-        <source>Darksend Create Denominations</source>
+        <source>Ramsend Create Denominations</source>
         <translation>匿名发送会生成面值额度</translation>
     </message>
     <message>
@@ -3120,19 +3120,19 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>匿名发送</translation>
     </message>
     <message>
-        <source>Darksend Make Collateral Inputs</source>
+        <source>Ramsend Make Collateral Inputs</source>
         <translation>匿名发送会产生附加费用</translation>
     </message>
     <message>
-        <source>Darksend Create Denominations</source>
+        <source>Ramsend Create Denominations</source>
         <translation>匿名发送会生成面值额度</translation>
     </message>
     <message>
-        <source>Darksend Denominate</source>
+        <source>Ramsend Denominate</source>
         <translation>匿名发送面额化</translation>
     </message>
     <message>
-        <source>Darksend Collateral Payment</source>
+        <source>Ramsend Collateral Payment</source>
         <translation>匿名发送附加费用</translation>
     </message>
     <message>
@@ -3311,7 +3311,7 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>不能获得锁定的数据目录 %s. 达世币核心可能已经在运行。</translation>
     </message>
     <message>
-        <source>Darksend uses exact denominated amounts to send funds, you might simply need to anonymize some more coins.</source>
+        <source>Ramsend uses exact denominated amounts to send funds, you might simply need to anonymize some more coins.</source>
         <translation>为了匿名发送的正常发送,您可能需要再混淆一些币.</translation>
     </message>
     <message>
@@ -3343,11 +3343,11 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>无法绑定%s此计算机. 达世币核心应该已经在运行中了.</translation>
     </message>
     <message>
-        <source>Unable to locate enough Darksend denominated funds for this transaction.</source>
+        <source>Unable to locate enough Ramsend denominated funds for this transaction.</source>
         <translation>无法找到足够的已匿名化资金来完成交易,不足1000 BRAINCOIN.</translation>
     </message>
     <message>
-        <source>Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 1000 BRAINCOIN.</source>
+        <source>Unable to locate enough Ramsend non-denominated funds for this transaction that are not equal 1000 BRAINCOIN.</source>
         <translation>无法找到足够的未匿名化资金来完成交易,不足1000 BRAINCOIN.</translation>
     </message>
     <message>
@@ -3447,7 +3447,7 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>已找到损坏的数据块</translation>
     </message>
     <message>
-        <source>Darksend options:</source>
+        <source>Ramsend options:</source>
         <translation>匿名发送选项：</translation>
     </message>
     <message>
@@ -3531,7 +3531,7 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>删除钱包里的所有交易信息, 并且在下次启动时, 使用 -rescan 来从区块链中恢复</translation>
     </message>
     <message>
-        <source>Disable all Braincoin specific functionality (Masternodes, Darksend, InstantX, Budgeting) (0-1, default: %u)</source>
+        <source>Disable all Braincoin specific functionality (Masternodes, Ramsend, InstantX, Budgeting) (0-1, default: %u)</source>
         <translation>禁止所有达世币附加功能(主节点, 匿名发送, 即时发送, 预算) (0-1, default: %u)</translation>
     </message>
     <message>
@@ -3539,7 +3539,7 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>激活即时支付,显示锁定交易的确认数(bool, 默认: %s)</translation>
     </message>
     <message>
-        <source>Enable use of automated darksend for funds stored in this wallet (0-1, default: %u)</source>
+        <source>Enable use of automated ramsend for funds stored in this wallet (0-1, default: %u)</source>
         <translation>允许存储在这个钱包内的资金自动使用匿名发送(0-1, 默认: %u)</translation>
     </message>
     <message>
@@ -3615,8 +3615,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>在白名单中的节点不会因为检测到DoS攻击而被停用. 来自这些节点的交易也一定会被转发, 即使说交易本神就来自记忆池. 适用于网关</translation>
     </message>
     <message>
-        <source>(9999 could be used only on mainnet)</source>
-        <translation>(9999 只能被用于主网)</translation>
+        <source>(6390 could be used only on mainnet)</source>
+        <translation>(6390 只能被用于主网)</translation>
     </message>
     <message>
         <source>(default: %s)</source>
@@ -3661,15 +3661,15 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>无法解析 -rpcbind 参数 %s 作为网络地址</translation>
     </message>
     <message>
-        <source>Darksend is idle.</source>
+        <source>Ramsend is idle.</source>
         <translation>匿名化处于空闲状态</translation>
     </message>
     <message>
-        <source>Darksend request complete:</source>
+        <source>Ramsend request complete:</source>
         <translation>匿名化请求已完成:</translation>
     </message>
     <message>
-        <source>Darksend request incomplete:</source>
+        <source>Ramsend request incomplete:</source>
         <translation>匿名化请求未完成:</translation>
     </message>
     <message>
@@ -3786,7 +3786,7 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>设定 -paytxfee=&lt;金额&gt; 的金额无效: '%s'</translation>
     </message>
     <message>
-        <source>Last successful Darksend action was too recent.</source>
+        <source>Last successful Ramsend action was too recent.</source>
         <translation>最后一次成功匿名发送刚刚完成.</translation>
     </message>
     <message>
@@ -3959,8 +3959,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>无效主节点私钥。请查阅文件材料。</translation>
     </message>
     <message>
-        <source>(must be 9999 for mainnet)</source>
-        <translation>(设置 9999 为主网)</translation>
+        <source>(must be 6390 for mainnet)</source>
+        <translation>(设置 6390 为主网)</translation>
     </message>
     <message>
         <source>Can't find random Masternode.</source>
@@ -3991,7 +3991,7 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>保持定量达世币匿名化(默认: %u)</translation>
     </message>
     <message>
-        <source>Last Darksend was too recent.</source>
+        <source>Last Ramsend was too recent.</source>
         <translation>最后一次匿名发送刚刚完成。</translation>
     </message>
     <message>
@@ -4215,7 +4215,7 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>链接JSON-RPC的用户名</translation>
     </message>
     <message>
-        <source>Value more than Darksend pool maximum allows.</source>
+        <source>Value more than Ramsend pool maximum allows.</source>
         <translation>数值超过匿名发送池所允许的最大数。</translation>
     </message>
     <message>

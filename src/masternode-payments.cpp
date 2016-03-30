@@ -6,7 +6,7 @@
 #include "masternode-budget.h"
 #include "masternode-sync.h"
 #include "masternodeman.h"
-#include "darksend.h"
+#include "ramsend.h"
 #include "util.h"
 #include "sync.h"
 #include "spork.h"
@@ -339,11 +339,11 @@ void CMasternodePayments::ProcessMessageMasternodePayments(CNode* pfrom, std::st
 {
     if(!masternodeSync.IsBlockchainSynced()) return;
 
-    if(fLiteMode) return; //disable all Darksend/Masternode related functionality
+    if(fLiteMode) return; //disable all Ramsend/Masternode related functionality
 
 
     if (strCommand == "mnget") { //Masternode Payments Request Sync
-        if(fLiteMode) return; //disable all Darksend/Masternode related functionality
+        if(fLiteMode) return; //disable all Ramsend/Masternode related functionality
 
         int nCountNeeded;
         vRecv >> nCountNeeded;

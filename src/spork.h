@@ -13,7 +13,7 @@
 #include "main.h"
 
 #include "protocol.h"
-#include "darksend.h"
+#include "ramsend.h"
 #include <boost/lexical_cast.hpp>
 
 using namespace std;

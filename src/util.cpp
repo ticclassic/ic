@@ -110,14 +110,14 @@ string strMasterNodeAddr = "";
 bool fLiteMode = false;
 bool fEnableInstantX = true;
 int nInstantXDepth = 5;
-int nDarksendRounds = 2;
+int nRamsendRounds = 2;
 int nAnonymizeDarkcoinAmount = 1000;
 int nLiquidityProvider = 0;
 /** Spork enforcement enabled time */
 int64_t enforceMasternodePaymentsTime = 4085657524;
 bool fSucessfullyLoaded = false;
-bool fEnableDarksend = false;
-/** All denominations used by darksend */
+bool fEnableRamsend = false;
+/** All denominations used by ramsend */
 std::vector<int64_t> darkSendDenominations;
 string strBudgetMode = "";
 
@@ -234,7 +234,7 @@ bool LogAcceptCategory(const char* category)
             // thread_specific_ptr automatically deletes the set when the thread ends.
             // "braincoin" is a composite category enabling all Braincoin-related debug output
             if(ptrCategory->count(string("braincoin"))) {
-                ptrCategory->insert(string("darksend"));
+                ptrCategory->insert(string("ramsend"));
                 ptrCategory->insert(string("instantx"));
                 ptrCategory->insert(string("masternode"));
                 ptrCategory->insert(string("keepass"));

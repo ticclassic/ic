@@ -1,29 +1,29 @@
-#ifndef DARKSENDCONFIG_H
-#define DARKSENDCONFIG_H
+#ifndef RAMSENDCONFIG_H
+#define RAMSENDCONFIG_H
 
 #include <QDialog>
 
 namespace Ui {
-    class DarksendConfig;
+    class RamsendConfig;
 }
 class WalletModel;
 
 /** Multifunctional dialog to ask for passphrases. Used for encryption, unlocking, and changing the passphrase.
  */
-class DarksendConfig : public QDialog
+class RamsendConfig : public QDialog
 {
     Q_OBJECT
 
 public:
 
-    DarksendConfig(QWidget *parent = 0);
-    ~DarksendConfig();
+    RamsendConfig(QWidget *parent = 0);
+    ~RamsendConfig();
 
     void setModel(WalletModel *model);
 
 
 private:
-    Ui::DarksendConfig *ui;
+    Ui::RamsendConfig *ui;
     WalletModel *model;
     void configure(bool enabled, int coins, int rounds);
 
@@ -34,4 +34,4 @@ private slots:
     void clickMax();
 };
 
-#endif // DARKSENDCONFIG_H
+#endif // RAMSENDCONFIG_H

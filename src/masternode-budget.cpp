@@ -7,7 +7,7 @@
 
 #include "masternode-budget.h"
 #include "masternode.h"
-#include "darksend.h"
+#include "ramsend.h"
 #include "masternodeman.h"
 #include "masternode-sync.h"
 #include "util.h"

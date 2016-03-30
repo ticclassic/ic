@@ -1,5 +1,5 @@
-#include "darksendconfig.h"
-#include "ui_darksendconfig.h"
+#include "ramsendconfig.h"
+#include "ui_ramsendconfig.h"
 
 #include "bitcoinunits.h"
 #include "guiconstants.h"
@@ -12,9 +12,9 @@
 #include <QKeyEvent>
 #include <QSettings>
 
-DarksendConfig::DarksendConfig(QWidget *parent) :
+RamsendConfig::RamsendConfig(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::DarksendConfig),
+    ui(new Ui::RamsendConfig),
     model(0)
 {
     ui->setupUi(this);
@@ -24,68 +24,68 @@ DarksendConfig::DarksendConfig(QWidget *parent) :
     connect(ui->buttonMax, SIGNAL(clicked()), this, SLOT(clickMax()));
 }
 
-DarksendConfig::~DarksendConfig()
+RamsendConfig::~RamsendConfig()
 {
     delete ui;
 }
 
-void DarksendConfig::setModel(WalletModel *model)
+void RamsendConfig::setModel(WalletModel *model)
 {
     this->model = model;
 }
 
-void DarksendConfig::clickBasic()
+void RamsendConfig::clickBasic()
 {
     configure(true, 1000, 2);
 
     QString strAmount(BitcoinUnits::formatWithUnit(
         model->getOptionsModel()->getDisplayUnit(), 1000 * COIN));
-    QMessageBox::information(this, tr("Darksend Configuration"),
+    QMessageBox::information(this, tr("Ramsend Configuration"),
         tr(
-            "Darksend was successfully set to basic (%1 and 2 rounds). You can change this at any time by opening Braincoin's configuration screen."
+            "Ramsend was successfully set to basic (%1 and 2 rounds). You can change this at any time by opening Braincoin's configuration screen."
         ).arg(strAmount)
     );
 
     close();
 }
 
-void DarksendConfig::clickHigh()
+void RamsendConfig::clickHigh()
 {
     configure(true, 1000, 8);
 
     QString strAmount(BitcoinUnits::formatWithUnit(
         model->getOptionsModel()->getDisplayUnit(), 1000 * COIN));
-    QMessageBox::information(this, tr("Darksend Configuration"),
+    QMessageBox::information(this, tr("Ramsend Configuration"),
         tr(
-            "Darksend was successfully set to high (%1 and 8 rounds). You can change this at any time by opening Braincoin's configuration screen."
+            "Ramsend was successfully set to high (%1 and 8 rounds). You can change this at any time by opening Braincoin's configuration screen."
         ).arg(strAmount)
     );
 
     close();
 }
 
-void DarksendConfig::clickMax()
+void RamsendConfig::clickMax()
 {
     configure(true, 1000, 16);
 
     QString strAmount(BitcoinUnits::formatWithUnit(
         model->getOptionsModel()->getDisplayUnit(), 1000 * COIN));
-    QMessageBox::information(this, tr("Darksend Configuration"),
+    QMessageBox::information(this, tr("Ramsend Configuration"),
         tr(
-            "Darksend was successfully set to maximum (%1 and 16 rounds). You can change this at any time by opening Braincoin's configuration screen."
+            "Ramsend was successfully set to maximum (%1 and 16 rounds). You can change this at any time by opening Braincoin's configuration screen."
         ).arg(strAmount)
     );
 
     close();
 }
 
-void DarksendConfig::configure(bool enabled, int coins, int rounds) {
+void RamsendConfig::configure(bool enabled, int coins, int rounds) {
 
     QSettings settings;
 
-    settings.setValue("nDarksendRounds", rounds);
+    settings.setValue("nRamsendRounds", rounds);
     settings.setValue("nAnonymizeDarkcoinAmount", coins);
 
-    nDarksendRounds = rounds;
+    nRamsendRounds = rounds;
     nAnonymizeDarkcoinAmount = coins;
 }

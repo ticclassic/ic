@@ -2,24 +2,24 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef DARKSEND_H
-#define DARKSEND_H
+#ifndef RAMSEND_H
+#define RAMSEND_H
 
 #include "main.h"
 #include "sync.h"
 #include "activemasternode.h"
 #include "masternodeman.h"
 #include "masternode-payments.h"
-#include "darksend-relay.h"
+#include "ramsend-relay.h"
 #include "masternode-sync.h"
 
 class CTxIn;
-class CDarksendPool;
+class CRamsendPool;
 class CDarkSendSigner;
 class CMasterNodeVote;
 class CBitcoinAddress;
-class CDarksendQueue;
-class CDarksendBroadcastTx;
+class CRamsendQueue;
+class CRamsendBroadcastTx;
 class CActiveMasternode;
 
 // pool states for mixing
@@ -38,25 +38,25 @@ class CActiveMasternode;
 #define MASTERNODE_REJECTED                    0
 #define MASTERNODE_RESET                       -1
 
-#define DARKSEND_QUEUE_TIMEOUT                 30
-#define DARKSEND_SIGNING_TIMEOUT               15
+#define RAMSEND_QUEUE_TIMEOUT                 30
+#define RAMSEND_SIGNING_TIMEOUT               15
 
 // used for anonymous relaying of inputs/outputs/sigs
-#define DARKSEND_RELAY_IN                 1
-#define DARKSEND_RELAY_OUT                2
-#define DARKSEND_RELAY_SIG                3
+#define RAMSEND_RELAY_IN                 1
+#define RAMSEND_RELAY_OUT                2
+#define RAMSEND_RELAY_SIG                3
 
-static const int64_t DARKSEND_COLLATERAL = (0.01*COIN);
-static const int64_t DARKSEND_POOL_MAX = (999.99*COIN);
+static const int64_t RAMSEND_COLLATERAL = (0.01*COIN);
+static const int64_t RAMSEND_POOL_MAX = (49999.99*COIN);
 
-extern CDarksendPool darkSendPool;
+extern CRamsendPool darkSendPool;
 extern CDarkSendSigner darkSendSigner;
-extern std::vector<CDarksendQueue> vecDarksendQueue;
+extern std::vector<CRamsendQueue> vecRamsendQueue;
 extern std::string strMasterNodePrivKey;
-extern map<uint256, CDarksendBroadcastTx> mapDarksendBroadcastTxes;
+extern map<uint256, CRamsendBroadcastTx> mapRamsendBroadcastTxes;
 extern CActiveMasternode activeMasternode;
 
-/** Holds an Darksend input
+/** Holds an Ramsend input
  */
 class CTxDSIn : public CTxIn
 {
@@ -75,7 +75,7 @@ public:
     }
 };
 
-/** Holds an Darksend output
+/** Holds an Ramsend output
  */
 class CTxDSOut : public CTxOut
 {
@@ -91,7 +91,7 @@ public:
     }
 };
 
-// A clients transaction in the darksend pool
+// A clients transaction in the ramsend pool
 class CDarkSendEntry
 {
 public:
@@ -110,7 +110,7 @@ public:
         amount = 0;
     }
 
-    /// Add entries to use for Darksend
+    /// Add entries to use for Ramsend
     bool Add(const std::vector<CTxIn> vinIn, int64_t amountIn, const CTransaction collateralIn, const std::vector<CTxOut> voutIn)
     {
         if(isSet){return false;}
@@ -147,15 +147,15 @@ public:
 
     bool IsExpired()
     {
-        return (GetTime() - addedTime) > DARKSEND_QUEUE_TIMEOUT;// 120 seconds
+        return (GetTime() - addedTime) > RAMSEND_QUEUE_TIMEOUT;// 120 seconds
     }
 };
 
 
 /**
- * A currently inprogress Darksend merge and denomination information
+ * A currently inprogress Ramsend merge and denomination information
  */
-class CDarksendQueue
+class CRamsendQueue
 {
 public:
     CTxIn vin;
@@ -164,7 +164,7 @@ public:
     bool ready; //ready for submit
     std::vector<unsigned char> vchSig;
 
-    CDarksendQueue()
+    CRamsendQueue()
     {
         nDenom = 0;
         vin = CTxIn();
@@ -207,7 +207,7 @@ public:
         return false;
     }
 
-    /** Sign this Darksend transaction
+    /** Sign this Ramsend transaction
      *  \return true if all conditions are met:
      *     1) we have an active Masternode,
      *     2) we have a valid Masternode private key,
@@ -218,10 +218,10 @@ public:
 
     bool Relay();
 
-    /// Is this Darksend expired?
+    /// Is this Ramsend expired?
     bool IsExpired()
     {
-        return (GetTime() - time) > DARKSEND_QUEUE_TIMEOUT;// 120 seconds
+        return (GetTime() - time) > RAMSEND_QUEUE_TIMEOUT;// 120 seconds
     }
 
     /// Check if we have a valid Masternode address
@@ -229,9 +229,9 @@ public:
 
 };
 
-/** Helper class to store Darksend transaction (tx) information.
+/** Helper class to store Ramsend transaction (tx) information.
  */
-class CDarksendBroadcastTx
+class CRamsendBroadcastTx
 {
 public:
     CTransaction tx;
@@ -255,12 +255,12 @@ public:
     bool VerifyMessage(CPubKey pubkey, std::vector<unsigned char>& vchSig, std::string strMessage, std::string& errorMessage);
 };
 
-/** Used to keep track of current status of Darksend pool
+/** Used to keep track of current status of Ramsend pool
  */
-class CDarksendPool
+class CRamsendPool
 {
 private:
-    mutable CCriticalSection cs_darksend;
+    mutable CCriticalSection cs_ramsend;
 
     std::vector<CDarkSendEntry> entries; // Masternode/clients entries
     CMutableTransaction finalTransaction; // the finalized transaction ready for signing
@@ -326,9 +326,9 @@ public:
     int sessionDenom; //Users must submit an denom matching this
     int cachedNumBlocks; //used for the overview screen
 
-    CDarksendPool()
+    CRamsendPool()
     {
-        /* Darksend uses collateral addresses to trust parties entering the pool
+        /* Ramsend uses collateral addresses to trust parties entering the pool
             to behave themselves. If they don't it takes their money. */
 
         cachedLastSuccess = 0;
@@ -341,25 +341,25 @@ public:
         SetNull();
     }
 
-    /** Process a Darksend message using the Darksend protocol
+    /** Process a Ramsend message using the Ramsend protocol
      * \param pfrom
      * \param strCommand lower case command string; valid values are:
      *        Command  | Description
      *        -------- | -----------------
-     *        dsa      | Darksend Acceptable
-     *        dsc      | Darksend Complete
-     *        dsf      | Darksend Final tx
-     *        dsi      | Darksend vIn
-     *        dsq      | Darksend Queue
-     *        dss      | Darksend Signal Final Tx
-     *        dssu     | Darksend status update
-     *        dssub    | Darksend Subscribe To
+     *        dsa      | Ramsend Acceptable
+     *        dsc      | Ramsend Complete
+     *        dsf      | Ramsend Final tx
+     *        dsi      | Ramsend vIn
+     *        dsq      | Ramsend Queue
+     *        dss      | Ramsend Signal Final Tx
+     *        dssu     | Ramsend status update
+     *        dssub    | Ramsend Subscribe To
      * \param vRecv
      */
-    void ProcessMessageDarksend(CNode* pfrom, std::string& strCommand, CDataStream& vRecv);
+    void ProcessMessageRamsend(CNode* pfrom, std::string& strCommand, CDataStream& vRecv);
 
     void InitCollateralAddress(){
-        SetCollateralAddress(Params().DarksendPoolDummyAddress());
+        SetCollateralAddress(Params().RamsendPoolDummyAddress());
     }
 
     void SetMinBlockSpacing(int minBlockSpacingIn){
@@ -405,11 +405,11 @@ public:
     void UpdateState(unsigned int newState)
     {
         if (fMasterNode && (newState == POOL_STATUS_ERROR || newState == POOL_STATUS_SUCCESS)){
-            LogPrint("darksend", "CDarksendPool::UpdateState() - Can't set state to ERROR or SUCCESS as a Masternode. \n");
+            LogPrint("ramsend", "CRamsendPool::UpdateState() - Can't set state to ERROR or SUCCESS as a Masternode. \n");
             return;
         }
 
-        LogPrintf("CDarksendPool::UpdateState() == %d | %d \n", state, newState);
+        LogPrintf("CRamsendPool::UpdateState() == %d | %d \n", state, newState);
         if(state != newState){
             lastTimeChanged = GetTimeMillis();
             if(fMasterNode) {
@@ -436,11 +436,11 @@ public:
     /// Is this amount compatible with other client in the pool?
     bool IsCompatibleWithSession(int64_t nAmount, CTransaction txCollateral, int &errorID);
 
-    /// Passively run Darksend in the background according to the configuration in settings (only for QT)
+    /// Passively run Ramsend in the background according to the configuration in settings (only for QT)
     bool DoAutomaticDenominating(bool fDryRun=false);
-    bool PrepareDarksendDenominate();
+    bool PrepareRamsendDenominate();
 
-    /// Check for process in Darksend
+    /// Check for process in Ramsend
     void Check();
     void CheckFinalTransaction();
     /// Charge fees to bad actors (Charge clients a fee if they're abusive)
@@ -460,8 +460,8 @@ public:
     /// Check that all inputs are signed. (Are all inputs signed?)
     bool SignaturesComplete();
     /// As a client, send a transaction to a Masternode to start the denomination process
-    void SendDarksendDenominate(std::vector<CTxIn>& vin, std::vector<CTxOut>& vout, int64_t amount);
-    /// Get Masternode updates about the progress of Darksend
+    void SendRamsendDenominate(std::vector<CTxIn>& vin, std::vector<CTxOut>& vout, int64_t amount);
+    /// Get Masternode updates about the progress of Ramsend
     bool StatusUpdate(int newState, int newEntriesCount, int newAccepted, int &errorID, int newSessionID=0);
 
     /// As a client, check and sign the final transaction
@@ -493,7 +493,7 @@ public:
     std::string GetMessageByID(int messageID);
 
     //
-    // Relay Darksend Messages
+    // Relay Ramsend Messages
     //
 
     void RelayFinalTransaction(const int sessionID, const CTransaction& txNew);

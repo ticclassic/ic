@@ -34,7 +34,7 @@ public:
     void setClientModel(ClientModel *clientModel);
     void setWalletModel(WalletModel *walletModel);
     void showOutOfSyncWarning(bool fShow);
-    void updateDarksendProgress();
+    void updateRamsendProgress();
 
 public slots:
     void darkSendStatus();
@@ -62,9 +62,9 @@ private:
     TransactionFilterProxy *filter;
 
 private slots:
-    void toggleDarksend();
-    void darksendAuto();
-    void darksendReset();
+    void toggleRamsend();
+    void ramsendAuto();
+    void ramsendReset();
     void updateDisplayUnit();
     void handleTransactionClicked(const QModelIndex &index);
     void updateAlerts(const QString &warnings);

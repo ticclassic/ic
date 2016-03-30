@@ -52,11 +52,11 @@ reachable from the Tor network. Add these lines to your /etc/tor/torrc (or equiv
 config file):
 
 	HiddenServiceDir /var/lib/tor/braincoin-service/
-	HiddenServicePort 9999 127.0.0.1:9999
-	HiddenServicePort 19999 127.0.0.1:19999
+	HiddenServicePort 6390 127.0.0.1:6390
+	HiddenServicePort 16390 127.0.0.1:16390
 
 The directory can be different of course, but (both) port numbers should be equal to
-your braincoind's P2P listen port (9999 by default).
+your braincoind's P2P listen port (6390 by default).
 
 	-externalip=X   You can tell braincoin about its publicly reachable address using
 	                this option, and this can be a .onion address. Given the above
@@ -86,7 +86,7 @@ specify:
 
 	./braincoind ... -discover
 
-and open port 9999 on your firewall (or use -upnp).
+and open port 6390 on your firewall (or use -upnp).
 
 If you only want to use Tor to reach onion addresses, but not use it as a proxy
 for normal IPv4/IPv6 communication, use:

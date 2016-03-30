@@ -43,15 +43,15 @@ Masternodes:
 - Show number of masternodes in debug window
 
 
-Darksend:
+Ramsend:
 
-- Reduced lower darksend limit to 1.5 DRK
+- Reduced lower ramsend limit to 1.5 DRK
 - Fixed progress bar calculation for low amounts
 - Improved support for adding DRK after anon has completed
 - Added denomination information to Overview tab
-- Added more detailed Darksend status information to Overview tab
-- Added Darksend high precision matching engine
-- Added Darksend balance to `getinfo`
+- Added more detailed Ramsend status information to Overview tab
+- Added Ramsend high precision matching engine
+- Added Ramsend balance to `getinfo`
 - Changed maximum rounds of mixing to 16
 
 

@@ -1,5 +1,5 @@
 ---
-name: "braincoin-win-0.12"
+name: "braincoin-win-1.0.0.1"
 enable_cache: true
 suites:
 - "precise"

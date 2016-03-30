@@ -10,7 +10,7 @@
 #include "instantx.h"
 #include "activemasternode.h"
 #include "masternodeman.h"
-#include "darksend.h"
+#include "ramsend.h"
 #include "spork.h"
 #include <boost/lexical_cast.hpp>
 
@@ -34,7 +34,7 @@ int nCompleteTXLocks;
 
 void ProcessMessageInstantX(CNode* pfrom, std::string& strCommand, CDataStream& vRecv)
 {
-    if(fLiteMode) return; //disable all darksend/masternode related functionality
+    if(fLiteMode) return; //disable all ramsend/masternode related functionality
     if(!IsSporkActive(SPORK_2_INSTANTX)) return;
     if(!masternodeSync.IsBlockchainSynced()) return;
 

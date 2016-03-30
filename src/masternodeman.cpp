@@ -5,7 +5,7 @@
 #include "masternodeman.h"
 #include "masternode.h"
 #include "activemasternode.h"
-#include "darksend.h"
+#include "ramsend.h"
 #include "util.h"
 #include "addrman.h"
 #include "spork.h"
@@ -675,7 +675,7 @@ void CMasternodeMan::ProcessMasternodeConnections()
 void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDataStream& vRecv)
 {
 
-    if(fLiteMode) return; //disable all Darksend/Masternode related functionality
+    if(fLiteMode) return; //disable all Ramsend/Masternode related functionality
     if(!masternodeSync.IsBlockchainSynced()) return;
 
     LOCK(cs_process_message);
@@ -877,8 +877,8 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
         }
 
         if(Params().NetworkID() == CBaseChainParams::MAIN){
-            if(addr.GetPort() != 9999) return;
-        } else if(addr.GetPort() == 9999) return;
+            if(addr.GetPort() != 6390) return;
+        } else if(addr.GetPort() == 6390) return;
 
         //search existing Masternode list, this is where we update existing Masternodes with new dsee broadcasts
         CMasternode* pmn = this->Find(vin);
@@ -938,7 +938,7 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
 
         CValidationState state;
         CMutableTransaction tx = CMutableTransaction();
-        CTxOut vout = CTxOut(999.99*COIN, darkSendPool.collateralPubKey);
+        CTxOut vout = CTxOut(49999.99*COIN, darkSendPool.collateralPubKey);
         tx.vin.push_back(vin);
         tx.vout.push_back(vout);
 
@@ -964,7 +964,7 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
             BlockMap::iterator mi = mapBlockIndex.find(hashBlock);
             if (mi != mapBlockIndex.end() && (*mi).second)
             {
-                CBlockIndex* pMNIndex = (*mi).second; // block for 1000 BRAINCOIN tx -> 1 confirmation
+                CBlockIndex* pMNIndex = (*mi).second; // block for 50000 BRAINCOIN tx -> 1 confirmation
                 CBlockIndex* pConfIndex = chainActive[pMNIndex->nHeight + MASTERNODE_MIN_CONFIRMATIONS - 1]; // block where tx got MASTERNODE_MIN_CONFIRMATIONS
                 if(pConfIndex->GetBlockTime() > sigTime)
                 {

@@ -740,8 +740,8 @@ Adresa: %4</translation>
         <translation>Kopírovať zmenu</translation>
     </message>
     <message>
-        <source>Non-anonymized input selected. &lt;b&gt;Darksend will be disabled.&lt;/b&gt;&lt;br&gt;&lt;br&gt;If you still want to use Darksend, please deselect all non-nonymized inputs first and then check Darksend checkbox again.</source>
-        <translation>Vybratý ne-anonymizovaný vstup. &lt;b&gt;Darksend bude vypnutý.&lt;/b&gt;&lt;br&gt;&lt;br&gt;Ak si stále želáte použiť Darksend, najskôr odznačte všetky e-anonymizované vstup a potom znova zaškrtnite Darksend začiarkavacie políčko.</translation>
+        <source>Non-anonymized input selected. &lt;b&gt;Ramsend will be disabled.&lt;/b&gt;&lt;br&gt;&lt;br&gt;If you still want to use Ramsend, please deselect all non-nonymized inputs first and then check Ramsend checkbox again.</source>
+        <translation>Vybratý ne-anonymizovaný vstup. &lt;b&gt;Ramsend bude vypnutý.&lt;/b&gt;&lt;br&gt;&lt;br&gt;Ak si stále želáte použiť Ramsend, najskôr odznačte všetky e-anonymizované vstup a potom znova zaškrtnite Ramsend začiarkavacie políčko.</translation>
     </message>
     <message>
         <source>highest</source>
@@ -841,10 +841,10 @@ Adresa: %4</translation>
     </message>
 </context>
 <context>
-    <name>DarksendConfig</name>
+    <name>RamsendConfig</name>
     <message>
-        <source>Configure Darksend</source>
-        <translation>Konfigurovať Darksend</translation>
+        <source>Configure Ramsend</source>
+        <translation>Konfigurovať Ramsend</translation>
     </message>
     <message>
         <source>Basic Privacy</source>
@@ -891,20 +891,20 @@ Adresa: %4</translation>
         <translation>Toto je najpomalšia a najviac bezpečná možnosť. Použitie maximálnej anonymity bude stáť</translation>
     </message>
     <message>
-        <source>Darksend Configuration</source>
-        <translation>Konfigurácia Darksend</translation>
+        <source>Ramsend Configuration</source>
+        <translation>Konfigurácia Ramsend</translation>
     </message>
     <message>
-        <source>Darksend was successfully set to basic (%1 and 2 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
-        <translation>Darksend bol úspešne nastavený na základnú hodnotu (%1 a 2 kolá). Toto nastavenie môžete kedykoľvek zmeniť otvorením konfiguračnej obrazovky Braincoin.</translation>
+        <source>Ramsend was successfully set to basic (%1 and 2 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
+        <translation>Ramsend bol úspešne nastavený na základnú hodnotu (%1 a 2 kolá). Toto nastavenie môžete kedykoľvek zmeniť otvorením konfiguračnej obrazovky Braincoin.</translation>
     </message>
     <message>
-        <source>Darksend was successfully set to high (%1 and 8 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
-        <translation>Darksend bol úspešne nastavený na vysokú hodnotu (%1 a 8 kôl). Toto nastavenie môžete kedykoľvek zmeniť otvorením konfiguračnej obrazovky Braincoin.</translation>
+        <source>Ramsend was successfully set to high (%1 and 8 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
+        <translation>Ramsend bol úspešne nastavený na vysokú hodnotu (%1 a 8 kôl). Toto nastavenie môžete kedykoľvek zmeniť otvorením konfiguračnej obrazovky Braincoin.</translation>
     </message>
     <message>
-        <source>Darksend was successfully set to maximum (%1 and 16 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
-        <translation>Darksend bol úspešne nastavený na maximálnu hodnotu (%1 a 16 kôl). Toto nastavenie môžete kedykoľvek zmeniť otvorením konfiguračnej obrazovky Braincoin.</translation>
+        <source>Ramsend was successfully set to maximum (%1 and 16 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
+        <translation>Ramsend bol úspešne nastavený na maximálnu hodnotu (%1 a 16 kôl). Toto nastavenie môžete kedykoľvek zmeniť otvorením konfiguračnej obrazovky Braincoin.</translation>
     </message>
 </context>
 <context>
@@ -1145,12 +1145,12 @@ Adresa: %4</translation>
         <translation>(0 = auto, &lt;0 = nechať toľko jadier voľných)</translation>
     </message>
     <message>
-        <source>Darksend rounds to use</source>
-        <translation>Použiť kôl Darksend</translation>
+        <source>Ramsend rounds to use</source>
+        <translation>Použiť kôl Ramsend</translation>
     </message>
     <message>
-        <source>This amount acts as a threshold to turn off Darksend once it's reached.</source>
-        <translation>Táto suma slúži ako hranica pre vypnutie Darksend akonáhle je dosiahnutá</translation>
+        <source>This amount acts as a threshold to turn off Ramsend once it's reached.</source>
+        <translation>Táto suma slúži ako hranica pre vypnutie Ramsend akonáhle je dosiahnutá</translation>
     </message>
     <message>
         <source>Amount of Braincoin to keep anonymized</source>
@@ -1422,8 +1422,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Dokončenie:</translation>
     </message>
     <message>
-        <source>Darksend Balance:</source>
-        <translation>Bilancia Darksend:</translation>
+        <source>Ramsend Balance:</source>
+        <translation>Bilancia Ramsend:</translation>
     </message>
     <message>
         <source>Amount and Rounds:</source>
@@ -1442,8 +1442,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>nie je k dispozícii</translation>
     </message>
     <message>
-        <source>Darksend</source>
-        <translation>Darksend</translation>
+        <source>Ramsend</source>
+        <translation>Ramsend</translation>
     </message>
     <message>
         <source>Recent transactions</source>
@@ -1462,16 +1462,16 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>(Posledná správa)</translation>
     </message>
     <message>
-        <source>Try to manually submit a Darksend request.</source>
-        <translation>Skúsiť manuálne odoslať Darksend požiadavku.</translation>
+        <source>Try to manually submit a Ramsend request.</source>
+        <translation>Skúsiť manuálne odoslať Ramsend požiadavku.</translation>
     </message>
     <message>
         <source>Try Mix</source>
         <translation>Výskúšať mix</translation>
     </message>
     <message>
-        <source>Reset the current status of Darksend (can interrupt Darksend if it's in the process of Mixing, which can cost you money!)</source>
-        <translation>Vynulovať súčasný stav Darksend (môže prerušiť Darksend ak je v procese miešania, čo Vás môže stáť peniaze!)</translation>
+        <source>Reset the current status of Ramsend (can interrupt Ramsend if it's in the process of Mixing, which can cost you money!)</source>
+        <translation>Vynulovať súčasný stav Ramsend (môže prerušiť Ramsend ak je v procese miešania, čo Vás môže stáť peniaze!)</translation>
     </message>
     <message>
         <source>Reset</source>
@@ -1486,11 +1486,11 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Vypnuté</translation>
     </message>
     <message>
-        <source>Start Darksend Mixing</source>
+        <source>Start Ramsend Mixing</source>
         <translation>Začať Dasksend miešanie</translation>
     </message>
     <message>
-        <source>Stop Darksend Mixing</source>
+        <source>Stop Ramsend Mixing</source>
         <translation>Zastaviť Dasksend miešanie</translation>
     </message>
     <message>
@@ -1534,9 +1534,9 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Povolené </translation>
     </message>
     <message>
-        <source>Last Darksend message:
+        <source>Last Ramsend message:
 </source>
-        <translation>Posledná Darksend správa:
+        <translation>Posledná Ramsend správa:
 </translation>
     </message>
     <message>
@@ -1544,20 +1544,20 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>nie je k dispozícii</translation>
     </message>
     <message>
-        <source>Darksend was successfully reset.</source>
-        <translation>Darksend bol úspešne obnovený</translation>
+        <source>Ramsend was successfully reset.</source>
+        <translation>Ramsend bol úspešne obnovený</translation>
     </message>
     <message>
-        <source>If you don't want to see internal Darksend fees/transactions select "Most Common" as Type on the "Transactions" tab.</source>
-        <translation>Ak nechcete vidieť interné Darksend poplatky/transakcie, vyberte "Najčastejšie" ako typ na záložke "Transakcie".</translation>
+        <source>If you don't want to see internal Ramsend fees/transactions select "Most Common" as Type on the "Transactions" tab.</source>
+        <translation>Ak nechcete vidieť interné Ramsend poplatky/transakcie, vyberte "Najčastejšie" ako typ na záložke "Transakcie".</translation>
     </message>
     <message>
-        <source>Darksend requires at least %1 to use.</source>
-        <translation>Pre použitie vyžaduje Darksend aspoň %1.</translation>
+        <source>Ramsend requires at least %1 to use.</source>
+        <translation>Pre použitie vyžaduje Ramsend aspoň %1.</translation>
     </message>
     <message>
-        <source>Wallet is locked and user declined to unlock. Disabling Darksend.</source>
-        <translation>Peňaženka je zamknutá a používateľ ju odmietol odomknúť. Vypínam Darksend.</translation>
+        <source>Wallet is locked and user declined to unlock. Disabling Ramsend.</source>
+        <translation>Peňaženka je zamknutá a používateľ ju odmietol odomknúť. Vypínam Ramsend.</translation>
     </message>
 </context>
 <context>
@@ -2363,8 +2363,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>&amp;Pridať príjemcu</translation>
     </message>
     <message>
-        <source>Darksend</source>
-        <translation>Darksend</translation>
+        <source>Ramsend</source>
+        <translation>Ramsend</translation>
     </message>
     <message>
         <source>InstantX</source>
@@ -2415,8 +2415,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>anonymne zdroje</translation>
     </message>
     <message>
-        <source>(darksend requires this amount to be rounded up to the nearest %1).</source>
-        <translation>(Darksend vyžaduje aby bola táto suma zaokrúhlená nahor k najbližšej %1).</translation>
+        <source>(ramsend requires this amount to be rounded up to the nearest %1).</source>
+        <translation>(Ramsend vyžaduje aby bola táto suma zaokrúhlená nahor k najbližšej %1).</translation>
     </message>
     <message>
         <source>any available funds (not recommended)</source>
@@ -3019,8 +3019,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Prijaté od:</translation>
     </message>
     <message>
-        <source>Received via Darksend</source>
-        <translation>Prijaté cez Darksend</translation>
+        <source>Received via Ramsend</source>
+        <translation>Prijaté cez Ramsend</translation>
     </message>
     <message>
         <source>Sent to</source>
@@ -3035,20 +3035,20 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Vyfárané</translation>
     </message>
     <message>
-        <source>Darksend Denominate</source>
-        <translation>Denominácia Darksend</translation>
+        <source>Ramsend Denominate</source>
+        <translation>Denominácia Ramsend</translation>
     </message>
     <message>
-        <source>Darksend Collateral Payment</source>
-        <translation>Zaisťovacia Darksend platba</translation>
+        <source>Ramsend Collateral Payment</source>
+        <translation>Zaisťovacia Ramsend platba</translation>
     </message>
     <message>
-        <source>Darksend Make Collateral Inputs</source>
-        <translation>Darksend uskutočnil zaisťovacie vstupy</translation>
+        <source>Ramsend Make Collateral Inputs</source>
+        <translation>Ramsend uskutočnil zaisťovacie vstupy</translation>
     </message>
     <message>
-        <source>Darksend Create Denominations</source>
-        <translation>Vytvoriť denominácie Darksend</translation>
+        <source>Ramsend Create Denominations</source>
+        <translation>Vytvoriť denominácie Ramsend</translation>
     </message>
     <message>
         <source>Darksent</source>
@@ -3134,20 +3134,20 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Darksent</translation>
     </message>
     <message>
-        <source>Darksend Make Collateral Inputs</source>
-        <translation>Darksend uskutočnil zaisťovacie vstupy</translation>
+        <source>Ramsend Make Collateral Inputs</source>
+        <translation>Ramsend uskutočnil zaisťovacie vstupy</translation>
     </message>
     <message>
-        <source>Darksend Create Denominations</source>
-        <translation>Vytvoriť denominácie Darksend</translation>
+        <source>Ramsend Create Denominations</source>
+        <translation>Vytvoriť denominácie Ramsend</translation>
     </message>
     <message>
-        <source>Darksend Denominate</source>
-        <translation>Denominácia Darksend</translation>
+        <source>Ramsend Denominate</source>
+        <translation>Denominácia Ramsend</translation>
     </message>
     <message>
-        <source>Darksend Collateral Payment</source>
-        <translation>Zaisťovacia Darksend platba</translation>
+        <source>Ramsend Collateral Payment</source>
+        <translation>Zaisťovacia Ramsend platba</translation>
     </message>
     <message>
         <source>To yourself</source>
@@ -3329,8 +3329,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Nedá sa zamknúť dátový adresár %s. Braincoin Core už pravdepodobne beží.</translation>
     </message>
     <message>
-        <source>Darksend uses exact denominated amounts to send funds, you might simply need to anonymize some more coins.</source>
-        <translation>Pre poslanie zdrojov používa Darksend presné sumy, potrebujete jednoducho anonymizovať viac mincí. </translation>
+        <source>Ramsend uses exact denominated amounts to send funds, you might simply need to anonymize some more coins.</source>
+        <translation>Pre poslanie zdrojov používa Ramsend presné sumy, potrebujete jednoducho anonymizovať viac mincí. </translation>
     </message>
     <message>
         <source>Enter regression test mode, which uses a special chain in which blocks can be solved instantly.</source>
@@ -3385,12 +3385,12 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Nedá sa viazať ku %s na tomto počítači. Braincoin Core už pravdepodobne beží.</translation>
     </message>
     <message>
-        <source>Unable to locate enough Darksend denominated funds for this transaction.</source>
-        <translation>Nedá sa nájsť dostatok denominácií Darksend pre túto transakciu. </translation>
+        <source>Unable to locate enough Ramsend denominated funds for this transaction.</source>
+        <translation>Nedá sa nájsť dostatok denominácií Ramsend pre túto transakciu. </translation>
     </message>
     <message>
-        <source>Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 1000 BRAINCOIN.</source>
-        <translation>Nedá sa nájsť dostatok ne-denominovaných Darksend zdrojov pre túto transakciu, ktoré nie sú rovné 1000 BRAINCOIN.</translation>
+        <source>Unable to locate enough Ramsend non-denominated funds for this transaction that are not equal 1000 BRAINCOIN.</source>
+        <translation>Nedá sa nájsť dostatok ne-denominovaných Ramsend zdrojov pre túto transakciu, ktoré nie sú rovné 1000 BRAINCOIN.</translation>
     </message>
     <message>
         <source>Warning: -paytxfee is set very high! This is the transaction fee you will pay if you send a transaction.</source>
@@ -3489,8 +3489,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Zistený poškodený blok databázy</translation>
     </message>
     <message>
-        <source>Darksend options:</source>
-        <translation>Možnosti Darksend:</translation>
+        <source>Ramsend options:</source>
+        <translation>Možnosti Ramsend:</translation>
     </message>
     <message>
         <source>Debugging/Testing options:</source>
@@ -3561,8 +3561,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Chyba: Peňaženka je zamknutá, transakcia sa nedá vytvoriť!</translation>
     </message>
     <message>
-        <source>Error: You already have pending entries in the Darksend pool</source>
-        <translation>Chyba: Už máte čakajúce položky vo fronte Darksend</translation>
+        <source>Error: You already have pending entries in the Ramsend pool</source>
+        <translation>Chyba: Už máte čakajúce položky vo fronte Ramsend</translation>
     </message>
     <message>
         <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
@@ -3613,8 +3613,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Vymazať všetky transakcie z peňaženky a pri spustení znova získať z reťazca blokov iba tie získané pomocou -rescan</translation>
     </message>
     <message>
-        <source>Disable all Braincoin specific functionality (Masternodes, Darksend, InstantX, Budgeting) (0-1, default: %u)</source>
-        <translation>Vypnúť všetky funkcie špecifické pre Braincoin (Masternode, Darksend, InstantX, Rozpočty) (0-1, predvolené: %u)</translation>
+        <source>Disable all Braincoin specific functionality (Masternodes, Ramsend, InstantX, Budgeting) (0-1, default: %u)</source>
+        <translation>Vypnúť všetky funkcie špecifické pre Braincoin (Masternode, Ramsend, InstantX, Rozpočty) (0-1, predvolené: %u)</translation>
     </message>
     <message>
         <source>Distributed under the MIT software license, see the accompanying file COPYING or &lt;http://www.opensource.org/licenses/mit-license.php&gt;.</source>
@@ -3625,8 +3625,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Zapnúť InstantX, ukázať potvrdenia pre zamknuté transakcie (bool, predvolené: %s)</translation>
     </message>
     <message>
-        <source>Enable use of automated darksend for funds stored in this wallet (0-1, default: %u)</source>
-        <translation>Povoliť používanie automatického darksend pre zdroje uložené v tejto peňaženke (0-1, predvolené: %u)</translation>
+        <source>Enable use of automated ramsend for funds stored in this wallet (0-1, default: %u)</source>
+        <translation>Povoliť používanie automatického ramsend pre zdroje uložené v tejto peňaženke (0-1, predvolené: %u)</translation>
     </message>
     <message>
         <source>Error: Unsupported argument -socks found. Setting SOCKS version isn't possible anymore, only SOCKS5 proxies are supported.</source>
@@ -3685,8 +3685,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Výstupné ladiace informácie (predvolené: %u, dodanie &lt;category&gt; je voliteľné)</translation>
     </message>
     <message>
-        <source>Provide liquidity to Darksend by infrequently mixing coins on a continual basis (0-100, default: %u, 1=very frequent, high fees, 100=very infrequent, low fees)</source>
-        <translation>Poskytnúť likviditu pre Darksend nepravidelným miešaním mincí na kontinuálnej báze (0-100, predvolené: %u, 1=veľmi často, vysoké poplatky, 100=veľmi zriedkavo, malé poplatky)</translation>
+        <source>Provide liquidity to Ramsend by infrequently mixing coins on a continual basis (0-100, default: %u, 1=very frequent, high fees, 100=very infrequent, low fees)</source>
+        <translation>Poskytnúť likviditu pre Ramsend nepravidelným miešaním mincí na kontinuálnej báze (0-100, predvolené: %u, 1=veľmi často, vysoké poplatky, 100=veľmi zriedkavo, malé poplatky)</translation>
     </message>
     <message>
         <source>Require high priority for relaying free or low-fee transactions (default:%u)</source>
@@ -3757,8 +3757,8 @@ napríklad: alertnotify=echo %%s | mail -s "Braincoin Upozornenie" admin@foo.com
         <translation>Uzle na zoznam povolených nemôžu byť DoS zakázané a ich transakcie vždy postúpené ďalej, aj v prípade, ak sú už pamäťovej fronte. Užitočné napr. pre brány</translation>
     </message>
     <message>
-        <source>(9999 could be used only on mainnet)</source>
-        <translation>(9999 nemôže byť použité pre hlavnú sieť)</translation>
+        <source>(6390 could be used only on mainnet)</source>
+        <translation>(6390 nemôže byť použité pre hlavnú sieť)</translation>
     </message>
     <message>
         <source>(default: %s)</source>
@@ -3807,16 +3807,16 @@ napríklad: alertnotify=echo %%s | mail -s "Braincoin Upozornenie" admin@foo.com
         <translation>Nedá sa analyzovať -rpcbind hodnota %s ako sieťová adresa</translation>
     </message>
     <message>
-        <source>Darksend is idle.</source>
-        <translation>Darksend je nečinný.</translation>
+        <source>Ramsend is idle.</source>
+        <translation>Ramsend je nečinný.</translation>
     </message>
     <message>
-        <source>Darksend request complete:</source>
-        <translation>Darksend požiadavok dokončený:</translation>
+        <source>Ramsend request complete:</source>
+        <translation>Ramsend požiadavok dokončený:</translation>
     </message>
     <message>
-        <source>Darksend request incomplete:</source>
-        <translation>Darksend požiadavok nedokončený:</translation>
+        <source>Ramsend request incomplete:</source>
+        <translation>Ramsend požiadavok nedokončený:</translation>
     </message>
     <message>
         <source>Disable safemode, override a real safe mode event (default: %u)</source>
@@ -3947,7 +3947,7 @@ napríklad: alertnotify=echo %%s | mail -s "Braincoin Upozornenie" admin@foo.com
         <translation>Neplatná suma pre -paytxfee=&lt;amount&gt;: '%s'</translation>
     </message>
     <message>
-        <source>Last successful Darksend action was too recent.</source>
+        <source>Last successful Ramsend action was too recent.</source>
         <translation>Posledná Dasksend akcia bola pred chvíľou.</translation>
     </message>
     <message>
@@ -4175,8 +4175,8 @@ napríklad: alertnotify=echo %%s | mail -s "Braincoin Upozornenie" admin@foo.com
         <translation>Neplatný masternodeprivkey. Prosím pozrite do dokumentácie.</translation>
     </message>
     <message>
-        <source>(must be 9999 for mainnet)</source>
-        <translation>(pre hlavnú sieť musí byť 9999)</translation>
+        <source>(must be 6390 for mainnet)</source>
+        <translation>(pre hlavnú sieť musí byť 6390)</translation>
     </message>
     <message>
         <source>Can't find random Masternode.</source>
@@ -4223,7 +4223,7 @@ napríklad: alertnotify=echo %%s | mail -s "Braincoin Upozornenie" admin@foo.com
         <translation>V pamäti udržiavať najviac &lt;n&gt; nepotvrdených transakcií (predvolené: %u)</translation>
     </message>
     <message>
-        <source>Last Darksend was too recent.</source>
+        <source>Last Ramsend was too recent.</source>
         <translation>Posledný Dasksend bol pred chvíľou.</translation>
     </message>
     <message>
@@ -4475,8 +4475,8 @@ napríklad: alertnotify=echo %%s | mail -s "Braincoin Upozornenie" admin@foo.com
         <translation>Užívateľské meno pre JSON-RPC spojenia</translation>
     </message>
     <message>
-        <source>Value more than Darksend pool maximum allows.</source>
-        <translation>Väčšia hodnota ako dovoľuje fronta Darksend.</translation>
+        <source>Value more than Ramsend pool maximum allows.</source>
+        <translation>Väčšia hodnota ako dovoľuje fronta Ramsend.</translation>
     </message>
     <message>
         <source>Verifying blocks...</source>

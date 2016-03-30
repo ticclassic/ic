@@ -1,5 +1,5 @@
 ---
-name: "braincoin-raspberry-0.12"
+name: "braincoin-raspberry-1.0.0.1"
 enable_cache: true
 suites:
 - "precise"

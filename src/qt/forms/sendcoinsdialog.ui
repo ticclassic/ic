@@ -1328,7 +1328,7 @@
         <number>3</number>
        </property>
        <item>
-        <widget class="QCheckBox" name="checkUseDarksend">
+        <widget class="QCheckBox" name="checkUseRamsend">
          <property name="minimumSize">
           <size>
            <width>95</width>
@@ -1336,7 +1336,7 @@
           </size>
          </property>
          <property name="text">
-          <string>Darksend</string>
+          <string>Ramsend</string>
          </property>
          <property name="checked">
           <bool>false</bool>

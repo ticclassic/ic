@@ -317,7 +317,7 @@ static const CRPCCommand vRPCCommands[] =
     { "braincoin",               "mnsync",                 &mnsync,                 true,      true,       false },
     { "braincoin",               "spork",                  &spork,                  true,      true,       false },
 #ifdef ENABLE_WALLET
-    { "braincoin",               "darksend",               &darksend,               false,     false,      true  }, /* not threadSafe because of SendMoney */
+    { "braincoin",               "ramsend",               &ramsend,               false,     false,      true  }, /* not threadSafe because of SendMoney */
 
     /* Wallet */
     { "wallet",             "addmultisigaddress",     &addmultisigaddress,     true,      false,      true },
@@ -1051,7 +1051,7 @@ std::string HelpExampleCli(string methodname, string args){
 
 std::string HelpExampleRpc(string methodname, string args){
     return "> curl --user myusername --data-binary '{\"jsonrpc\": \"1.0\", \"id\":\"curltest\", "
-        "\"method\": \"" + methodname + "\", \"params\": [" + args + "] }' -H 'content-type: text/plain;' http://127.0.0.1:9998/\n";
+        "\"method\": \"" + methodname + "\", \"params\": [" + args + "] }' -H 'content-type: text/plain;' http://127.0.0.1:6389/\n";
 }
 
 const CRPCTable tableRPC;

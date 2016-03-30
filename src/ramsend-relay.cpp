@@ -1,5 +1,5 @@
 
-#include "darksend-relay.h"
+#include "ramsend-relay.h"
 
 
 CDarkSendRelay::CDarkSendRelay()

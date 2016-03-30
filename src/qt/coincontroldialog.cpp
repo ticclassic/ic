@@ -16,7 +16,7 @@
 #include "coincontrol.h"
 #include "main.h"
 #include "wallet.h"
-#include "darksend.h"
+#include "ramsend.h"
 
 #include <boost/assign/list_of.hpp> // for 'map_list_of()'
 
@@ -132,7 +132,7 @@ CoinControlDialog::CoinControlDialog(QWidget *parent) :
     ui->treeWidget->setColumnWidth(COLUMN_AMOUNT, 100);
     ui->treeWidget->setColumnWidth(COLUMN_LABEL, 170);
     ui->treeWidget->setColumnWidth(COLUMN_ADDRESS, 190);
-    ui->treeWidget->setColumnWidth(COLUMN_DARKSEND_ROUNDS, 88);
+    ui->treeWidget->setColumnWidth(COLUMN_RAMSEND_ROUNDS, 88);
     ui->treeWidget->setColumnWidth(COLUMN_DATE, 80);
     ui->treeWidget->setColumnWidth(COLUMN_CONFIRMATIONS, 100);
     ui->treeWidget->setColumnWidth(COLUMN_PRIORITY, 100);
@@ -443,10 +443,10 @@ void CoinControlDialog::viewItemChanged(QTreeWidgetItem* item, int column)
         else {
             coinControl->Select(outpt);
             CTxIn vin(outpt);
-            int rounds = pwalletMain->GetInputDarksendRounds(vin);
-            if(coinControl->useDarkSend && rounds < nDarksendRounds) {
+            int rounds = pwalletMain->GetInputRamsendRounds(vin);
+            if(coinControl->useDarkSend && rounds < nRamsendRounds) {
                 QMessageBox::warning(this, windowTitle(),
-                    tr("Non-anonymized input selected. <b>Darksend will be disabled.</b><br><br>If you still want to use Darksend, please deselect all non-nonymized inputs first and then check Darksend checkbox again."),
+                    tr("Non-anonymized input selected. <b>Ramsend will be disabled.</b><br><br>If you still want to use Ramsend, please deselect all non-nonymized inputs first and then check Ramsend checkbox again."),
                     QMessageBox::Ok, QMessageBox::Ok);
                 coinControl->useDarkSend = false;
             }
@@ -826,10 +826,10 @@ void CoinControlDialog::updateView()
 
             // ds+ rounds
             CTxIn vin = CTxIn(out.tx->GetHash(), out.i);
-            int rounds = pwalletMain->GetInputDarksendRounds(vin);
+            int rounds = pwalletMain->GetInputRamsendRounds(vin);
 
-            if(rounds >= 0) itemOutput->setText(COLUMN_DARKSEND_ROUNDS, strPad(QString::number(rounds), 11, " "));
-            else itemOutput->setText(COLUMN_DARKSEND_ROUNDS, strPad(QString(tr("n/a")), 11, " "));
+            if(rounds >= 0) itemOutput->setText(COLUMN_RAMSEND_ROUNDS, strPad(QString::number(rounds), 11, " "));
+            else itemOutput->setText(COLUMN_RAMSEND_ROUNDS, strPad(QString(tr("n/a")), 11, " "));
 
 
             // confirmations

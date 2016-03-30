@@ -90,10 +90,10 @@ TransactionView::TransactionView(QWidget *parent) :
     typeWidget->addItem(tr("Sent to"), TransactionFilterProxy::TYPE(TransactionRecord::SendToAddress) |
                                   TransactionFilterProxy::TYPE(TransactionRecord::SendToOther));
     typeWidget->addItem(tr("Darksent"), TransactionFilterProxy::TYPE(TransactionRecord::Darksent));
-    typeWidget->addItem(tr("Darksend Make Collateral Inputs"), TransactionFilterProxy::TYPE(TransactionRecord::DarksendMakeCollaterals));
-    typeWidget->addItem(tr("Darksend Create Denominations"), TransactionFilterProxy::TYPE(TransactionRecord::DarksendCreateDenominations));
-    typeWidget->addItem(tr("Darksend Denominate"), TransactionFilterProxy::TYPE(TransactionRecord::DarksendDenominate));
-    typeWidget->addItem(tr("Darksend Collateral Payment"), TransactionFilterProxy::TYPE(TransactionRecord::DarksendCollateralPayment));
+    typeWidget->addItem(tr("Ramsend Make Collateral Inputs"), TransactionFilterProxy::TYPE(TransactionRecord::RamsendMakeCollaterals));
+    typeWidget->addItem(tr("Ramsend Create Denominations"), TransactionFilterProxy::TYPE(TransactionRecord::RamsendCreateDenominations));
+    typeWidget->addItem(tr("Ramsend Denominate"), TransactionFilterProxy::TYPE(TransactionRecord::RamsendDenominate));
+    typeWidget->addItem(tr("Ramsend Collateral Payment"), TransactionFilterProxy::TYPE(TransactionRecord::RamsendCollateralPayment));
     typeWidget->addItem(tr("To yourself"), TransactionFilterProxy::TYPE(TransactionRecord::SendToSelf));
     typeWidget->addItem(tr("Mined"), TransactionFilterProxy::TYPE(TransactionRecord::Generated));
     typeWidget->addItem(tr("Other"), TransactionFilterProxy::TYPE(TransactionRecord::Other));
