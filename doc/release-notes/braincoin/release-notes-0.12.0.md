@@ -8,7 +8,7 @@ Braincoin Core version 0.12.0 is now available from:
 
 Please report bugs using the issue tracker at github:
 
-  https://https://github.com/axelxod/braincoin/issues
+  https://github.com/axelxod/braincoin/issues
 
 
 How to Upgrade

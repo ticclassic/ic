@@ -2,7 +2,7 @@ Release Process
 ====================
 
 * update translations (ping wumpus, Diapolo or tcatm on IRC)
-* see https://https://github.com/axelxod/braincoin/blob/master/doc/translation_process.md#syncing-with-transifex
+* see https://github.com/axelxod/braincoin/blob/master/doc/translation_process.md#syncing-with-transifex
 
 * * *
 

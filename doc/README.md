@@ -46,7 +46,7 @@ The following are developer notes on how to build Braincoin on your native platf
 
 Development
 ---------------------
-The Braincoin repo's [root README](https://https://github.com/axelxod/braincoin/blob/master/README.md) contains relevant information on the development process and automated testing.
+The Braincoin repo's [root README](https://github.com/axelxod/braincoin/blob/master/README.md) contains relevant information on the development process and automated testing.
 
 - [Coding Guidelines](coding.md)
 - [Multiwallet Qt Development](multiwallet-qt.md)

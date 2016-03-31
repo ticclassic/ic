@@ -281,7 +281,7 @@ Clone the git repositories for braincoin and gitian and then checkout the brainc
 
 ```bash
 git clone https://github.com/devrandom/gitian-builder.git
-git clone https://https://github.com/axelxod/braincoin.git
+git clone https://github.com/axelxod/braincoin.git
 cd braincoin
 git checkout v${VERSION}
 cd ..
@@ -350,7 +350,7 @@ Output from `gbuild` will look something like
     remote: Total 35606 (delta 0), reused 0 (delta 0)
     Receiving objects: 100% (35606/35606), 26.52 MiB | 4.28 MiB/s, done.
     Resolving deltas: 100% (25724/25724), done.
-    From https://https://github.com/axelxod/braincoin
+    From https://github.com/axelxod/braincoin
     ... (new tags, new branch etc)
     --- Building for precise x86_64 ---
     Stopping target if it is up
