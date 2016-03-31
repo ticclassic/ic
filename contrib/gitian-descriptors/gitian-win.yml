@@ -20,7 +20,7 @@ packages:
 - "zip"
 reference_datetime: "2014-01-10 00:00:00"
 remotes:
-- "url": "https://https://github.com/axelxod/braincoin.git"
+- "url": "https://github.com/axelxod/braincoin.git"
   "dir": "braincoin"
 files: []
 script: |
