@@ -55,24 +55,24 @@ SendCoinsDialog::SendCoinsDialog(QWidget *parent) :
 
     // Braincoin specific
     QSettings settings;
-    if (!settings.contains("bUseDarkSend"))
-        settings.setValue("bUseDarkSend", false);
+    if (!settings.contains("bUseRamSend"))
+        settings.setValue("bUseRamSend", false);
     if (!settings.contains("bUseInstantX"))
         settings.setValue("bUseInstantX", false);
         
-    bool useDarkSend = settings.value("bUseDarkSend").toBool();
+    bool useRamSend = settings.value("bUseRamSend").toBool();
     bool useInstantX = settings.value("bUseInstantX").toBool();
     if(fLiteMode) {
         ui->checkUseRamsend->setChecked(false);
         ui->checkUseRamsend->setVisible(false);
         ui->checkInstantX->setVisible(false);
-        CoinControlDialog::coinControl->useDarkSend = false;
+        CoinControlDialog::coinControl->useRamSend = false;
         CoinControlDialog::coinControl->useInstantX = false;
     }
     else{
-        ui->checkUseRamsend->setChecked(useDarkSend);
+        ui->checkUseRamsend->setChecked(useRamSend);
         ui->checkInstantX->setChecked(useInstantX);
-        CoinControlDialog::coinControl->useDarkSend = useDarkSend;
+        CoinControlDialog::coinControl->useRamSend = useRamSend;
         CoinControlDialog::coinControl->useInstantX = useInstantX;
     }
     
@@ -567,7 +567,7 @@ void SendCoinsDialog::setBalance(const CAmount& balance, const CAmount& unconfir
     {
 	    uint64_t bal = 0;
         QSettings settings;
-        settings.setValue("bUseDarkSend", ui->checkUseRamsend->isChecked());
+        settings.setValue("bUseRamSend", ui->checkUseRamsend->isChecked());
 	    if(ui->checkUseRamsend->isChecked()) {
 		    bal = anonymizedBalance;
 	    } else {
@@ -585,7 +585,7 @@ void SendCoinsDialog::updateDisplayUnit()
 
     setBalance(model->getBalance(), model->getUnconfirmedBalance(), model->getImmatureBalance(), model->getAnonymizedBalance(),
                    model->getWatchBalance(), model->getWatchUnconfirmedBalance(), model->getWatchImmatureBalance());
-    CoinControlDialog::coinControl->useDarkSend = ui->checkUseRamsend->isChecked();
+    CoinControlDialog::coinControl->useRamSend = ui->checkUseRamsend->isChecked();
     coinControlUpdateLabels();
     ui->customFee->setDisplayUnit(model->getOptionsModel()->getDisplayUnit());
     updateMinFeeLabel();
@@ -898,7 +898,7 @@ void SendCoinsDialog::coinControlUpdateLabels()
             CoinControlDialog::payAmounts.append(entry->getValue().amount);
     }
 
-    ui->checkUseRamsend->setChecked(CoinControlDialog::coinControl->useDarkSend);
+    ui->checkUseRamsend->setChecked(CoinControlDialog::coinControl->useRamSend);
 
     if (CoinControlDialog::coinControl->HasSelected())
     {

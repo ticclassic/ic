@@ -664,7 +664,7 @@ and even disable ramsend auto-denom if wanted:
 
 - Masternodes should change every block now
 - DoAutomaticDenomination should happen every block now
-- DarkSendRounds had a bug that I fixed, should calculate correctly now
+- RamSendRounds had a bug that I fixed, should calculate correctly now
 
 
 0.10.12.4 Release notes

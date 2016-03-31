@@ -444,11 +444,11 @@ void CoinControlDialog::viewItemChanged(QTreeWidgetItem* item, int column)
             coinControl->Select(outpt);
             CTxIn vin(outpt);
             int rounds = pwalletMain->GetInputRamsendRounds(vin);
-            if(coinControl->useDarkSend && rounds < nRamsendRounds) {
+            if(coinControl->useRamSend && rounds < nRamsendRounds) {
                 QMessageBox::warning(this, windowTitle(),
                     tr("Non-anonymized input selected. <b>Ramsend will be disabled.</b><br><br>If you still want to use Ramsend, please deselect all non-nonymized inputs first and then check Ramsend checkbox again."),
                     QMessageBox::Ok, QMessageBox::Ok);
-                coinControl->useDarkSend = false;
+                coinControl->useRamSend = false;
             }
         }
 
@@ -612,7 +612,7 @@ void CoinControlDialog::updateLabels(WalletModel *model, QDialog* dialog)
             nChange = nAmount - nPayFee - nPayAmount;
 
             // DS Fee = overpay
-            if(coinControl->useDarkSend && nChange > 0)
+            if(coinControl->useRamSend && nChange > 0)
             {
                 nPayFee += nChange;
                 nChange = 0;

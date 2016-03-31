@@ -156,7 +156,7 @@ OverviewPage::OverviewPage(QWidget *parent) :
                 ui->toggleRamsend->setText(tr("Stop Ramsend Mixing"));
             }
             timer = new QTimer(this);
-            connect(timer, SIGNAL(timeout()), this, SLOT(darkSendStatus()));
+            connect(timer, SIGNAL(timeout()), this, SLOT(ramSendStatus()));
             timer->start(1000);
         }
     }
@@ -173,7 +173,7 @@ void OverviewPage::handleTransactionClicked(const QModelIndex &index)
 
 OverviewPage::~OverviewPage()
 {
-    if(!fLiteMode && !fMasterNode) disconnect(timer, SIGNAL(timeout()), this, SLOT(darkSendStatus()));
+    if(!fLiteMode && !fMasterNode) disconnect(timer, SIGNAL(timeout()), this, SLOT(ramSendStatus()));
     delete ui;
 }
 
@@ -423,20 +423,20 @@ void OverviewPage::updateRamsendProgress()
 }
 
 
-void OverviewPage::darkSendStatus()
+void OverviewPage::ramSendStatus()
 {
     static int64_t nLastDSProgressBlockTime = 0;
 
     int nBestHeight = chainActive.Tip()->nHeight;
 
     // we we're processing more then 1 block per second, we'll just leave
-    if(((nBestHeight - darkSendPool.cachedNumBlocks) / (GetTimeMillis() - nLastDSProgressBlockTime + 1) > 1)) return;
+    if(((nBestHeight - ramSendPool.cachedNumBlocks) / (GetTimeMillis() - nLastDSProgressBlockTime + 1) > 1)) return;
     nLastDSProgressBlockTime = GetTimeMillis();
 
     if(!fEnableRamsend) {
-        if(nBestHeight != darkSendPool.cachedNumBlocks)
+        if(nBestHeight != ramSendPool.cachedNumBlocks)
         {
-            darkSendPool.cachedNumBlocks = nBestHeight;
+            ramSendPool.cachedNumBlocks = nBestHeight;
             updateRamsendProgress();
 
             ui->ramsendEnabled->setText(tr("Disabled"));
@@ -448,16 +448,16 @@ void OverviewPage::darkSendStatus()
     }
 
     // check ramsend status and unlock if needed
-    if(nBestHeight != darkSendPool.cachedNumBlocks)
+    if(nBestHeight != ramSendPool.cachedNumBlocks)
     {
         // Balance and number of transactions might have changed
-        darkSendPool.cachedNumBlocks = nBestHeight;
+        ramSendPool.cachedNumBlocks = nBestHeight;
         updateRamsendProgress();
 
         ui->ramsendEnabled->setText(tr("Enabled"));
     }
 
-    QString strStatus = QString(darkSendPool.GetStatus().c_str());
+    QString strStatus = QString(ramSendPool.GetStatus().c_str());
 
     QString s = tr("Last Ramsend message:\n") + strStatus;
 
@@ -466,11 +466,11 @@ void OverviewPage::darkSendStatus()
 
     ui->ramsendStatus->setText(s);
 
-    if(darkSendPool.sessionDenom == 0){
+    if(ramSendPool.sessionDenom == 0){
         ui->labelSubmittedDenom->setText(tr("N/A"));
     } else {
         std::string out;
-        darkSendPool.GetDenominationsToString(darkSendPool.sessionDenom, out);
+        ramSendPool.GetDenominationsToString(ramSendPool.sessionDenom, out);
         QString s2(out.c_str());
         ui->labelSubmittedDenom->setText(s2);
     }
@@ -478,11 +478,11 @@ void OverviewPage::darkSendStatus()
 }
 
 void OverviewPage::ramsendAuto(){
-    darkSendPool.DoAutomaticDenominating();
+    ramSendPool.DoAutomaticDenominating();
 }
 
 void OverviewPage::ramsendReset(){
-    darkSendPool.Reset();
+    ramSendPool.Reset();
 
     QMessageBox::warning(this, tr("Ramsend"),
         tr("Ramsend was successfully reset."),
@@ -517,7 +517,7 @@ void OverviewPage::toggleRamsend(){
             if(!ctx.isValid())
             {
                 //unlock was cancelled
-                darkSendPool.cachedNumBlocks = std::numeric_limits<int>::max();
+                ramSendPool.cachedNumBlocks = std::numeric_limits<int>::max();
                 QMessageBox::warning(this, tr("Ramsend"),
                     tr("Wallet is locked and user declined to unlock. Disabling Ramsend."),
                     QMessageBox::Ok, QMessageBox::Ok);
@@ -529,11 +529,11 @@ void OverviewPage::toggleRamsend(){
     }
 
     fEnableRamsend = !fEnableRamsend;
-    darkSendPool.cachedNumBlocks = std::numeric_limits<int>::max();
+    ramSendPool.cachedNumBlocks = std::numeric_limits<int>::max();
 
     if(!fEnableRamsend){
         ui->toggleRamsend->setText(tr("Start Ramsend Mixing"));
-        darkSendPool.UnlockCoins();
+        ramSendPool.UnlockCoins();
     } else {
         ui->toggleRamsend->setText(tr("Stop Ramsend Mixing"));
 

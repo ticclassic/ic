@@ -244,57 +244,57 @@ static const CRPCCommand vRPCCommands[] =
 { //  category              name                      actor (function)         okSafeMode threadSafe reqWallet
   //  --------------------- ------------------------  -----------------------  ---------- ---------- ---------
     /* Overall control/query calls */
-    { "control",            "getinfo",                &getinfo,                true,      false,      false }, /* uses wallet if enabled */
+    { "control",            "getinfo",                &getinfo,                true,      true,       false }, /* uses wallet if enabled */
     { "control",            "help",                   &help,                   true,      true,       false },
     { "control",            "stop",                   &stop,                   true,      true,       false },
 
     /* P2P networking */
-    { "network",            "getnetworkinfo",         &getnetworkinfo,         true,      false,      false },
+    { "network",            "getnetworkinfo",         &getnetworkinfo,         true,      true,       false },
     { "network",            "addnode",                &addnode,                true,      true,       false },
     { "network",            "getaddednodeinfo",       &getaddednodeinfo,       true,      true,       false },
-    { "network",            "getconnectioncount",     &getconnectioncount,     true,      false,      false },
+    { "network",            "getconnectioncount",     &getconnectioncount,     true,      true,       false },
     { "network",            "getnettotals",           &getnettotals,           true,      true,       false },
-    { "network",            "getpeerinfo",            &getpeerinfo,            true,      false,      false },
-    { "network",            "ping",                   &ping,                   true,      false,      false },
+    { "network",            "getpeerinfo",            &getpeerinfo,            true,      true,       false },
+    { "network",            "ping",                   &ping,                   true,      true,       false },
 
     /* Block chain and UTXO */
-    { "blockchain",         "getblockchaininfo",      &getblockchaininfo,      true,      false,      false },
-    { "blockchain",         "getbestblockhash",       &getbestblockhash,       true,      false,      false },
-    { "blockchain",         "getblockcount",          &getblockcount,          true,      false,      false },
-    { "blockchain",         "getblock",               &getblock,               true,      false,      false },
-    { "blockchain",         "getblockhash",           &getblockhash,           true,      false,      false },
-    { "blockchain",         "getblockheader",         &getblockheader,         false,     false,      false },
-    { "blockchain",         "getchaintips",           &getchaintips,           true,      false,      false },
-    { "blockchain",         "getdifficulty",          &getdifficulty,          true,      false,      false },
+    { "blockchain",         "getblockchaininfo",      &getblockchaininfo,      true,      true,       false },
+    { "blockchain",         "getbestblockhash",       &getbestblockhash,       true,      true,       false },
+    { "blockchain",         "getblockcount",          &getblockcount,          true,      true,       false },
+    { "blockchain",         "getblock",               &getblock,               true,      true,       false },
+    { "blockchain",         "getblockhash",           &getblockhash,           true,      true,       false },
+    { "blockchain",         "getblockheader",         &getblockheader,         true,      true,       false },
+    { "blockchain",         "getchaintips",           &getchaintips,           true,      true,       false },
+    { "blockchain",         "getdifficulty",          &getdifficulty,          true,      true,       false },
     { "blockchain",         "getmempoolinfo",         &getmempoolinfo,         true,      true,       false },
-    { "blockchain",         "getrawmempool",          &getrawmempool,          true,      false,      false },
-    { "blockchain",         "gettxout",               &gettxout,               true,      false,      false },
-    { "blockchain",         "gettxoutsetinfo",        &gettxoutsetinfo,        true,      false,      false },
-    { "blockchain",         "verifychain",            &verifychain,            true,      false,      false },
+    { "blockchain",         "getrawmempool",          &getrawmempool,          true,      true,       false },
+    { "blockchain",         "gettxout",               &gettxout,               true,      true,       false },
+    { "blockchain",         "gettxoutsetinfo",        &gettxoutsetinfo,        true,      true,       false },
+    { "blockchain",         "verifychain",            &verifychain,            true,      true,       false },
     { "blockchain",         "invalidateblock",        &invalidateblock,        true,      true,       false },
     { "blockchain",         "reconsiderblock",        &reconsiderblock,        true,      true,       false },
 
     /* Mining */
-    { "mining",             "getblocktemplate",       &getblocktemplate,       true,      false,      false },
-    { "mining",             "getmininginfo",          &getmininginfo,          true,      false,      false },
-    { "mining",             "getnetworkhashps",       &getnetworkhashps,       true,      false,      false },
-    { "mining",             "prioritisetransaction",  &prioritisetransaction,  true,      false,      false },
+    { "mining",             "getblocktemplate",       &getblocktemplate,       true,      true,       false },
+    { "mining",             "getmininginfo",          &getmininginfo,          true,      true,       false },
+    { "mining",             "getnetworkhashps",       &getnetworkhashps,       true,      true,       false },
+    { "mining",             "prioritisetransaction",  &prioritisetransaction,  true,      true,       false },
     { "mining",             "submitblock",            &submitblock,            true,      true,       false },
 
 #ifdef ENABLE_WALLET
     /* Coin generation */
-    { "generating",         "getgenerate",            &getgenerate,            true,      false,      false },
-    { "generating",         "gethashespersec",        &gethashespersec,        true,      false,      false },
+    { "generating",         "getgenerate",            &getgenerate,            true,      true,       false },
+    { "generating",         "gethashespersec",        &gethashespersec,        true,      true,       false },
     { "generating",         "setgenerate",            &setgenerate,            true,      true,       false },
 #endif
 
     /* Raw transactions */
-    { "rawtransactions",    "createrawtransaction",   &createrawtransaction,   true,      false,      false },
-    { "rawtransactions",    "decoderawtransaction",   &decoderawtransaction,   true,      false,      false },
-    { "rawtransactions",    "decodescript",           &decodescript,           true,      false,      false },
-    { "rawtransactions",    "getrawtransaction",      &getrawtransaction,      true,      false,      false },
-    { "rawtransactions",    "sendrawtransaction",     &sendrawtransaction,     false,     false,      false },
-    { "rawtransactions",    "signrawtransaction",     &signrawtransaction,     false,     false,      false }, /* uses wallet if enabled */
+    { "rawtransactions",    "createrawtransaction",   &createrawtransaction,   true,      true,       false },
+    { "rawtransactions",    "decoderawtransaction",   &decoderawtransaction,   true,      true,       false },
+    { "rawtransactions",    "decodescript",           &decodescript,           true,      true,       false },
+    { "rawtransactions",    "getrawtransaction",      &getrawtransaction,      true,      true,       false },
+    { "rawtransactions",    "sendrawtransaction",     &sendrawtransaction,     true,      true,       false },
+    { "rawtransactions",    "signrawtransaction",     &signrawtransaction,     true,      false,      false }, /* uses wallet if enabled */
 
     /* Utility functions */
     { "util",               "createmultisig",         &createmultisig,         true,      true ,      false },

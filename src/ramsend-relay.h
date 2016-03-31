@@ -11,7 +11,7 @@
 #include "masternodeman.h"
 
 
-class CDarkSendRelay
+class CRamSendRelay
 {
 public:
     CTxIn vinMasternode;
@@ -22,8 +22,8 @@ public:
     CTxIn in;
     CTxOut out;
 
-    CDarkSendRelay();
-    CDarkSendRelay(CTxIn& vinMasternodeIn, vector<unsigned char>& vchSigIn, int nBlockHeightIn, int nRelayTypeIn, CTxIn& in2, CTxOut& out2);
+    CRamSendRelay();
+    CRamSendRelay(CTxIn& vinMasternodeIn, vector<unsigned char>& vchSigIn, int nBlockHeightIn, int nRelayTypeIn, CTxIn& in2, CTxOut& out2);
     
     ADD_SERIALIZE_METHODS;
 

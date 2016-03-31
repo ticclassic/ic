@@ -15,7 +15,7 @@
 
 class CTxIn;
 class CRamsendPool;
-class CDarkSendSigner;
+class CRamSendSigner;
 class CMasterNodeVote;
 class CBitcoinAddress;
 class CRamsendQueue;
@@ -49,8 +49,8 @@ class CActiveMasternode;
 static const int64_t RAMSEND_COLLATERAL = (0.01*COIN);
 static const int64_t RAMSEND_POOL_MAX = (49999.99*COIN);
 
-extern CRamsendPool darkSendPool;
-extern CDarkSendSigner darkSendSigner;
+extern CRamsendPool ramSendPool;
+extern CRamSendSigner ramSendSigner;
 extern std::vector<CRamsendQueue> vecRamsendQueue;
 extern std::string strMasterNodePrivKey;
 extern map<uint256, CRamsendBroadcastTx> mapRamsendBroadcastTxes;
@@ -92,7 +92,7 @@ public:
 };
 
 // A clients transaction in the ramsend pool
-class CDarkSendEntry
+class CRamSendEntry
 {
 public:
     bool isSet;
@@ -103,7 +103,7 @@ public:
     CTransaction txSupporting;
     int64_t addedTime; // time in UTC milliseconds
 
-    CDarkSendEntry()
+    CRamSendEntry()
     {
         isSet = false;
         collateral = CTransaction();
@@ -242,7 +242,7 @@ public:
 
 /** Helper object for signing and checking signatures
  */
-class CDarkSendSigner
+class CRamSendSigner
 {
 public:
     /// Is the inputs associated with this public key? (and there is 1000 BRAINCOIN - checking if valid masternode)
@@ -262,7 +262,7 @@ class CRamsendPool
 private:
     mutable CCriticalSection cs_ramsend;
 
-    std::vector<CDarkSendEntry> entries; // Masternode/clients entries
+    std::vector<CRamSendEntry> entries; // Masternode/clients entries
     CMutableTransaction finalTransaction; // the finalized transaction ready for signing
 
     int64_t lastTimeChanged; // last time the 'state' changed, in UTC milliseconds
@@ -413,7 +413,7 @@ public:
         if(state != newState){
             lastTimeChanged = GetTimeMillis();
             if(fMasterNode) {
-                RelayStatus(darkSendPool.sessionID, darkSendPool.GetState(), darkSendPool.GetEntriesCount(), MASTERNODE_RESET);
+                RelayStatus(ramSendPool.sessionID, ramSendPool.GetState(), ramSendPool.GetEntriesCount(), MASTERNODE_RESET);
             }
         }
         state = newState;
@@ -504,6 +504,6 @@ public:
     void RelayCompletedTransaction(const int sessionID, const bool error, const int errorID);
 };
 
-void ThreadCheckDarkSendPool();
+void ThreadCheckRamSendPool();
 
 #endif

@@ -1414,7 +1414,7 @@ bool AppInit2(boost::thread_group& threadGroup)
             MilliSleep(10);
     }
 
-    // ********************************************************* Step 10: setup DarkSend
+    // ********************************************************* Step 10: setup RamSend
 
     uiInterface.InitMessage(_("Loading masternode cache..."));
 
@@ -1495,7 +1495,7 @@ bool AppInit2(boost::thread_group& threadGroup)
             CKey key;
             CPubKey pubkey;
 
-            if(!darkSendSigner.SetKey(strMasterNodePrivKey, errorMessage, key, pubkey))
+            if(!ramSendSigner.SetKey(strMasterNodePrivKey, errorMessage, key, pubkey))
             {
                 return InitError(_("Invalid masternodeprivkey. Please see documenation."));
             }
@@ -1530,7 +1530,7 @@ bool AppInit2(boost::thread_group& threadGroup)
 
     nLiquidityProvider = GetArg("-liquidityprovider", 0); //0-100
     if(nLiquidityProvider != 0) {
-        darkSendPool.SetMinBlockSpacing(std::min(nLiquidityProvider,100)*15);
+        ramSendPool.SetMinBlockSpacing(std::min(nLiquidityProvider,100)*15);
         fEnableRamsend = true;
         nRamsendRounds = 99999;
     }
@@ -1564,18 +1564,18 @@ bool AppInit2(boost::thread_group& threadGroup)
        1DRK+1000 == (.1DRK+100)*10
        10DRK+10000 == (1DRK+1000)*10
     */
-    darkSendDenominations.push_back( (100      * COIN)+100000 );
-    darkSendDenominations.push_back( (10       * COIN)+10000 );
-    darkSendDenominations.push_back( (1        * COIN)+1000 );
-    darkSendDenominations.push_back( (.1       * COIN)+100 );
+    ramSendDenominations.push_back( (100      * COIN)+100000 );
+    ramSendDenominations.push_back( (10       * COIN)+10000 );
+    ramSendDenominations.push_back( (1        * COIN)+1000 );
+    ramSendDenominations.push_back( (.1       * COIN)+100 );
     /* Disabled till we need them
-    darkSendDenominations.push_back( (.01      * COIN)+10 );
-    darkSendDenominations.push_back( (.001     * COIN)+1 );
+    ramSendDenominations.push_back( (.01      * COIN)+10 );
+    ramSendDenominations.push_back( (.001     * COIN)+1 );
     */
 
-    darkSendPool.InitCollateralAddress();
+    ramSendPool.InitCollateralAddress();
 
-    threadGroup.create_thread(boost::bind(&ThreadCheckDarkSendPool));
+    threadGroup.create_thread(boost::bind(&ThreadCheckRamSendPool));
 
     // ********************************************************* Step 11: start node
 

@@ -23,9 +23,9 @@ using namespace std;
 using namespace boost;
 
 // The main object for accessing Ramsend
-CRamsendPool darkSendPool;
+CRamsendPool ramSendPool;
 // A helper object for signing messages from Masternodes
-CDarkSendSigner darkSendSigner;
+CRamSendSigner ramSendSigner;
 // The current Ramsends in progress on the network
 std::vector<CRamsendQueue> vecRamsendQueue;
 // Keep track of the used Masternodes
@@ -153,7 +153,7 @@ void CRamsendPool::ProcessMessageRamsend(CNode* pfrom, std::string& strCommand, 
             dsq.time = GetTime();
         }
 
-    } else if (strCommand == "dsi") { //DarkSend vIn
+    } else if (strCommand == "dsi") { //RamSend vIn
         int errorID;
 
         if (pfrom->nVersion < MIN_POOL_PEER_PROTO_VERSION) {
@@ -326,8 +326,8 @@ void CRamsendPool::ProcessMessageRamsend(CNode* pfrom, std::string& strCommand, 
         }
 
         if(success){
-            darkSendPool.Check();
-            RelayStatus(darkSendPool.sessionID, darkSendPool.GetState(), darkSendPool.GetEntriesCount(), MASTERNODE_RESET);
+            ramSendPool.Check();
+            RelayStatus(ramSendPool.sessionID, ramSendPool.GetState(), ramSendPool.GetEntriesCount(), MASTERNODE_RESET);
         }
     } else if (strCommand == "dsf") { //Ramsend Final tx
         if (pfrom->nVersion < MIN_POOL_PEER_PROTO_VERSION) {
@@ -370,11 +370,11 @@ void CRamsendPool::ProcessMessageRamsend(CNode* pfrom, std::string& strCommand, 
         vRecv >> sessionIDMessage >> error >> errorID;
 
         if(sessionID != sessionIDMessage){
-            LogPrint("ramsend", "dsc - message doesn't match current Ramsend session %d %d\n", darkSendPool.sessionID, sessionIDMessage);
+            LogPrint("ramsend", "dsc - message doesn't match current Ramsend session %d %d\n", ramSendPool.sessionID, sessionIDMessage);
             return;
         }
 
-        darkSendPool.CompletedTransaction(error, errorID);
+        ramSendPool.CompletedTransaction(error, errorID);
     }
 
 }
@@ -445,8 +445,8 @@ void CRamsendPool::UnlockCoins(){
 
 std::string CRamsendPool::GetStatus()
 {
-    static int showingDarkSendMessage = 0;
-    showingDarkSendMessage += 10;
+    static int showingRamSendMessage = 0;
+    showingRamSendMessage += 10;
     std::string suffix = "";
 
     if(chainActive.Tip()->nHeight - cachedLastSuccess < minBlockSpacing || !masternodeSync.IsBlockchainSynced()) {
@@ -457,27 +457,27 @@ std::string CRamsendPool::GetStatus()
             return _("Ramsend is idle.");
         case POOL_STATUS_ACCEPTING_ENTRIES:
             if(entriesCount == 0) {
-                showingDarkSendMessage = 0;
+                showingRamSendMessage = 0;
                 return strAutoDenomResult;
             } else if (lastEntryAccepted == 1) {
-                if(showingDarkSendMessage % 10 > 8) {
+                if(showingRamSendMessage % 10 > 8) {
                     lastEntryAccepted = 0;
-                    showingDarkSendMessage = 0;
+                    showingRamSendMessage = 0;
                 }
                 return _("Ramsend request complete:") + " " + _("Your transaction was accepted into the pool!");
             } else {
                 std::string suffix = "";
-                if(     showingDarkSendMessage % 70 <= 40) return strprintf(_("Submitted following entries to masternode: %u / %d"), entriesCount, GetMaxPoolTransactions());
-                else if(showingDarkSendMessage % 70 <= 50) suffix = ".";
-                else if(showingDarkSendMessage % 70 <= 60) suffix = "..";
-                else if(showingDarkSendMessage % 70 <= 70) suffix = "...";
+                if(     showingRamSendMessage % 70 <= 40) return strprintf(_("Submitted following entries to masternode: %u / %d"), entriesCount, GetMaxPoolTransactions());
+                else if(showingRamSendMessage % 70 <= 50) suffix = ".";
+                else if(showingRamSendMessage % 70 <= 60) suffix = "..";
+                else if(showingRamSendMessage % 70 <= 70) suffix = "...";
                 return strprintf(_("Submitted to masternode, waiting for more entries ( %u / %d ) %s"), entriesCount, GetMaxPoolTransactions(), suffix);
             }
         case POOL_STATUS_SIGNING:
-            if(     showingDarkSendMessage % 70 <= 40) return _("Found enough users, signing ...");
-            else if(showingDarkSendMessage % 70 <= 50) suffix = ".";
-            else if(showingDarkSendMessage % 70 <= 60) suffix = "..";
-            else if(showingDarkSendMessage % 70 <= 70) suffix = "...";
+            if(     showingRamSendMessage % 70 <= 40) return _("Found enough users, signing ...");
+            else if(showingRamSendMessage % 70 <= 50) suffix = ".";
+            else if(showingRamSendMessage % 70 <= 60) suffix = "..";
+            else if(showingRamSendMessage % 70 <= 70) suffix = "...";
             return strprintf(_("Found enough users, signing ( waiting %s )"), suffix);
         case POOL_STATUS_TRANSMISSION:
             return _("Transmitting final transaction.");
@@ -488,9 +488,9 @@ std::string CRamsendPool::GetStatus()
         case POOL_STATUS_SUCCESS:
             return _("Ramsend request complete:") + " " + lastMessage;
         case POOL_STATUS_QUEUE:
-            if(     showingDarkSendMessage % 70 <= 30) suffix = ".";
-            else if(showingDarkSendMessage % 70 <= 50) suffix = "..";
-            else if(showingDarkSendMessage % 70 <= 70) suffix = "...";
+            if(     showingRamSendMessage % 70 <= 30) suffix = ".";
+            else if(showingRamSendMessage % 70 <= 50) suffix = "..";
+            else if(showingRamSendMessage % 70 <= 70) suffix = "...";
             return strprintf(_("Submitted to masternode, waiting in queue %s"), suffix);;
        default:
             return strprintf(_("Unknown state: id = %u"), state);
@@ -596,18 +596,18 @@ void CRamsendPool::CheckFinalTransaction()
         CKey key2;
         CPubKey pubkey2;
 
-        if(!darkSendSigner.SetKey(strMasterNodePrivKey, strError, key2, pubkey2))
+        if(!ramSendSigner.SetKey(strMasterNodePrivKey, strError, key2, pubkey2))
         {
             LogPrintf("CRamsendPool::Check() - ERROR: Invalid Masternodeprivkey: '%s'\n", strError);
             return;
         }
 
-        if(!darkSendSigner.SignMessage(strMessage, strError, vchSig, key2)) {
+        if(!ramSendSigner.SignMessage(strMessage, strError, vchSig, key2)) {
             LogPrintf("CRamsendPool::Check() - Sign message failed\n");
             return;
         }
 
-        if(!darkSendSigner.VerifyMessage(pubkey2, vchSig, strMessage, strError)) {
+        if(!ramSendSigner.VerifyMessage(pubkey2, vchSig, strMessage, strError)) {
             LogPrintf("CRamsendPool::Check() - Verify message failed\n");
             return;
         }
@@ -661,7 +661,7 @@ void CRamsendPool::ChargeFees(){
     if(state == POOL_STATUS_ACCEPTING_ENTRIES){
         BOOST_FOREACH(const CTransaction& txCollateral, vecSessionCollateral) {
             bool found = false;
-            BOOST_FOREACH(const CDarkSendEntry& v, entries) {
+            BOOST_FOREACH(const CRamSendEntry& v, entries) {
                 if(v.collateral == txCollateral) {
                     found = true;
                 }
@@ -677,7 +677,7 @@ void CRamsendPool::ChargeFees(){
 
     if(state == POOL_STATUS_SIGNING) {
         // who didn't sign?
-        BOOST_FOREACH(const CDarkSendEntry v, entries) {
+        BOOST_FOREACH(const CRamSendEntry v, entries) {
             BOOST_FOREACH(const CTxDSIn s, v.sev) {
                 if(!s.fHasSig){
                     LogPrintf("CRamsendPool::ChargeFees -- found uncooperative node (didn't sign). Found offence\n");
@@ -705,7 +705,7 @@ void CRamsendPool::ChargeFees(){
     if(state == POOL_STATUS_ACCEPTING_ENTRIES){
         BOOST_FOREACH(const CTransaction& txCollateral, vecSessionCollateral) {
             bool found = false;
-            BOOST_FOREACH(const CDarkSendEntry& v, entries) {
+            BOOST_FOREACH(const CRamSendEntry& v, entries) {
                 if(v.collateral == txCollateral) {
                     found = true;
                 }
@@ -731,7 +731,7 @@ void CRamsendPool::ChargeFees(){
 
     if(state == POOL_STATUS_SIGNING) {
         // who didn't sign?
-        BOOST_FOREACH(const CDarkSendEntry v, entries) {
+        BOOST_FOREACH(const CRamSendEntry v, entries) {
             BOOST_FOREACH(const CTxDSIn s, v.sev) {
                 if(!s.fHasSig && r > target){
                     LogPrintf("CRamsendPool::ChargeFees -- found uncooperative node (didn't sign). charging fees.\n");
@@ -830,7 +830,7 @@ void CRamsendPool::CheckTimeout(){
         c = 0;
 
         // check for a timeout and reset if needed
-        vector<CDarkSendEntry>::iterator it2 = entries.begin();
+        vector<CRamSendEntry>::iterator it2 = entries.begin();
         while(it2 != entries.end()){
             if((*it2).IsExpired()){
                 LogPrint("ramsend", "CRamsendPool::CheckTimeout() : Removing expired entry - %d\n", c);
@@ -904,7 +904,7 @@ bool CRamsendPool::SignatureValid(const CScript& newSig, const CTxIn& newVin){
     CScript sigPubKey = CScript();
     unsigned int i = 0;
 
-    BOOST_FOREACH(CDarkSendEntry& e, entries) {
+    BOOST_FOREACH(CRamSendEntry& e, entries) {
         BOOST_FOREACH(const CTxOut& out, e.vout)
             txNew.vout.push_back(out);
 
@@ -1020,7 +1020,7 @@ bool CRamsendPool::AddEntry(const std::vector<CTxIn>& newInput, const int64_t& n
 
     BOOST_FOREACH(CTxIn in, newInput) {
         LogPrint("ramsend", "looking for vin -- %s\n", in.ToString());
-        BOOST_FOREACH(const CDarkSendEntry& v, entries) {
+        BOOST_FOREACH(const CRamSendEntry& v, entries) {
             BOOST_FOREACH(const CTxDSIn& s, v.sev){
                 if((CTxIn)s == in) {
                     LogPrint("ramsend", "CRamsendPool::AddEntry - found in vin\n");
@@ -1032,7 +1032,7 @@ bool CRamsendPool::AddEntry(const std::vector<CTxIn>& newInput, const int64_t& n
         }
     }
 
-    CDarkSendEntry v;
+    CRamSendEntry v;
     v.Add(newInput, nAmount, txCollateral, newOutput);
     entries.push_back(v);
 
@@ -1046,7 +1046,7 @@ bool CRamsendPool::AddScriptSig(const CTxIn& newVin){
     LogPrint("ramsend", "CRamsendPool::AddScriptSig -- new sig  %s\n", newVin.scriptSig.ToString().substr(0,24));
 
 
-    BOOST_FOREACH(const CDarkSendEntry& v, entries) {
+    BOOST_FOREACH(const CRamSendEntry& v, entries) {
         BOOST_FOREACH(const CTxDSIn& s, v.sev){
             if(s.scriptSig == newVin.scriptSig) {
                 LogPrint("ramsend", "CRamsendPool::AddScriptSig - already exists\n");
@@ -1066,12 +1066,12 @@ bool CRamsendPool::AddScriptSig(const CTxIn& newVin){
         if(newVin.prevout == vin.prevout && vin.nSequence == newVin.nSequence){
             vin.scriptSig = newVin.scriptSig;
             vin.prevPubKey = newVin.prevPubKey;
-            LogPrint("ramsend", "CDarkSendPool::AddScriptSig -- adding to finalTransaction  %s\n", newVin.scriptSig.ToString().substr(0,24));
+            LogPrint("ramsend", "CRamSendPool::AddScriptSig -- adding to finalTransaction  %s\n", newVin.scriptSig.ToString().substr(0,24));
         }
     }
     for(unsigned int i = 0; i < entries.size(); i++){
         if(entries[i].AddSig(newVin)){
-            LogPrint("ramsend", "CDarkSendPool::AddScriptSig -- adding  %s\n", newVin.scriptSig.ToString().substr(0,24));
+            LogPrint("ramsend", "CRamSendPool::AddScriptSig -- adding  %s\n", newVin.scriptSig.ToString().substr(0,24));
             return true;
         }
     }
@@ -1082,7 +1082,7 @@ bool CRamsendPool::AddScriptSig(const CTxIn& newVin){
 
 // Check to make sure everything is signed
 bool CRamsendPool::SignaturesComplete(){
-    BOOST_FOREACH(const CDarkSendEntry& v, entries) {
+    BOOST_FOREACH(const CRamSendEntry& v, entries) {
         BOOST_FOREACH(const CTxDSIn& s, v.sev){
             if(!s.fHasSig) return false;
         }
@@ -1173,7 +1173,7 @@ void CRamsendPool::SendRamsendDenominate(std::vector<CTxIn>& vin, std::vector<CT
     }
 
     // store our entry for later use
-    CDarkSendEntry e;
+    CRamSendEntry e;
     e.Add(vin, amount, txCollateral, vout);
     entries.push_back(e);
 
@@ -1242,7 +1242,7 @@ bool CRamsendPool::SignFinalTransaction(CTransaction& finalTransactionNew, CNode
     vector<CTxIn> sigs;
 
     //make sure my inputs/outputs are present, otherwise refuse to sign
-    BOOST_FOREACH(const CDarkSendEntry e, entries) {
+    BOOST_FOREACH(const CRamSendEntry e, entries) {
         BOOST_FOREACH(const CTxDSIn s, e.sev) {
             /* Sign my transaction and all outputs */
             int mine = -1;
@@ -1318,7 +1318,7 @@ void CRamsendPool::NewBlock()
     if(GetTime() - lastNewBlock < 10) return;
     lastNewBlock = GetTime();
 
-    darkSendPool.CheckTimeout();
+    ramSendPool.CheckTimeout();
 }
 
 // Ramsend transaction was completed (failed or successful)
@@ -1403,7 +1403,7 @@ bool CRamsendPool::DoAutomaticDenominating(bool fDryRun)
     CAmount nBalanceNeedsDenominated;
 
     // should not be less than fees in RAMSEND_COLLATERAL + few (lets say 5) smallest denoms
-    CAmount nLowestDenom = RAMSEND_COLLATERAL + darkSendDenominations[darkSendDenominations.size() - 1]*5;
+    CAmount nLowestDenom = RAMSEND_COLLATERAL + ramSendDenominations[ramSendDenominations.size() - 1]*5;
 
     // if there are no DS collateral inputs yet
     if(!pwalletMain->HasCollateralInputs())
@@ -1765,7 +1765,7 @@ bool CRamsendPool::CreateDenominated(int64_t nTotalValue)
     }
 
     // ****** Add denoms ************ /
-    BOOST_REVERSE_FOREACH(int64_t v, darkSendDenominations){
+    BOOST_REVERSE_FOREACH(int64_t v, ramSendDenominations){
         int nOutputs = 0;
 
         // add each output up to 10 times until it can't be added again
@@ -1820,7 +1820,7 @@ bool CRamsendPool::IsCompatibleWithEntries(std::vector<CTxOut>& vout)
 {
     if(GetDenominations(vout) == 0) return false;
 
-    BOOST_FOREACH(const CDarkSendEntry v, entries) {
+    BOOST_FOREACH(const CRamSendEntry v, entries) {
         LogPrintf(" IsCompatibleWithEntries %d %d\n", GetDenominations(vout), GetDenominations(v.vout));
 /*
         BOOST_FOREACH(CTxOut o1, vout)
@@ -1882,7 +1882,7 @@ bool CRamsendPool::IsCompatibleWithSession(int64_t nDenom, CTransaction txCollat
         return false;
     }
 
-    LogPrintf("CDarkSendPool::IsCompatibleWithSession - compatible\n");
+    LogPrintf("CRamSendPool::IsCompatibleWithSession - compatible\n");
 
     sessionUsers++;
     lastTimeChanged = GetTimeMillis();
@@ -1939,7 +1939,7 @@ int CRamsendPool::GetDenominations(const std::vector<CTxOut>& vout, bool fSingle
     std::vector<pair<int64_t, int> > denomUsed;
 
     // make a list of denominations, with zero uses
-    BOOST_FOREACH(int64_t d, darkSendDenominations)
+    BOOST_FOREACH(int64_t d, ramSendDenominations)
         denomUsed.push_back(make_pair(d, 0));
 
     // look for denominations and update uses to 1
@@ -1995,7 +1995,7 @@ int CRamsendPool::GetDenominationsByAmount(int64_t nAmount, int nDenomTarget){
     std::vector<CTxOut> vout1;
 
     // Make outputs by looping through denominations, from small to large
-    BOOST_REVERSE_FOREACH(int64_t v, darkSendDenominations){
+    BOOST_REVERSE_FOREACH(int64_t v, ramSendDenominations){
         if(nDenomTarget != 0){
             bool fAccepted = false;
             if((nDenomTarget & (1 << 0)) &&      v == ((100*COIN)+100000)) {fAccepted = true;}
@@ -2049,7 +2049,7 @@ std::string CRamsendPool::GetMessageByID(int messageID) {
     }
 }
 
-bool CDarkSendSigner::IsVinAssociatedWithPubkey(CTxIn& vin, CPubKey& pubkey){
+bool CRamSendSigner::IsVinAssociatedWithPubkey(CTxIn& vin, CPubKey& pubkey){
     CScript payee2;
     payee2 = GetScriptForDestination(pubkey.GetID());
 
@@ -2066,7 +2066,7 @@ bool CDarkSendSigner::IsVinAssociatedWithPubkey(CTxIn& vin, CPubKey& pubkey){
     return false;
 }
 
-bool CDarkSendSigner::SetKey(std::string strSecret, std::string& errorMessage, CKey& key, CPubKey& pubkey){
+bool CRamSendSigner::SetKey(std::string strSecret, std::string& errorMessage, CKey& key, CPubKey& pubkey){
     CBitcoinSecret vchSecret;
     bool fGood = vchSecret.SetString(strSecret);
 
@@ -2081,7 +2081,7 @@ bool CDarkSendSigner::SetKey(std::string strSecret, std::string& errorMessage, C
     return true;
 }
 
-bool CDarkSendSigner::SignMessage(std::string strMessage, std::string& errorMessage, vector<unsigned char>& vchSig, CKey key)
+bool CRamSendSigner::SignMessage(std::string strMessage, std::string& errorMessage, vector<unsigned char>& vchSig, CKey key)
 {
     CHashWriter ss(SER_GETHASH, 0);
     ss << strMessageMagic;
@@ -2095,7 +2095,7 @@ bool CDarkSendSigner::SignMessage(std::string strMessage, std::string& errorMess
     return true;
 }
 
-bool CDarkSendSigner::VerifyMessage(CPubKey pubkey, vector<unsigned char>& vchSig, std::string strMessage, std::string& errorMessage)
+bool CRamSendSigner::VerifyMessage(CPubKey pubkey, vector<unsigned char>& vchSig, std::string strMessage, std::string& errorMessage)
 {
     CHashWriter ss(SER_GETHASH, 0);
     ss << strMessageMagic;
@@ -2108,7 +2108,7 @@ bool CDarkSendSigner::VerifyMessage(CPubKey pubkey, vector<unsigned char>& vchSi
     }
 
     if (fDebug && pubkey2.GetID() != pubkey.GetID())
-        LogPrintf("CDarkSendSigner::VerifyMessage -- keys don't match: %s %s\n", pubkey2.GetID().ToString(), pubkey.GetID().ToString());
+        LogPrintf("CRamSendSigner::VerifyMessage -- keys don't match: %s %s\n", pubkey2.GetID().ToString(), pubkey.GetID().ToString());
 
     return (pubkey2.GetID() == pubkey.GetID());
 }
@@ -2123,18 +2123,18 @@ bool CRamsendQueue::Sign()
     CPubKey pubkey2;
     std::string errorMessage = "";
 
-    if(!darkSendSigner.SetKey(strMasterNodePrivKey, errorMessage, key2, pubkey2))
+    if(!ramSendSigner.SetKey(strMasterNodePrivKey, errorMessage, key2, pubkey2))
     {
         LogPrintf("CRamsendQueue():Relay - ERROR: Invalid Masternodeprivkey: '%s'\n", errorMessage);
         return false;
     }
 
-    if(!darkSendSigner.SignMessage(strMessage, errorMessage, vchSig, key2)) {
+    if(!ramSendSigner.SignMessage(strMessage, errorMessage, vchSig, key2)) {
         LogPrintf("CRamsendQueue():Relay - Sign message failed");
         return false;
     }
 
-    if(!darkSendSigner.VerifyMessage(pubkey2, vchSig, strMessage, errorMessage)) {
+    if(!ramSendSigner.VerifyMessage(pubkey2, vchSig, strMessage, errorMessage)) {
         LogPrintf("CRamsendQueue():Relay - Verify message failed");
         return false;
     }
@@ -2163,7 +2163,7 @@ bool CRamsendQueue::CheckSignature()
         std::string strMessage = vin.ToString() + boost::lexical_cast<std::string>(nDenom) + boost::lexical_cast<std::string>(time) + boost::lexical_cast<std::string>(ready);
 
         std::string errorMessage = "";
-        if(!darkSendSigner.VerifyMessage(pmn->pubkey2, vchSig, strMessage, errorMessage)){
+        if(!ramSendSigner.VerifyMessage(pmn->pubkey2, vchSig, strMessage, errorMessage)){
             return error("CRamsendQueue::CheckSignature() - Got bad Masternode address signature %s \n", vin.ToString().c_str());
         }
 
@@ -2218,7 +2218,7 @@ void CRamsendPool::RelayCompletedTransaction(const int sessionID, const bool err
 }
 
 //TODO: Rename/move to core
-void ThreadCheckDarkSendPool()
+void ThreadCheckRamSendPool()
 {
     if(fLiteMode) return; //disable all Ramsend/Masternode related functionality
 
@@ -2230,7 +2230,7 @@ void ThreadCheckDarkSendPool()
     while (true)
     {
         MilliSleep(1000);
-        //LogPrintf("ThreadCheckDarkSendPool::check timeout\n");
+        //LogPrintf("ThreadCheckRamSendPool::check timeout\n");
 
         // try to sync from all available nodes, one step at a time
         masternodeSync.Process();
@@ -2253,11 +2253,11 @@ void ThreadCheckDarkSendPool()
 
             //if(c % MASTERNODES_DUMP_SECONDS == 0) DumpMasternodes();
 
-            darkSendPool.CheckTimeout();
-            darkSendPool.CheckForCompleteQueue();
+            ramSendPool.CheckTimeout();
+            ramSendPool.CheckForCompleteQueue();
 
-            if(darkSendPool.GetState() == POOL_STATUS_IDLE && c % 15 == 0){
-                darkSendPool.DoAutomaticDenominating();
+            if(ramSendPool.GetState() == POOL_STATUS_IDLE && c % 15 == 0){
+                ramSendPool.DoAutomaticDenominating();
             }
         }
     }

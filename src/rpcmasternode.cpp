@@ -65,13 +65,13 @@ Value ramsend(const Array& params, bool fHelp)
 
     if(params[0].get_str() == "auto"){
         if(fMasterNode)
-            return "DarkSend is not supported from masternodes";
+            return "RamSend is not supported from masternodes";
 
-        return "DoAutomaticDenominating " + (darkSendPool.DoAutomaticDenominating() ? "successful" : ("failed: " + darkSendPool.GetStatus()));
+        return "DoAutomaticDenominating " + (ramSendPool.DoAutomaticDenominating() ? "successful" : ("failed: " + ramSendPool.GetStatus()));
     }
 
     if(params[0].get_str() == "reset"){
-        darkSendPool.Reset();
+        ramSendPool.Reset();
         return "successfully reset ramsend";
     }
 
@@ -109,9 +109,9 @@ Value getpoolinfo(const Array& params, bool fHelp)
 
     Object obj;
     obj.push_back(Pair("current_masternode",        mnodeman.GetCurrentMasterNode()->addr.ToString()));
-    obj.push_back(Pair("state",        darkSendPool.GetState()));
-    obj.push_back(Pair("entries",      darkSendPool.GetEntriesCount()));
-    obj.push_back(Pair("entries_accepted",      darkSendPool.GetCountEntriesAccepted()));
+    obj.push_back(Pair("state",        ramSendPool.GetState()));
+    obj.push_back(Pair("entries",      ramSendPool.GetEntriesCount()));
+    obj.push_back(Pair("entries_accepted",      ramSendPool.GetCountEntriesAccepted()));
     return obj;
 }
 
@@ -128,25 +128,7 @@ Value masternode(const Array& params, bool fHelp)
         strCommand != "debug" && strCommand != "current" && strCommand != "winners" && strCommand != "genkey" && strCommand != "connect" &&
         strCommand != "outputs" && strCommand != "status" && strCommand != "calcscore"))
         throw runtime_error(
-                "masternode \"command\"... ( \"passphrase\" )\n"
-                "Set of commands to execute masternode related actions\n"
-                "\nArguments:\n"
-                "1. \"command\"        (string or set of strings, required) The command to execute\n"
-                "2. \"passphrase\"     (string, optional) The wallet passphrase\n"
-                "\nAvailable commands:\n"
-                "  count        - Print number of all known masternodes (optional: 'ds', 'enabled', 'all', 'qualify')\n"
-                "  current      - Print info on current masternode winner\n"
-                "  debug        - Print masternode status\n"
-                "  genkey       - Generate new masternodeprivkey\n"
-                "  enforce      - Enforce masternode payments\n"
-                "  outputs      - Print masternode compatible outputs\n"
-                "  start        - Start masternode configured in braincoin.conf\n"
-                "  start-alias  - Start single masternode by assigned alias configured in masternode.conf\n"
-                "  start-<mode> - Start masternodes configured in masternode.conf (<mode>: 'all', 'missing', 'disabled')\n"
-                "  status       - Print masternode status information\n"
-                "  list         - Print list of all known masternodes (see masternodelist for more info)\n"
-                "  list-conf    - Print masternode.conf in JSON format\n"
-                "  winners      - Print list of masternode winners\n"
+                "masternode off"
                 );
 
     if (strCommand == "list")

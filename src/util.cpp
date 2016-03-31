@@ -118,7 +118,7 @@ int64_t enforceMasternodePaymentsTime = 4085657524;
 bool fSucessfullyLoaded = false;
 bool fEnableRamsend = false;
 /** All denominations used by ramsend */
-std::vector<int64_t> darkSendDenominations;
+std::vector<int64_t> ramSendDenominations;
 string strBudgetMode = "";
 
 map<string, string> mapArgs;
