@@ -165,7 +165,7 @@ public:
         nPoolMaxTransactions = 3;
         strSporkKey = "043d6716fc02f6b8747253a9d5d17f30dea4637b888338f193ff145cf08677c3271cd2e56fab29838bcfdae3b8175f37f6da826578ac1be82e38e783a899ffe348";
         strMasternodePaymentsPubKey = "043d6716fc02f6b8747253a9d5d17f30dea4637b888338f193ff145cf08677c3271cd2e56fab29838bcfdae3b8175f37f6da826578ac1be82e38e783a899ffe348";
-        strRamsendPoolDummyAddress = "XkDg6PVr8FeASaF2RbMiSDckAmGALzW6Xs";
+        strRamsendPoolDummyAddress = "XymEwiQrZnyZYzXUFgieTwKnzPefeTF8ud";
         nStartMasternodePayments = 1459472400; //Wed, 25 Jun 2014 20:36:16 GMT
     }
 
