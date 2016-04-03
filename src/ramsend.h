@@ -47,7 +47,7 @@ class CActiveMasternode;
 #define RAMSEND_RELAY_SIG                3
 
 static const int64_t RAMSEND_COLLATERAL = (0.01*COIN);
-static const int64_t RAMSEND_POOL_MAX = (49999.99*COIN);
+static const int64_t RAMSEND_POOL_MAX = (999.99*COIN);
 
 extern CRamsendPool ramSendPool;
 extern CRamSendSigner ramSendSigner;
