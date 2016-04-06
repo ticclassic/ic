@@ -98,10 +98,10 @@ public:
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
          * a large 4-byte int at any alignment.
          */
-        pchMessageStart[0] = 0xbf;
-        pchMessageStart[1] = 0x0c;
-        pchMessageStart[2] = 0x6b;
-        pchMessageStart[3] = 0xbd;
+        pchMessageStart[0] = 0x1c;
+        pchMessageStart[1] = 0xbd;
+        pchMessageStart[2] = 0xcb;
+        pchMessageStart[3] = 0x4f;
         vAlertPubKey = ParseHex("04981232fe6debfc178558371a3dcf488f1fee31ae31d9da0337bfadf9611203954b7ab8df7b47a00b8e92936ef424a48a9f6626d962ac186a234160b3d215ebf9");
         nDefaultPort = 6390;
         bnProofOfWorkLimit = ~uint256(0) >> 20;  // braincoin starting difficulty is 1 / 2^12
@@ -184,10 +184,10 @@ public:
     CTestNetParams() {
         networkID = CBaseChainParams::TESTNET;
         strNetworkID = "test";
-        pchMessageStart[0] = 0xce;
-        pchMessageStart[1] = 0xe2;
-        pchMessageStart[2] = 0xca;
-        pchMessageStart[3] = 0xff;
+        pchMessageStart[0] = 0x1f;
+        pchMessageStart[1] = 0xbc;
+        pchMessageStart[2] = 0xc7;
+        pchMessageStart[3] = 0x4c;
         vAlertPubKey = ParseHex("04f9ea714a6a8ab2e4dd18c3ba2c15f93b6b2c78bbce95ff44db3eb5afca92550869e1ed2ac29b7aa97add677fae0ff80e69976582363ca269678d6f29982b4069");
         nDefaultPort = 16390;
         nEnforceBlockUpgradeMajority = 51;
