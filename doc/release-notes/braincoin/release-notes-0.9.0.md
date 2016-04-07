@@ -90,7 +90,7 @@ v0.10.14 on Sept/25/2014.
 ----------------------
 
 - Fixed issue with denominating small amounts of DRK in large wallet
-  (http://jira.darkcoin.qa/browse/DRK-46)
+  (http://jira.braincoin.qa/browse/DRK-46)
 - Made splitting up initial inputs much more efficient. Now when splitting up,
   it will use powers of two from 4096 DRK in reverse to get the best possible
   mix of inputs for the next phase without any bloat to the blockchain or to
@@ -105,8 +105,8 @@ v0.10.14 on Sept/25/2014.
 - Added Amount/Rounds to overview screen so you can see current settings
 - Overview ramsend cache is cleared on settings change (will instantly update)
 - Fixed issue with completed amount jumping around
-  (http://jira.darkcoin.qa/browse/DRK-46)
-- Made messages less threatening (http://jira.darkcoin.qa/browse/DRK-60)
+  (http://jira.braincoin.qa/browse/DRK-46)
+- Made messages less threatening (http://jira.braincoin.qa/browse/DRK-60)
 
 PS : Please move testing funds to a new wallet. This version has massive
 optimizations for the way inputs are stored and split up. This will make
@@ -182,7 +182,7 @@ RC4 released!
 All fees will use 0.001 sized inputs (they have no change so you can't follow
 them), all transactions now should look like this one:
 
-http://test.explorer.darkcoin.fr/tx/ce0ea2bdf630233955d459489b6f764e0d0bbe9e8a62531dd2a14b455626b59c
+http://test.explorer.braincoin.fr/tx/ce0ea2bdf630233955d459489b6f764e0d0bbe9e8a62531dd2a14b455626b59c
 
 - Client now creates fee sizes inputs for use in ramsend denomination phases
   to improve anonymity
@@ -193,11 +193,11 @@ http://test.explorer.darkcoin.fr/tx/ce0ea2bdf630233955d459489b6f764e0d0bbe9e8a62
 - SplitUpMoney can only execute every 10 blocks now.
 - removed matching masternode debugging messages, that's not really an error
 - Client now prioritises sending denominated funds back into Ramsend. This will
-  improve anonymity and help to respect the "anonymize darkcoin" amount in the
+  improve anonymity and help to respect the "anonymize braincoin" amount in the
   configuration.
 - fixed a bug where masternodes send failed transactions
 - changed max to 100k in configuration
-- added a warning message to startup (delete ~/.darkcoin/.agree_to_tou to see it)
+- added a warning message to startup (delete ~/.braincoin/.agree_to_tou to see it)
 - found a bug causing inputs to get locked forever.
 - Ramsend now checks diskspace before sending anything to a masternode.
 - incrementing protocol version to knock all old clients off
@@ -251,7 +251,7 @@ now, so it might be a bit slower.
 
 All transactions after this should look like this one:
 
-http://test.explorer.darkcoin.fr/tx/6de2c5204abdea451da930f61bae0f954eef13188a3a37a572a24c9d92057d5d
+http://test.explorer.braincoin.fr/tx/6de2c5204abdea451da930f61bae0f954eef13188a3a37a572a24c9d92057d5d
 
 
 0.9.12.17 Release notes
@@ -288,7 +288,7 @@ http://test.explorer.darkcoin.fr/tx/6de2c5204abdea451da930f61bae0f954eef13188a3a
   confused when they got messages about other sessions (sometimes happened when
   they all jumped on the same masternode at once)
 - Added a pre-session state where the client will query a random masternode
-  and ask if they can perform a merge on N darkcoin without giving any other
+  and ask if they can perform a merge on N braincoin without giving any other
   information. If that amount is compatible without losing anonymity, the client
   will then add it's entry for merging
 - Added code to randomly use the top 20 masternodes, this can dynamically be
@@ -342,8 +342,8 @@ http://test.explorer.darkcoin.fr/tx/6de2c5204abdea451da930f61bae0f954eef13188a3a
 
 - Ramsend Denominate Outputs are now in a random order:
 
-http://test.explorer.darkcoin.fr/tx/072ca56cbf705b87749513a2d2ee02080d506adcf8fe178f6dc2967f0711788e
-http://test.explorer.darkcoin.fr/tx/32daa8ca46462e7e99f3532251d68a8c3835a080c937bd83b11db74e47b770ff
+http://test.explorer.braincoin.fr/tx/072ca56cbf705b87749513a2d2ee02080d506adcf8fe178f6dc2967f0711788e
+http://test.explorer.braincoin.fr/tx/32daa8ca46462e7e99f3532251d68a8c3835a080c937bd83b11db74e47b770ff
 
 - Ramsend now uses 3 participants instead of two.
 - SplitUpMoney can now make collateral inputs when needed
@@ -448,11 +448,11 @@ However, there are some known issues:
 
 Testing commands, you can start multiple wallets up and all denominate
 on the same masternode for testing purposes:
-/darkcoin-qt -datadir=/home/user/.darkcoin -listen=0 -ramsendrounds=8 -usemasternode="192.168.56.102:16390"
-/darkcoin-qt -datadir=/home/user/.darkcoin2 -listen=0 -ramsendrounds=8 -usemasternode="192.168.56.102:16390"
+/braincoin-qt -datadir=/home/user/.braincoin -listen=0 -ramsendrounds=8 -usemasternode="192.168.56.102:16390"
+/braincoin-qt -datadir=/home/user/.braincoin2 -listen=0 -ramsendrounds=8 -usemasternode="192.168.56.102:16390"
 
 and even disable ramsend auto-denom if wanted:
-/darkcoin-qt -datadir=/home/user/.darkcoin -listen=0 -ramsendrounds=8 -usemasternode="192.168.56.102:16390" -disableramsend=1
+/braincoin-qt -datadir=/home/user/.braincoin -listen=0 -ramsendrounds=8 -usemasternode="192.168.56.102:16390" -disableramsend=1
 
 
 0.9.12.7 Release notes
@@ -528,11 +528,11 @@ This is a pretty large update to the RC client.
 ----------------------
 
 - resolves issue with wallet not syncing by adding the capability to retrieve nodes through dnsseed
-   (see https://github.com/darkcoinproject/darkcoin/pull/21)
+   (see https://github.com/braincoinproject/braincoin/pull/21)
 - Linux 32 and Mac OS X are now officially supported platforms
-   (see https://github.com/darkcoinproject/darkcoin/pull/17)
+   (see https://github.com/braincoinproject/braincoin/pull/17)
 - improved overall unit test code coverage
-   (see https://github.com/darkcoinproject/darkcoin/pull/13 and https://github.com/darkcoinproject/darkcoin/pull/15)
+   (see https://github.com/braincoinproject/braincoin/pull/13 and https://github.com/braincoinproject/braincoin/pull/15)
 - minor documentation updates
-   (https://github.com/darkcoinproject/darkcoin/pull/18)
+   (https://github.com/braincoinproject/braincoin/pull/18)
 - improved distribution packaging (win: zip, linux: tar.gz, osx: dmg)

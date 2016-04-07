@@ -74,11 +74,11 @@ void OptionsModel::Init()
     if (!settings.contains("nRamsendRounds"))
         settings.setValue("nRamsendRounds", 2);
 
-    if (!settings.contains("nAnonymizeDarkcoinAmount"))
-        settings.setValue("nAnonymizeDarkcoinAmount", 1000);
+    if (!settings.contains("nAnonymizeBraincoinAmount"))
+        settings.setValue("nAnonymizeBraincoinAmount", 1000);
 
     nRamsendRounds = settings.value("nRamsendRounds").toLongLong();
-    nAnonymizeDarkcoinAmount = settings.value("nAnonymizeDarkcoinAmount").toLongLong();
+    nAnonymizeBraincoinAmount = settings.value("nAnonymizeBraincoinAmount").toLongLong();
 
     // These are shared with the core or have a command-line parameter
     // and we want command-line parameters to overwrite the GUI settings.
@@ -140,8 +140,8 @@ void OptionsModel::Init()
 
     if (settings.contains("nRamsendRounds"))
         SoftSetArg("-ramsendrounds", settings.value("nRamsendRounds").toString().toStdString());
-    if (settings.contains("nAnonymizeDarkcoinAmount"))
-        SoftSetArg("-anonymizebraincoinamount", settings.value("nAnonymizeDarkcoinAmount").toString().toStdString());
+    if (settings.contains("nAnonymizeBraincoinAmount"))
+        SoftSetArg("-anonymizebraincoinamount", settings.value("nAnonymizeBraincoinAmount").toString().toStdString());
 
     language = settings.value("language").toString();
 }
@@ -221,8 +221,8 @@ QVariant OptionsModel::data(const QModelIndex & index, int role) const
             return settings.value("nThreadsScriptVerif");
         case RamsendRounds:
             return QVariant(nRamsendRounds);
-        case AnonymizeDarkcoinAmount:
-            return QVariant(nAnonymizeDarkcoinAmount);
+        case AnonymizeBraincoinAmount:
+            return QVariant(nAnonymizeBraincoinAmount);
         case Listen:
             return settings.value("fListen");
         default:
@@ -329,10 +329,10 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
             settings.setValue("nRamsendRounds", nRamsendRounds);
             emit ramsendRoundsChanged(nRamsendRounds);
             break;
-        case AnonymizeDarkcoinAmount:
-            nAnonymizeDarkcoinAmount = value.toInt();
-            settings.setValue("nAnonymizeDarkcoinAmount", nAnonymizeDarkcoinAmount);
-            emit anonymizeDarkcoinAmountChanged(nAnonymizeDarkcoinAmount);
+        case AnonymizeBraincoinAmount:
+            nAnonymizeBraincoinAmount = value.toInt();
+            settings.setValue("nAnonymizeBraincoinAmount", nAnonymizeBraincoinAmount);
+            emit anonymizeBraincoinAmountChanged(nAnonymizeBraincoinAmount);
             break;
         case CoinControlFeatures:
             fCoinControlFeatures = value.toBool();

@@ -1535,9 +1535,9 @@ bool AppInit2(boost::thread_group& threadGroup)
         nRamsendRounds = 99999;
     }
 
-    nAnonymizeDarkcoinAmount = GetArg("-anonymizebraincoinamount", 0);
-    if(nAnonymizeDarkcoinAmount > 999999) nAnonymizeDarkcoinAmount = 999999;
-    if(nAnonymizeDarkcoinAmount < 2) nAnonymizeDarkcoinAmount = 2;
+    nAnonymizeBraincoinAmount = GetArg("-anonymizebraincoinamount", 0);
+    if(nAnonymizeBraincoinAmount > 999999) nAnonymizeBraincoinAmount = 999999;
+    if(nAnonymizeBraincoinAmount < 2) nAnonymizeBraincoinAmount = 2;
 
     fEnableInstantX = GetBoolArg("-enableinstantx", fEnableInstantX);
     nInstantXDepth = GetArg("-instantxdepth", nInstantXDepth);
@@ -1552,7 +1552,7 @@ bool AppInit2(boost::thread_group& threadGroup)
     LogPrintf("fLiteMode %d\n", fLiteMode);
     LogPrintf("nInstantXDepth %d\n", nInstantXDepth);
     LogPrintf("Ramsend rounds %d\n", nRamsendRounds);
-    LogPrintf("Anonymize Braincoin Amount %d\n", nAnonymizeDarkcoinAmount);
+    LogPrintf("Anonymize Braincoin Amount %d\n", nAnonymizeBraincoinAmount);
     LogPrintf("Budget Mode %s\n", strBudgetMode.c_str());
 
     /* Denominations

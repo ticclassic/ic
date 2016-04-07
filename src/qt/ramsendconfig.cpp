@@ -84,8 +84,8 @@ void RamsendConfig::configure(bool enabled, int coins, int rounds) {
     QSettings settings;
 
     settings.setValue("nRamsendRounds", rounds);
-    settings.setValue("nAnonymizeDarkcoinAmount", coins);
+    settings.setValue("nAnonymizeBraincoinAmount", coins);
 
     nRamsendRounds = rounds;
-    nAnonymizeDarkcoinAmount = coins;
+    nAnonymizeBraincoinAmount = coins;
 }

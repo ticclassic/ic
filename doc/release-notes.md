@@ -11,18 +11,18 @@ Braincoin Core tree 0.12.x is a fork of Bitcoin Core tree 0.10.2
 Older releases
 --------------
 
-Braincoin was previously known as Darkcoin.
+Braincoin was previously known as Braincoin.
 
-Darkcoin tree 0.8.x was a fork of Litecoin tree 0.8, original name was XCoin
+Braincoin tree 0.8.x was a fork of Litecoin tree 0.8, original name was XCoin
 which was first released on Jan/18/2014.
 
-Darkcoin tree 0.9.x was the open source implementation of masternodes based on
+Braincoin tree 0.9.x was the open source implementation of masternodes based on
 the 0.8.x tree and was first released on Mar/13/2014.
 
-Darkcoin tree 0.10.x used to be the closed source implementation of Ramsend
+Braincoin tree 0.10.x used to be the closed source implementation of Ramsend
 which was released open source on Sep/25/2014.
 
-Braincoin Core tree 0.11.x was a fork of Bitcoin Core tree 0.9, Darkcoin was rebranded
+Braincoin Core tree 0.11.x was a fork of Bitcoin Core tree 0.9, Braincoin was rebranded
 to Braincoin.
 
 These release are considered obsolete. Old changelogs can be found here:

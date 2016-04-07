@@ -35,7 +35,7 @@ extern bool fLiteMode;
 extern bool fEnableInstantX;
 extern int nInstantXDepth;
 extern int nRamsendRounds;
-extern int nAnonymizeDarkcoinAmount;
+extern int nAnonymizeBraincoinAmount;
 extern int nLiquidityProvider;
 extern bool fEnableRamsend;
 extern int64_t enforceMasternodePaymentsTime;

@@ -44,7 +44,7 @@ public:
         DatabaseCache,          // int
         SpendZeroConfChange,    // bool
         RamsendRounds,    // int
-        AnonymizeDarkcoinAmount, //int
+        AnonymizeBraincoinAmount, //int
         Listen,                 // bool
         OptionIDRowCount,
     };
@@ -89,7 +89,7 @@ private:
 signals:
     void displayUnitChanged(int unit);
     void ramsendRoundsChanged(int);
-    void anonymizeDarkcoinAmountChanged(int);
+    void anonymizeBraincoinAmountChanged(int);
     void coinControlFeaturesChanged(bool);
 };
 

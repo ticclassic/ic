@@ -7,7 +7,7 @@ Braincoin Core version 0.11.2 is now available from:
 
 Please report bugs using the issue tracker at github:
 
-  https://github.com/darkcoin/darkcoin/issues
+  https://github.com/braincoin/braincoin/issues
 
 
 Masternode enhancements
@@ -107,4 +107,4 @@ Thanks to who contributed to this release, at least:
 - 21E14
 
 As well as the Bitcoin Core developers and everyone that helped translating on
-[Transifex](https://www.transifex.com/projects/p/darkcoin/).
+[Transifex](https://www.transifex.com/projects/p/braincoin/).

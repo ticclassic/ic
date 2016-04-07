@@ -209,7 +209,7 @@ void OptionsDialog::setMapper()
 
     /* Ramsend Rounds */
     mapper->addMapping(ui->ramsendRounds, OptionsModel::RamsendRounds);
-    mapper->addMapping(ui->anonymizeDarkcoin, OptionsModel::AnonymizeDarkcoinAmount);
+    mapper->addMapping(ui->anonymizeBraincoin, OptionsModel::AnonymizeBraincoinAmount);
 
 }
 
