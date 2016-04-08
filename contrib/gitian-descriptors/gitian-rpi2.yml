@@ -1,5 +1,5 @@
 ---
-name: "braincoin-raspberry-1.0.0.1"
+name: "braincoin-raspberry-2.2.1.6"
 enable_cache: true
 suites:
 - "precise"
@@ -15,7 +15,7 @@ packages:
 - "faketime"
 - "bsdmainutils"
 - "binutils-gold"
-reference_datetime: "2014-01-10 00:00:00"
+reference_datetime: "2016-04-1 00:00:00"
 remotes:
 - "url": "https://github.com/axelxod/braincoin.git"
   "dir": "braincoin"
