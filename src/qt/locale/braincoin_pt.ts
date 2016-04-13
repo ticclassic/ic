@@ -737,8 +737,8 @@ Endereço: %4
         <translation>Copiar troco</translation>
     </message>
     <message>
-        <source>Non-anonymized input selected. &lt;b&gt;Ramsend will be disabled.&lt;/b&gt;&lt;br&gt;&lt;br&gt;If you still want to use Ramsend, please deselect all non-nonymized inputs first and then check Ramsend checkbox again.</source>
-        <translation>Entrada não anonimizada seleccionada. &lt;b&gt;O Ramsend será desactivado.&lt;/b&gt;&lt;br&gt;&lt;br&gt;Se deseja usar o Ramsend, por favor desseleccione primeiro todas as entradas não anonimizadas e em seguida volte a marcar a opção Ramsend.</translation>
+        <source>Non-anonymized input selected. &lt;b&gt;Darksend will be disabled.&lt;/b&gt;&lt;br&gt;&lt;br&gt;If you still want to use Darksend, please deselect all non-nonymized inputs first and then check Darksend checkbox again.</source>
+        <translation>Entrada não anonimizada seleccionada. &lt;b&gt;O Darksend será desactivado.&lt;/b&gt;&lt;br&gt;&lt;br&gt;Se deseja usar o Darksend, por favor desseleccione primeiro todas as entradas não anonimizadas e em seguida volte a marcar a opção Darksend.</translation>
     </message>
     <message>
         <source>highest</source>
@@ -838,10 +838,10 @@ Endereço: %4
     </message>
 </context>
 <context>
-    <name>RamsendConfig</name>
+    <name>DarksendConfig</name>
     <message>
-        <source>Configure Ramsend</source>
-        <translation>Configurar Ramsend</translation>
+        <source>Configure Darksend</source>
+        <translation>Configurar Darksend</translation>
     </message>
     <message>
         <source>Basic Privacy</source>
@@ -888,20 +888,20 @@ Endereço: %4
         <translation>Esta é a opção mais lenta e mais segura. Usando anonimização máxima irá custar</translation>
     </message>
     <message>
-        <source>Ramsend Configuration</source>
-        <translation>Configuração Ramsend</translation>
+        <source>Darksend Configuration</source>
+        <translation>Configuração Darksend</translation>
     </message>
     <message>
-        <source>Ramsend was successfully set to basic (%1 and 2 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
-        <translation>Ramsend foi colocado com sucesso no modo básico (%1 e 2 voltas). Pode mudar esta definição em qualquer altura abrindo o ecrã de configuração Braincoin.</translation>
+        <source>Darksend was successfully set to basic (%1 and 2 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
+        <translation>Darksend foi colocado com sucesso no modo básico (%1 e 2 voltas). Pode mudar esta definição em qualquer altura abrindo o ecrã de configuração Braincoin.</translation>
     </message>
     <message>
-        <source>Ramsend was successfully set to high (%1 and 8 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
-        <translation>Ramsend foi colocado com sucesso no modo alto (%1 e 8 voltas). Pode mudar esta definição em qualquer altura abrindo o ecrã de configuração Braincoin.</translation>
+        <source>Darksend was successfully set to high (%1 and 8 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
+        <translation>Darksend foi colocado com sucesso no modo alto (%1 e 8 voltas). Pode mudar esta definição em qualquer altura abrindo o ecrã de configuração Braincoin.</translation>
     </message>
     <message>
-        <source>Ramsend was successfully set to maximum (%1 and 16 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
-        <translation>Ramsend foi colocado com sucesso no modo máximo (%1 e 16 voltas). Pode mudar esta definição em qualquer altura abrindo o ecrã de configuração Braincoin.</translation>
+        <source>Darksend was successfully set to maximum (%1 and 16 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
+        <translation>Darksend foi colocado com sucesso no modo máximo (%1 e 16 voltas). Pode mudar esta definição em qualquer altura abrindo o ecrã de configuração Braincoin.</translation>
     </message>
 </context>
 <context>
@@ -1142,12 +1142,12 @@ Endereço: %4
         <translation>(0 = auto, &lt;0 = deixar este número de cores livres)</translation>
     </message>
     <message>
-        <source>Ramsend rounds to use</source>
-        <translation>Número de voltas Ramsend a usar</translation>
+        <source>Darksend rounds to use</source>
+        <translation>Número de voltas Darksend a usar</translation>
     </message>
     <message>
-        <source>This amount acts as a threshold to turn off Ramsend once it's reached.</source>
-        <translation>Esta quantia actua como um limite, a partir do qual o Ramsend é desligado.</translation>
+        <source>This amount acts as a threshold to turn off Darksend once it's reached.</source>
+        <translation>Esta quantia actua como um limite, a partir do qual o Darksend é desligado.</translation>
     </message>
     <message>
         <source>Amount of Braincoin to keep anonymized</source>
@@ -1419,8 +1419,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Progresso:</translation>
     </message>
     <message>
-        <source>Ramsend Balance:</source>
-        <translation>Saldo Ramsend:</translation>
+        <source>Darksend Balance:</source>
+        <translation>Saldo Darksend:</translation>
     </message>
     <message>
         <source>Amount and Rounds:</source>
@@ -1439,8 +1439,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>n/d</translation>
     </message>
     <message>
-        <source>Ramsend</source>
-        <translation>Ramsend</translation>
+        <source>Darksend</source>
+        <translation>Darksend</translation>
     </message>
     <message>
         <source>Recent transactions</source>
@@ -1459,16 +1459,16 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>(Última Mensagem)</translation>
     </message>
     <message>
-        <source>Try to manually submit a Ramsend request.</source>
-        <translation>Tentar submeter um pedido Ramsend manualmente.</translation>
+        <source>Try to manually submit a Darksend request.</source>
+        <translation>Tentar submeter um pedido Darksend manualmente.</translation>
     </message>
     <message>
         <source>Try Mix</source>
         <translation>Tentar Mistura</translation>
     </message>
     <message>
-        <source>Reset the current status of Ramsend (can interrupt Ramsend if it's in the process of Mixing, which can cost you money!)</source>
-        <translation>Reinicia o estado actual Ramsend (pode interromper o Ramsend mesmo quando em processo de Mistura, o que pode ter custos!)</translation>
+        <source>Reset the current status of Darksend (can interrupt Darksend if it's in the process of Mixing, which can cost you money!)</source>
+        <translation>Reinicia o estado actual Darksend (pode interromper o Darksend mesmo quando em processo de Mistura, o que pode ter custos!)</translation>
     </message>
     <message>
         <source>Reset</source>
@@ -1483,12 +1483,12 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Desactivado</translation>
     </message>
     <message>
-        <source>Start Ramsend Mixing</source>
-        <translation>Iniciar Mistura Ramsend</translation>
+        <source>Start Darksend Mixing</source>
+        <translation>Iniciar Mistura Darksend</translation>
     </message>
     <message>
-        <source>Stop Ramsend Mixing</source>
-        <translation>Parar Mistura Ramsend</translation>
+        <source>Stop Darksend Mixing</source>
+        <translation>Parar Mistura Darksend</translation>
     </message>
     <message>
         <source>No inputs detected</source>
@@ -1531,9 +1531,9 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Activado</translation>
     </message>
     <message>
-        <source>Last Ramsend message:
+        <source>Last Darksend message:
 </source>
-        <translation>Última mensagem Ramsend:
+        <translation>Última mensagem Darksend:
 </translation>
     </message>
     <message>
@@ -1541,20 +1541,20 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>N/D</translation>
     </message>
     <message>
-        <source>Ramsend was successfully reset.</source>
-        <translation>Ramsend foi reposto com sucesso.</translation>
+        <source>Darksend was successfully reset.</source>
+        <translation>Darksend foi reposto com sucesso.</translation>
     </message>
     <message>
-        <source>If you don't want to see internal Ramsend fees/transactions select "Most Common" as Type on the "Transactions" tab.</source>
-        <translation>Se não deseja visualizar as taxas/transacções internas Ramsend seleccione "Mais Comuns" como Tipo no separador "Transacções"</translation>
+        <source>If you don't want to see internal Darksend fees/transactions select "Most Common" as Type on the "Transactions" tab.</source>
+        <translation>Se não deseja visualizar as taxas/transacções internas Darksend seleccione "Mais Comuns" como Tipo no separador "Transacções"</translation>
     </message>
     <message>
-        <source>Ramsend requires at least %1 to use.</source>
-        <translation>Ramsend necessita de pelo menos %1 para ser usado.</translation>
+        <source>Darksend requires at least %1 to use.</source>
+        <translation>Darksend necessita de pelo menos %1 para ser usado.</translation>
     </message>
     <message>
-        <source>Wallet is locked and user declined to unlock. Disabling Ramsend.</source>
-        <translation>A carteira está bloqueada e o utilizador recusou o desbloqueamento. A desactivar Ramsend.</translation>
+        <source>Wallet is locked and user declined to unlock. Disabling Darksend.</source>
+        <translation>A carteira está bloqueada e o utilizador recusou o desbloqueamento. A desactivar Darksend.</translation>
     </message>
 </context>
 <context>
@@ -2348,8 +2348,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Adicionar &amp;Destinatário</translation>
     </message>
     <message>
-        <source>Ramsend</source>
-        <translation>Ramsend</translation>
+        <source>Darksend</source>
+        <translation>Darksend</translation>
     </message>
     <message>
         <source>InstantX</source>
@@ -2400,8 +2400,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>fundos anónimos</translation>
     </message>
     <message>
-        <source>(ramsend requires this amount to be rounded up to the nearest %1).</source>
-        <translation>(o ramsend requer que esta quantia seja arredondada até ao %1 mais próximo).</translation>
+        <source>(darksend requires this amount to be rounded up to the nearest %1).</source>
+        <translation>(o darksend requer que esta quantia seja arredondada até ao %1 mais próximo).</translation>
     </message>
     <message>
         <source>any available funds (not recommended)</source>
@@ -3004,8 +3004,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Recebido de</translation>
     </message>
     <message>
-        <source>Received via Ramsend</source>
-        <translation>Recebido via Ramsend</translation>
+        <source>Received via Darksend</source>
+        <translation>Recebido via Darksend</translation>
     </message>
     <message>
         <source>Sent to</source>
@@ -3020,20 +3020,20 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Minado</translation>
     </message>
     <message>
-        <source>Ramsend Denominate</source>
-        <translation>Denominação Ramsend</translation>
+        <source>Darksend Denominate</source>
+        <translation>Denominação Darksend</translation>
     </message>
     <message>
-        <source>Ramsend Collateral Payment</source>
-        <translation>Pagamento Colateral Ramsend</translation>
+        <source>Darksend Collateral Payment</source>
+        <translation>Pagamento Colateral Darksend</translation>
     </message>
     <message>
-        <source>Ramsend Make Collateral Inputs</source>
-        <translation>Ramsend Fazer Entradas Colaterais</translation>
+        <source>Darksend Make Collateral Inputs</source>
+        <translation>Darksend Fazer Entradas Colaterais</translation>
     </message>
     <message>
-        <source>Ramsend Create Denominations</source>
-        <translation>Ramsend Criar Denominações</translation>
+        <source>Darksend Create Denominations</source>
+        <translation>Darksend Criar Denominações</translation>
     </message>
     <message>
         <source>Darksent</source>
@@ -3119,20 +3119,20 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Darksent</translation>
     </message>
     <message>
-        <source>Ramsend Make Collateral Inputs</source>
-        <translation>Ramsend Fazer Entradas Colaterais</translation>
+        <source>Darksend Make Collateral Inputs</source>
+        <translation>Darksend Fazer Entradas Colaterais</translation>
     </message>
     <message>
-        <source>Ramsend Create Denominations</source>
-        <translation>Ramsend Criar Denominações</translation>
+        <source>Darksend Create Denominations</source>
+        <translation>Darksend Criar Denominações</translation>
     </message>
     <message>
-        <source>Ramsend Denominate</source>
-        <translation>Denominação Ramsend</translation>
+        <source>Darksend Denominate</source>
+        <translation>Denominação Darksend</translation>
     </message>
     <message>
-        <source>Ramsend Collateral Payment</source>
-        <translation>Pagamento Colateral Ramsend</translation>
+        <source>Darksend Collateral Payment</source>
+        <translation>Pagamento Colateral Darksend</translation>
     </message>
     <message>
         <source>To yourself</source>
@@ -3314,8 +3314,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Não foi possível obter acesso exclusivo à pasta de dados %s. Possivelmente o Braincoin Core já se encontra em execução.</translation>
     </message>
     <message>
-        <source>Ramsend uses exact denominated amounts to send funds, you might simply need to anonymize some more coins.</source>
-        <translation>O Ramsend usa denominações exactas para enviar fundos, pode necessitar simplesmente de anonimizar mais algumas moedas.</translation>
+        <source>Darksend uses exact denominated amounts to send funds, you might simply need to anonymize some more coins.</source>
+        <translation>O Darksend usa denominações exactas para enviar fundos, pode necessitar simplesmente de anonimizar mais algumas moedas.</translation>
     </message>
     <message>
         <source>Enter regression test mode, which uses a special chain in which blocks can be solved instantly.</source>
@@ -3370,12 +3370,12 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Não foi possível vincular a %s neste computador. Provavelmente o Braincoin Core já está a ser executado.</translation>
     </message>
     <message>
-        <source>Unable to locate enough Ramsend denominated funds for this transaction.</source>
-        <translation>Não foi possível localizar fundos Ramsend denominados suficientes para esta transacção.</translation>
+        <source>Unable to locate enough Darksend denominated funds for this transaction.</source>
+        <translation>Não foi possível localizar fundos Darksend denominados suficientes para esta transacção.</translation>
     </message>
     <message>
-        <source>Unable to locate enough Ramsend non-denominated funds for this transaction that are not equal 1000 BRAINCOIN.</source>
-        <translation>Não foi possível localizar fundos Ramsend não denominados suficientes para esta transacção que não sejam igual a 1000DRK.</translation>
+        <source>Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 1000 BRAINCOIN.</source>
+        <translation>Não foi possível localizar fundos Darksend não denominados suficientes para esta transacção que não sejam igual a 1000DRK.</translation>
     </message>
     <message>
         <source>Warning: -paytxfee is set very high! This is the transaction fee you will pay if you send a transaction.</source>
@@ -3474,8 +3474,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Detectada corrupção na base de dados dos blocos</translation>
     </message>
     <message>
-        <source>Ramsend options:</source>
-        <translation>Opções Ramsend:</translation>
+        <source>Darksend options:</source>
+        <translation>Opções Darksend:</translation>
     </message>
     <message>
         <source>Debugging/Testing options:</source>
@@ -3546,8 +3546,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Erro: Carteira bloqueada, não foi possível criar a transacção!</translation>
     </message>
     <message>
-        <source>Error: You already have pending entries in the Ramsend pool</source>
-        <translation>Erro: Já tem entradas pendentes no conjunto Ramsend</translation>
+        <source>Error: You already have pending entries in the Darksend pool</source>
+        <translation>Erro: Já tem entradas pendentes no conjunto Darksend</translation>
     </message>
     <message>
         <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
@@ -3586,8 +3586,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Activar instantx, mostrar confirmações para transacções bloqueadas (bool, default: %s)</translation>
     </message>
     <message>
-        <source>Enable use of automated ramsend for funds stored in this wallet (0-1, default: %u)</source>
-        <translation>Activar o uso de ramsend automatizado para os fundos guardados nesta carteira (0-1, default: %u)</translation>
+        <source>Enable use of automated darksend for funds stored in this wallet (0-1, default: %u)</source>
+        <translation>Activar o uso de darksend automatizado para os fundos guardados nesta carteira (0-1, default: %u)</translation>
     </message>
     <message>
         <source>Fees (in BRAINCOIN/Kb) smaller than this are considered zero fee for relaying (default: %s)</source>
@@ -3618,8 +3618,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Informação de depuração de saída (omissão: %u, fornecer &lt;category&gt; é opcional)</translation>
     </message>
     <message>
-        <source>Provide liquidity to Ramsend by infrequently mixing coins on a continual basis (0-100, default: %u, 1=very frequent, high fees, 100=very infrequent, low fees)</source>
-        <translation>Providenciar liquidez para o Ramsend misturando moedas continuamente com baixa frequência (0-100, omissão: %u, 1=muito frequente taxas elevadas, 100=pouco frequente, taxas reduzidas)</translation>
+        <source>Provide liquidity to Darksend by infrequently mixing coins on a continual basis (0-100, default: %u, 1=very frequent, high fees, 100=very infrequent, low fees)</source>
+        <translation>Providenciar liquidez para o Darksend misturando moedas continuamente com baixa frequência (0-100, omissão: %u, 1=muito frequente taxas elevadas, 100=pouco frequente, taxas reduzidas)</translation>
     </message>
     <message>
         <source>Send trace/debug info to console instead of debug.log file (default: %u)</source>
@@ -3704,16 +3704,16 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Incapaz de analizar -rpcbind value %s como endereço de rede</translation>
     </message>
     <message>
-        <source>Ramsend is idle.</source>
-        <translation>Ramsend está inactivo.</translation>
+        <source>Darksend is idle.</source>
+        <translation>Darksend está inactivo.</translation>
     </message>
     <message>
-        <source>Ramsend request complete:</source>
-        <translation>Pedido Ramsend completo:</translation>
+        <source>Darksend request complete:</source>
+        <translation>Pedido Darksend completo:</translation>
     </message>
     <message>
-        <source>Ramsend request incomplete:</source>
-        <translation>Pedido Ramsend incompleto:</translation>
+        <source>Darksend request incomplete:</source>
+        <translation>Pedido Darksend incompleto:</translation>
     </message>
     <message>
         <source>Disable safemode, override a real safe mode event (default: %u)</source>
@@ -3844,8 +3844,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Quantia inválida para -paytxfee=&lt;amount&gt;: '%s'</translation>
     </message>
     <message>
-        <source>Last successful Ramsend action was too recent.</source>
-        <translation>Ultima acção Ramsend com sucesso é demasiado recente.</translation>
+        <source>Last successful Darksend action was too recent.</source>
+        <translation>Ultima acção Darksend com sucesso é demasiado recente.</translation>
     </message>
     <message>
         <source>Limit size of signature cache to &lt;n&gt; entries (default: %u)</source>
@@ -4112,8 +4112,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Manter no máximo &lt;n&gt; transacções não conectáveis em memória (omissão: %u)</translation>
     </message>
     <message>
-        <source>Last Ramsend was too recent.</source>
-        <translation>O último Ramsend é muito recente.</translation>
+        <source>Last Darksend was too recent.</source>
+        <translation>O último Darksend é muito recente.</translation>
     </message>
     <message>
         <source>Line: %d</source>
@@ -4360,8 +4360,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Utilizador para as ligações JSON-RPC</translation>
     </message>
     <message>
-        <source>Value more than Ramsend pool maximum allows.</source>
-        <translation>Valor mais elevado do que o máximo permitido pelo Ramsend.</translation>
+        <source>Value more than Darksend pool maximum allows.</source>
+        <translation>Valor mais elevado do que o máximo permitido pelo Darksend.</translation>
     </message>
     <message>
         <source>Verifying blocks...</source>

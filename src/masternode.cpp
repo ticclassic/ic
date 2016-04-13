@@ -4,7 +4,7 @@
 
 #include "masternode.h"
 #include "masternodeman.h"
-#include "ramsend.h"
+#include "darksend.h"
 #include "util.h"
 #include "sync.h"
 #include "addrman.h"
@@ -203,7 +203,7 @@ void CMasternode::Check(bool forceCheck)
     if(!unitTest){
         CValidationState state;
         CMutableTransaction tx = CMutableTransaction();
-        CTxOut vout = CTxOut(999.99*COIN, ramSendPool.collateralPubKey);
+        CTxOut vout = CTxOut(999.99*COIN, darkSendPool.collateralPubKey);
         tx.vin.push_back(vin);
         tx.vout.push_back(vout);
 
@@ -385,7 +385,7 @@ bool CMasternodeBroadcast::CheckAndUpdate(int& nDos)
     }
 
     std::string errorMessage = "";
-    if(!ramSendSigner.VerifyMessage(pubkey, sig, strMessage, errorMessage)){
+    if(!darkSendSigner.VerifyMessage(pubkey, sig, strMessage, errorMessage)){
         LogPrintf("mnb - Got bad Masternode address signature\n");
         nDos = 100;
         return false;
@@ -435,7 +435,7 @@ bool CMasternodeBroadcast::CheckInputsAndAdd(int& nDoS)
 
     CValidationState state;
     CMutableTransaction tx = CMutableTransaction();
-    CTxOut vout = CTxOut(999.99*COIN, ramSendPool.collateralPubKey);
+    CTxOut vout = CTxOut(999.99*COIN, darkSendPool.collateralPubKey);
     tx.vin.push_back(vin);
     tx.vout.push_back(vout);
 
@@ -466,14 +466,14 @@ bool CMasternodeBroadcast::CheckInputsAndAdd(int& nDoS)
     }
 
     // verify that sig time is legit in past
-    // should be at least not earlier than block when 50000 BRAINCOIN tx got MASTERNODE_MIN_CONFIRMATIONS
+    // should be at least not earlier than block when 1000 BRAINCOIN tx got MASTERNODE_MIN_CONFIRMATIONS
     uint256 hashBlock = 0;
     CTransaction tx2;
     GetTransaction(vin.prevout.hash, tx2, hashBlock, true);
     BlockMap::iterator mi = mapBlockIndex.find(hashBlock);
     if (mi != mapBlockIndex.end() && (*mi).second)
     {
-        CBlockIndex* pMNIndex = (*mi).second; // block for 50000 BRAINCOIN tx -> 1 confirmation
+        CBlockIndex* pMNIndex = (*mi).second; // block for 1000 BRAINCOIN tx -> 1 confirmation
         CBlockIndex* pConfIndex = chainActive[pMNIndex->nHeight + MASTERNODE_MIN_CONFIRMATIONS - 1]; // block where tx got MASTERNODE_MIN_CONFIRMATIONS
         if(pConfIndex->GetBlockTime() > sigTime)
         {
@@ -517,12 +517,12 @@ bool CMasternodeBroadcast::Sign(CKey& keyCollateralAddress)
 
     std::string strMessage = addr.ToString() + boost::lexical_cast<std::string>(sigTime) + vchPubKey + vchPubKey2 + boost::lexical_cast<std::string>(protocolVersion);
 
-    if(!ramSendSigner.SignMessage(strMessage, errorMessage, sig, keyCollateralAddress)) {
+    if(!darkSendSigner.SignMessage(strMessage, errorMessage, sig, keyCollateralAddress)) {
         LogPrintf("CMasternodeBroadcast::Sign() - Error: %s\n", errorMessage);
         return false;
     }
 
-    if(!ramSendSigner.VerifyMessage(pubkey, sig, strMessage, errorMessage)) {
+    if(!darkSendSigner.VerifyMessage(pubkey, sig, strMessage, errorMessage)) {
         LogPrintf("CMasternodeBroadcast::Sign() - Error: %s\n", errorMessage);
         return false;
     }
@@ -555,12 +555,12 @@ bool CMasternodePing::Sign(CKey& keyMasternode, CPubKey& pubKeyMasternode)
     sigTime = GetAdjustedTime();
     std::string strMessage = vin.ToString() + blockHash.ToString() + boost::lexical_cast<std::string>(sigTime);
 
-    if(!ramSendSigner.SignMessage(strMessage, errorMessage, vchSig, keyMasternode)) {
+    if(!darkSendSigner.SignMessage(strMessage, errorMessage, vchSig, keyMasternode)) {
         LogPrintf("CMasternodePing::Sign() - Error: %s\n", errorMessage);
         return false;
     }
 
-    if(!ramSendSigner.VerifyMessage(pubKeyMasternode, vchSig, strMessage, errorMessage)) {
+    if(!darkSendSigner.VerifyMessage(pubKeyMasternode, vchSig, strMessage, errorMessage)) {
         LogPrintf("CMasternodePing::Sign() - Error: %s\n", errorMessage);
         return false;
     }
@@ -598,7 +598,7 @@ bool CMasternodePing::CheckAndUpdate(int& nDos, bool fRequireEnabled)
             std::string strMessage = vin.ToString() + blockHash.ToString() + boost::lexical_cast<std::string>(sigTime);
 
             std::string errorMessage = "";
-            if(!ramSendSigner.VerifyMessage(pmn->pubkey2, vchSig, strMessage, errorMessage))
+            if(!darkSendSigner.VerifyMessage(pmn->pubkey2, vchSig, strMessage, errorMessage))
             {
                 LogPrintf("CMasternodePing::CheckAndUpdate - Got bad Masternode address signature %s\n", vin.ToString());
                 nDos = 33;

@@ -13,7 +13,7 @@
 #include "checkqueue.h"
 #include "init.h"
 #include "instantx.h"
-#include "ramsend.h"
+#include "darksend.h"
 #include "masternodeman.h"
 #include "masternode-payments.h"
 #include "masternode-budget.h"
@@ -1115,7 +1115,7 @@ bool AcceptToMemoryPool(CTxMemPool& pool, CValidationState &state, const CTransa
 
         // Don't accept it if it can't get into a block
         // but prioritise dstx and don't check fees for it
-        if(mapRamsendBroadcastTxes.count(hash)) {
+        if(mapDarksendBroadcastTxes.count(hash)) {
             mempool.PrioritiseTransaction(hash, hash.ToString(), 1000, 0.1*COIN);
         } else if(!ignoreFees){
             CAmount txMinFee = GetMinRelayFee(tx, nSize, true);
@@ -3313,7 +3313,7 @@ bool ProcessNewBlock(CValidationState &state, CNode* pfrom, CBlock* pblock, CDis
 
     if(!fLiteMode){
         if (masternodeSync.RequestedMasternodeAssets > MASTERNODE_SYNC_LIST) {
-            ramSendPool.NewBlock();
+            darkSendPool.NewBlock();
             masternodePayments.ProcessBlock(GetHeight()+10);
             budget.NewBlock();
         }
@@ -4005,7 +4005,7 @@ bool static AlreadyHave(const CInv& inv)
                 pcoinsTip->HaveCoins(inv.hash);
         }
     case MSG_DSTX:
-        return mapRamsendBroadcastTxes.count(inv.hash);
+        return mapDarksendBroadcastTxes.count(inv.hash);
     case MSG_BLOCK:
         return mapBlockIndex.count(inv.hash);
     case MSG_TXLOCK_REQUEST:
@@ -4260,14 +4260,14 @@ void static ProcessGetData(CNode* pfrom)
                 }
 
                 if (!pushed && inv.type == MSG_DSTX) {       
-                    if(mapRamsendBroadcastTxes.count(inv.hash)){
+                    if(mapDarksendBroadcastTxes.count(inv.hash)){
                         CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
                         ss.reserve(1000);
                         ss <<
-                            mapRamsendBroadcastTxes[inv.hash].tx <<
-                            mapRamsendBroadcastTxes[inv.hash].vin <<
-                            mapRamsendBroadcastTxes[inv.hash].vchSig <<
-                            mapRamsendBroadcastTxes[inv.hash].sigTime;
+                            mapDarksendBroadcastTxes[inv.hash].tx <<
+                            mapDarksendBroadcastTxes[inv.hash].vin <<
+                            mapDarksendBroadcastTxes[inv.hash].vchSig <<
+                            mapDarksendBroadcastTxes[inv.hash].sigTime;
 
                         pfrom->PushMessage("dstx", ss);
                         pushed = true;
@@ -4713,7 +4713,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
                 std::string strMessage = tx.GetHash().ToString() + boost::lexical_cast<std::string>(sigTime);
 
                 std::string errorMessage = "";
-                if(!ramSendSigner.VerifyMessage(pmn->pubkey2, vchSig, strMessage, errorMessage)){
+                if(!darkSendSigner.VerifyMessage(pmn->pubkey2, vchSig, strMessage, errorMessage)){
                     LogPrintf("dstx: Got bad masternode address signature %s \n", vin.ToString());
                     //pfrom->Misbehaving(20);
                     return false;
@@ -4724,14 +4724,14 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
                 ignoreFees = true;
                 pmn->allowFreeTx = false;
 
-                if(!mapRamsendBroadcastTxes.count(tx.GetHash())){
-                    CRamsendBroadcastTx dstx;
+                if(!mapDarksendBroadcastTxes.count(tx.GetHash())){
+                    CDarksendBroadcastTx dstx;
                     dstx.tx = tx;
                     dstx.vin = vin;
                     dstx.vchSig = vchSig;
                     dstx.sigTime = sigTime;
 
-                    mapRamsendBroadcastTxes.insert(make_pair(tx.GetHash(), dstx));
+                    mapDarksendBroadcastTxes.insert(make_pair(tx.GetHash(), dstx));
                 }
             }
         }
@@ -5148,7 +5148,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv, 
     else
     {
         //probably one the extensions
-        ramSendPool.ProcessMessageRamsend(pfrom, strCommand, vRecv);
+        darkSendPool.ProcessMessageDarksend(pfrom, strCommand, vRecv);
         mnodeman.ProcessMessage(pfrom, strCommand, vRecv);
         budget.ProcessMessage(pfrom, strCommand, vRecv);
         masternodePayments.ProcessMessageMasternodePayments(pfrom, strCommand, vRecv);

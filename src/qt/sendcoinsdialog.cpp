@@ -55,28 +55,28 @@ SendCoinsDialog::SendCoinsDialog(QWidget *parent) :
 
     // Braincoin specific
     QSettings settings;
-    if (!settings.contains("bUseRamSend"))
-        settings.setValue("bUseRamSend", false);
+    if (!settings.contains("bUseDarkSend"))
+        settings.setValue("bUseDarkSend", false);
     if (!settings.contains("bUseInstantX"))
         settings.setValue("bUseInstantX", false);
         
-    bool useRamSend = settings.value("bUseRamSend").toBool();
+    bool useDarkSend = settings.value("bUseDarkSend").toBool();
     bool useInstantX = settings.value("bUseInstantX").toBool();
     if(fLiteMode) {
-        ui->checkUseRamsend->setChecked(false);
-        ui->checkUseRamsend->setVisible(false);
+        ui->checkUseDarksend->setChecked(false);
+        ui->checkUseDarksend->setVisible(false);
         ui->checkInstantX->setVisible(false);
-        CoinControlDialog::coinControl->useRamSend = false;
+        CoinControlDialog::coinControl->useDarkSend = false;
         CoinControlDialog::coinControl->useInstantX = false;
     }
     else{
-        ui->checkUseRamsend->setChecked(useRamSend);
+        ui->checkUseDarksend->setChecked(useDarkSend);
         ui->checkInstantX->setChecked(useInstantX);
-        CoinControlDialog::coinControl->useRamSend = useRamSend;
+        CoinControlDialog::coinControl->useDarkSend = useDarkSend;
         CoinControlDialog::coinControl->useInstantX = useInstantX;
     }
     
-    connect(ui->checkUseRamsend, SIGNAL(stateChanged ( int )), this, SLOT(updateDisplayUnit()));
+    connect(ui->checkUseDarksend, SIGNAL(stateChanged ( int )), this, SLOT(updateDisplayUnit()));
     connect(ui->checkInstantX, SIGNAL(stateChanged ( int )), this, SLOT(updateInstantX()));
 
     // Coin Control: clipboard actions
@@ -246,14 +246,14 @@ void SendCoinsDialog::on_sendButton_clicked()
     QString strFee = "";
     recipients[0].inputType = ONLY_DENOMINATED;
 
-    if(ui->checkUseRamsend->isChecked()) {
+    if(ui->checkUseDarksend->isChecked()) {
         recipients[0].inputType = ONLY_DENOMINATED;
         strFunds = tr("using") + " <b>" + tr("anonymous funds") + "</b>";
         QString strNearestAmount(
             BitcoinUnits::formatWithUnit(
                 model->getOptionsModel()->getDisplayUnit(), 0.1 * COIN));
         strFee = QString(tr(
-            "(ramsend requires this amount to be rounded up to the nearest %1)."
+            "(darksend requires this amount to be rounded up to the nearest %1)."
         ).arg(strNearestAmount));
     } else {
         recipients[0].inputType = ALL_COINS;
@@ -567,8 +567,8 @@ void SendCoinsDialog::setBalance(const CAmount& balance, const CAmount& unconfir
     {
 	    uint64_t bal = 0;
         QSettings settings;
-        settings.setValue("bUseRamSend", ui->checkUseRamsend->isChecked());
-	    if(ui->checkUseRamsend->isChecked()) {
+        settings.setValue("bUseDarkSend", ui->checkUseDarksend->isChecked());
+	    if(ui->checkUseDarksend->isChecked()) {
 		    bal = anonymizedBalance;
 	    } else {
 		    bal = balance;
@@ -585,7 +585,7 @@ void SendCoinsDialog::updateDisplayUnit()
 
     setBalance(model->getBalance(), model->getUnconfirmedBalance(), model->getImmatureBalance(), model->getAnonymizedBalance(),
                    model->getWatchBalance(), model->getWatchUnconfirmedBalance(), model->getWatchImmatureBalance());
-    CoinControlDialog::coinControl->useRamSend = ui->checkUseRamsend->isChecked();
+    CoinControlDialog::coinControl->useDarkSend = ui->checkUseDarksend->isChecked();
     coinControlUpdateLabels();
     ui->customFee->setDisplayUnit(model->getOptionsModel()->getDisplayUnit());
     updateMinFeeLabel();
@@ -898,7 +898,7 @@ void SendCoinsDialog::coinControlUpdateLabels()
             CoinControlDialog::payAmounts.append(entry->getValue().amount);
     }
 
-    ui->checkUseRamsend->setChecked(CoinControlDialog::coinControl->useRamSend);
+    ui->checkUseDarksend->setChecked(CoinControlDialog::coinControl->useDarkSend);
 
     if (CoinControlDialog::coinControl->HasSelected())
     {

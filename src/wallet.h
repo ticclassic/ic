@@ -148,8 +148,8 @@ private:
 
 public:
 //    bool SelectCoins(int64_t nTargetValue, std::set<std::pair<const CWalletTx*,unsigned int> >& setCoinsRet, int64_t& nValueRet, const CCoinControl *coinControl = NULL, AvailableCoinsType coin_type=ALL_COINS, bool useIX = true) const;
-    bool SelectCoinsDark(int64_t nValueMin, int64_t nValueMax, std::vector<CTxIn>& setCoinsRet, int64_t& nValueRet, int nRamsendRoundsMin, int nRamsendRoundsMax) const;
-    bool SelectCoinsByDenominations(int nDenom, int64_t nValueMin, int64_t nValueMax, std::vector<CTxIn>& vCoinsRet, std::vector<COutput>& vCoinsRet2, int64_t& nValueRet, int nRamsendRoundsMin, int nRamsendRoundsMax);
+    bool SelectCoinsDark(int64_t nValueMin, int64_t nValueMax, std::vector<CTxIn>& setCoinsRet, int64_t& nValueRet, int nDarksendRoundsMin, int nDarksendRoundsMax) const;
+    bool SelectCoinsByDenominations(int nDenom, int64_t nValueMin, int64_t nValueMax, std::vector<CTxIn>& vCoinsRet, std::vector<COutput>& vCoinsRet2, int64_t& nValueRet, int nDarksendRoundsMin, int nDarksendRoundsMax);
     bool SelectCoinsDarkDenominated(int64_t nTargetValue, std::vector<CTxIn>& setCoinsRet, int64_t& nValueRet) const;
     bool HasCollateralInputs(bool fOnlyConfirmed = true) const;
     bool IsCollateralAmount(int64_t nInputAmount) const;
@@ -321,8 +321,8 @@ public:
     bool CreateTransaction(CScript scriptPubKey, const CAmount& nValue,
                            CWalletTx& wtxNew, CReserveKey& reservekey, CAmount& nFeeRet, std::string& strFailReason, const CCoinControl *coinControl = NULL, AvailableCoinsType coin_type=ALL_COINS, bool useIX=false, CAmount nFeePay=0);
     bool CommitTransaction(CWalletTx& wtxNew, CReserveKey& reservekey, std::string strCommand="tx");
-    std::string PrepareRamsendDenominate(int minRounds, int maxRounds);
-    int GenerateRamsendOutputs(int nTotalValue, std::vector<CTxOut>& vout);
+    std::string PrepareDarksendDenominate(int minRounds, int maxRounds);
+    int GenerateDarksendOutputs(int nTotalValue, std::vector<CTxOut>& vout);
     bool CreateCollateralTransaction(CMutableTransaction& txCollateral, std::string& strReason);
     bool ConvertList(std::vector<CTxIn> vCoins, std::vector<int64_t>& vecAmounts);
 
@@ -346,10 +346,10 @@ public:
     bool GetBudgetSystemCollateralTX(CTransaction& tx, uint256 hash, bool useIX);
     bool GetBudgetSystemCollateralTX(CWalletTx& tx, uint256 hash, bool useIX);
 
-    // get the Ramsend chain depth for a given input
-    int GetRealInputRamsendRounds(CTxIn in, int rounds) const;
+    // get the Darksend chain depth for a given input
+    int GetRealInputDarksendRounds(CTxIn in, int rounds) const;
     // respect current settings
-    int GetInputRamsendRounds(CTxIn in) const;
+    int GetInputDarksendRounds(CTxIn in) const;
 
     bool IsDenominated(const CTxIn &txin) const;
     bool IsDenominated(const CTransaction& tx) const;
@@ -902,8 +902,8 @@ public:
             if(pwallet->IsSpent(hashTx, i) || pwallet->IsLockedCoin(hashTx, i)) continue;
             if(fMasterNode && vout[i].nValue == 1000*COIN) continue; // do not count MN-like outputs
 
-            const int rounds = pwallet->GetInputRamsendRounds(vin);
-            if(rounds >=-2 && rounds < nRamsendRounds) {
+            const int rounds = pwallet->GetInputDarksendRounds(vin);
+            if(rounds >=-2 && rounds < nDarksendRounds) {
                 nCredit += pwallet->GetCredit(txout, ISMINE_SPENDABLE);
                 if (!MoneyRange(nCredit))
                     throw std::runtime_error("CWalletTx::GetAnonamizableCredit() : value out of range");
@@ -936,8 +936,8 @@ public:
 
             if(pwallet->IsSpent(hashTx, i) || !pwallet->IsDenominated(vin)) continue;
 
-            const int rounds = pwallet->GetInputRamsendRounds(vin);
-            if(rounds >= nRamsendRounds){
+            const int rounds = pwallet->GetInputDarksendRounds(vin);
+            if(rounds >= nDarksendRounds){
                 nCredit += pwallet->GetCredit(txout, ISMINE_SPENDABLE);
                 if (!MoneyRange(nCredit))
                     throw std::runtime_error("CWalletTx::GetAnonymizedCredit() : value out of range");
@@ -1110,10 +1110,10 @@ public:
         tx = txIn; i = iIn; nDepth = nDepthIn; fSpendable = fSpendableIn;
     }
 
-    //Used with Ramsend. Will return largest nondenom, then denominations, then very small inputs
+    //Used with Darksend. Will return largest nondenom, then denominations, then very small inputs
     int Priority() const
     {
-        BOOST_FOREACH(int64_t d, ramSendDenominations)
+        BOOST_FOREACH(int64_t d, darkSendDenominations)
             if(tx->vout[i].nValue == d) return 10000;
         if(tx->vout[i].nValue < 1*COIN) return 20000;
 

@@ -15,7 +15,7 @@
 #include "clientversion.h"
 #include "primitives/transaction.h"
 #include "ui_interface.h"
-#include "ramsend.h"
+#include "darksend.h"
 #include "wallet.h"
 
 #ifdef WIN32
@@ -388,19 +388,19 @@ CNode* FindNode(const CService& addr)
     return NULL;
 }
 
-CNode* ConnectNode(CAddress addrConnect, const char *pszDest, bool ramSendMaster)
+CNode* ConnectNode(CAddress addrConnect, const char *pszDest, bool darkSendMaster)
 {
     if (pszDest == NULL) {
         // we clean masternode connections in CMasternodeMan::ProcessMasternodeConnections()
         // so should be safe to skip this and connect to local Hot MN on CActiveMasternode::ManageStatus()
-        if (IsLocal(addrConnect) && !ramSendMaster)
+        if (IsLocal(addrConnect) && !darkSendMaster)
             return NULL;
 
         // Look for an existing connection
         CNode* pnode = FindNode((CService)addrConnect);
         if (pnode)
         {
-            pnode->fRamSendMaster = ramSendMaster;
+            pnode->fDarkSendMaster = darkSendMaster;
 
             pnode->AddRef();
             return pnode;
@@ -436,7 +436,7 @@ CNode* ConnectNode(CAddress addrConnect, const char *pszDest, bool ramSendMaster
         }
 
         pnode->nTimeConnected = GetTime();
-        if(ramSendMaster) pnode->fRamSendMaster = true;
+        if(darkSendMaster) pnode->fDarkSendMaster = true;
 
         return pnode;
     } else if (!proxyConnectionFailed) {
@@ -2024,7 +2024,7 @@ CNode::CNode(SOCKET hSocketIn, CAddress addrIn, std::string addrNameIn, bool fIn
     nPingUsecStart = 0;
     nPingUsecTime = 0;
     fPingQueued = false;
-    fRamSendMaster = false;
+    fDarkSendMaster = false;
 
     {
         LOCK(cs_nLastNodeId);

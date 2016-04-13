@@ -642,7 +642,7 @@
     </message>
 </context>
 <context>
-    <name>RamsendConfig</name>
+    <name>DarksendConfig</name>
     </context>
 <context>
     <name>EditAddressDialog</name>

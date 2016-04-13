@@ -741,8 +741,8 @@ Osoite: %4
         <translation>Kopioi vaihtoraha</translation>
     </message>
     <message>
-        <source>Non-anonymized input selected. &lt;b&gt;Ramsend will be disabled.&lt;/b&gt;&lt;br&gt;&lt;br&gt;If you still want to use Ramsend, please deselect all non-nonymized inputs first and then check Ramsend checkbox again.</source>
-        <translation>Ei anonyymeja syötteitä valittu. &lt;b&gt;Ramsend poistetaan käytöstä.&lt;/b&gt;&lt;br&gt;&lt;br&gt;Jos silti haluat käyttää Ramsend:iä, poista ei anonyymit valinnat ensin ja valitse uudelleen Ramsend optio.</translation>
+        <source>Non-anonymized input selected. &lt;b&gt;Darksend will be disabled.&lt;/b&gt;&lt;br&gt;&lt;br&gt;If you still want to use Darksend, please deselect all non-nonymized inputs first and then check Darksend checkbox again.</source>
+        <translation>Ei anonyymeja syötteitä valittu. &lt;b&gt;Darksend poistetaan käytöstä.&lt;/b&gt;&lt;br&gt;&lt;br&gt;Jos silti haluat käyttää Darksend:iä, poista ei anonyymit valinnat ensin ja valitse uudelleen Darksend optio.</translation>
     </message>
     <message>
         <source>highest</source>
@@ -842,10 +842,10 @@ Osoite: %4
     </message>
 </context>
 <context>
-    <name>RamsendConfig</name>
+    <name>DarksendConfig</name>
     <message>
-        <source>Configure Ramsend</source>
-        <translation>Ramsend Asetukset</translation>
+        <source>Configure Darksend</source>
+        <translation>Darksend Asetukset</translation>
     </message>
     <message>
         <source>Basic Privacy</source>
@@ -892,20 +892,20 @@ Osoite: %4
         <translation>Tämä vaihtoehto on hitain ja kaikkein anonyymi. Suurimman yksityisyyden käyttö maksaa</translation>
     </message>
     <message>
-        <source>Ramsend Configuration</source>
-        <translation>Ramsend Asetukset</translation>
+        <source>Darksend Configuration</source>
+        <translation>Darksend Asetukset</translation>
     </message>
     <message>
-        <source>Ramsend was successfully set to basic (%1 and 2 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
-        <translation>Ramsend on asetettu perusasetuksiin (%1 and 2 kierrosta). Voit muuttaa asetuksia milloin vain Braincoin asetuksista.</translation>
+        <source>Darksend was successfully set to basic (%1 and 2 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
+        <translation>Darksend on asetettu perusasetuksiin (%1 and 2 kierrosta). Voit muuttaa asetuksia milloin vain Braincoin asetuksista.</translation>
     </message>
     <message>
-        <source>Ramsend was successfully set to high (%1 and 8 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
-        <translation>Ramsend on asetettu keskitason asetuksiin (%1 and 8 kierrosta). Voit muuttaa asetuksia milloin vain Braincoin asetuksista.</translation>
+        <source>Darksend was successfully set to high (%1 and 8 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
+        <translation>Darksend on asetettu keskitason asetuksiin (%1 and 8 kierrosta). Voit muuttaa asetuksia milloin vain Braincoin asetuksista.</translation>
     </message>
     <message>
-        <source>Ramsend was successfully set to maximum (%1 and 16 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
-        <translation>Ramsend on asetettu maksimitason asetuksiin (%1 and 16 kierrosta). Voit muuttaa asetuksia milloin vain Braincoin asetuksista.</translation>
+        <source>Darksend was successfully set to maximum (%1 and 16 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
+        <translation>Darksend on asetettu maksimitason asetuksiin (%1 and 16 kierrosta). Voit muuttaa asetuksia milloin vain Braincoin asetuksista.</translation>
     </message>
 </context>
 <context>
@@ -1147,12 +1147,12 @@ Varoitus: Jos käytät käyttöjärjestelmää (Live os) suoraan usb, dvd tai cd
         <translation>(0 = auto, &lt;0 = jätä näin monta prosessorin ydintä vapaaksi)</translation>
     </message>
     <message>
-        <source>Ramsend rounds to use</source>
-        <translation>Kuinka montaa Ramsend kierrosta käytetään</translation>
+        <source>Darksend rounds to use</source>
+        <translation>Kuinka montaa Darksend kierrosta käytetään</translation>
     </message>
     <message>
-        <source>This amount acts as a threshold to turn off Ramsend once it's reached.</source>
-        <translation>Tämä määrä toimii rajana keskeytykselle kun Ramsend anonymisointi sen saavuttaa.</translation>
+        <source>This amount acts as a threshold to turn off Darksend once it's reached.</source>
+        <translation>Tämä määrä toimii rajana keskeytykselle kun Darksend anonymisointi sen saavuttaa.</translation>
     </message>
     <message>
         <source>Amount of Braincoin to keep anonymized</source>
@@ -1424,8 +1424,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Valmiina:</translation>
     </message>
     <message>
-        <source>Ramsend Balance:</source>
-        <translation>Ramsend Saldo:</translation>
+        <source>Darksend Balance:</source>
+        <translation>Darksend Saldo:</translation>
     </message>
     <message>
         <source>Amount and Rounds:</source>
@@ -1444,8 +1444,8 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>e/s</translation>
     </message>
     <message>
-        <source>Ramsend</source>
-        <translation>Ramsend</translation>
+        <source>Darksend</source>
+        <translation>Darksend</translation>
     </message>
     <message>
         <source>Recent transactions</source>
@@ -1464,16 +1464,16 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>(Viimeisin Viesti)</translation>
     </message>
     <message>
-        <source>Try to manually submit a Ramsend request.</source>
-        <translation>Yritä manuaalisesti esittää Ramsend sekoituspyyntö.</translation>
+        <source>Try to manually submit a Darksend request.</source>
+        <translation>Yritä manuaalisesti esittää Darksend sekoituspyyntö.</translation>
     </message>
     <message>
         <source>Try Mix</source>
         <translation>Yritä Sekoittaa</translation>
     </message>
     <message>
-        <source>Reset the current status of Ramsend (can interrupt Ramsend if it's in the process of Mixing, which can cost you money!)</source>
-        <translation>Nollaa nykyinen Ramsend tila (voi keskeyttää Ramsend sekoituksen, joka voi maksaa ylimääräisiä kuluja)</translation>
+        <source>Reset the current status of Darksend (can interrupt Darksend if it's in the process of Mixing, which can cost you money!)</source>
+        <translation>Nollaa nykyinen Darksend tila (voi keskeyttää Darksend sekoituksen, joka voi maksaa ylimääräisiä kuluja)</translation>
     </message>
     <message>
         <source>Reset</source>
@@ -1488,12 +1488,12 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Ei käytössä</translation>
     </message>
     <message>
-        <source>Start Ramsend Mixing</source>
-        <translation>Käynnistä Ramsend Sekoitus</translation>
+        <source>Start Darksend Mixing</source>
+        <translation>Käynnistä Darksend Sekoitus</translation>
     </message>
     <message>
-        <source>Stop Ramsend Mixing</source>
-        <translation>Lopeta Ramsend Sekoitus</translation>
+        <source>Stop Darksend Mixing</source>
+        <translation>Lopeta Darksend Sekoitus</translation>
     </message>
     <message>
         <source>No inputs detected</source>
@@ -1536,9 +1536,9 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>Käytössä</translation>
     </message>
     <message>
-        <source>Last Ramsend message:
+        <source>Last Darksend message:
 </source>
-        <translation>Viimeisin Ramsend viesti:
+        <translation>Viimeisin Darksend viesti:
 </translation>
     </message>
     <message>
@@ -1546,20 +1546,20 @@ https://www.transifex.com/projects/p/braincoin/</translation>
         <translation>e/s</translation>
     </message>
     <message>
-        <source>Ramsend was successfully reset.</source>
-        <translation>Ramsend nollattu onnistuneesti.</translation>
+        <source>Darksend was successfully reset.</source>
+        <translation>Darksend nollattu onnistuneesti.</translation>
     </message>
     <message>
-        <source>If you don't want to see internal Ramsend fees/transactions select "Most Common" as Type on the "Transactions" tab.</source>
-        <translation>Jos et halua nähdä sisäisiä Ramsend sekoituksen kuluja/tapahtumia, valitse "Yleiset" tyypiksi siirtotapahtumissa.</translation>
+        <source>If you don't want to see internal Darksend fees/transactions select "Most Common" as Type on the "Transactions" tab.</source>
+        <translation>Jos et halua nähdä sisäisiä Darksend sekoituksen kuluja/tapahtumia, valitse "Yleiset" tyypiksi siirtotapahtumissa.</translation>
     </message>
     <message>
-        <source>Ramsend requires at least %1 to use.</source>
-        <translation>Ramsendin käyttö vaatii vähintään %1.</translation>
+        <source>Darksend requires at least %1 to use.</source>
+        <translation>Darksendin käyttö vaatii vähintään %1.</translation>
     </message>
     <message>
-        <source>Wallet is locked and user declined to unlock. Disabling Ramsend.</source>
-        <translation>Lompakko on lukittu ja käyttäjä ei avannut sitä. Ramsend asetetaan pois käytöstä.</translation>
+        <source>Wallet is locked and user declined to unlock. Disabling Darksend.</source>
+        <translation>Lompakko on lukittu ja käyttäjä ei avannut sitä. Darksend asetetaan pois käytöstä.</translation>
     </message>
 </context>
 <context>
@@ -2369,8 +2369,8 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
         <translation>Lisää &amp;Vastaanottaja</translation>
     </message>
     <message>
-        <source>Ramsend</source>
-        <translation>Ramsend</translation>
+        <source>Darksend</source>
+        <translation>Darksend</translation>
     </message>
     <message>
         <source>InstantX</source>
@@ -2421,8 +2421,8 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
         <translation>anonymisoituja varoja</translation>
     </message>
     <message>
-        <source>(ramsend requires this amount to be rounded up to the nearest %1).</source>
-        <translation>(ramsend pyöristää tämän lähimpään %1).</translation>
+        <source>(darksend requires this amount to be rounded up to the nearest %1).</source>
+        <translation>(darksend pyöristää tämän lähimpään %1).</translation>
     </message>
     <message>
         <source>any available funds (not recommended)</source>
@@ -3025,8 +3025,8 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
         <translation>Vastaanotettu osoitteesta</translation>
     </message>
     <message>
-        <source>Received via Ramsend</source>
-        <translation>Ramsend vastaanotettu</translation>
+        <source>Received via Darksend</source>
+        <translation>Darksend vastaanotettu</translation>
     </message>
     <message>
         <source>Sent to</source>
@@ -3041,24 +3041,24 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
         <translation>Louhittu</translation>
     </message>
     <message>
-        <source>Ramsend Denominate</source>
-        <translation>Ramsend denominointi</translation>
+        <source>Darksend Denominate</source>
+        <translation>Darksend denominointi</translation>
     </message>
     <message>
-        <source>Ramsend Collateral Payment</source>
-        <translation>Ramsend vakuus maksu</translation>
+        <source>Darksend Collateral Payment</source>
+        <translation>Darksend vakuus maksu</translation>
     </message>
     <message>
-        <source>Ramsend Make Collateral Inputs</source>
-        <translation>Ramsend luo vakuus syötteet</translation>
+        <source>Darksend Make Collateral Inputs</source>
+        <translation>Darksend luo vakuus syötteet</translation>
     </message>
     <message>
-        <source>Ramsend Create Denominations</source>
-        <translation>Ramsend denominointien luonti</translation>
+        <source>Darksend Create Denominations</source>
+        <translation>Darksend denominointien luonti</translation>
     </message>
     <message>
         <source>Darksent</source>
-        <translation>Ramsend lähetetty</translation>
+        <translation>Darksend lähetetty</translation>
     </message>
     <message>
         <source>watch-only</source>
@@ -3137,23 +3137,23 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
     </message>
     <message>
         <source>Darksent</source>
-        <translation>Ramsend lähetetty</translation>
+        <translation>Darksend lähetetty</translation>
     </message>
     <message>
-        <source>Ramsend Make Collateral Inputs</source>
-        <translation>Ramsend luo vakuus syötteet</translation>
+        <source>Darksend Make Collateral Inputs</source>
+        <translation>Darksend luo vakuus syötteet</translation>
     </message>
     <message>
-        <source>Ramsend Create Denominations</source>
-        <translation>Ramsend denominointien luonti</translation>
+        <source>Darksend Create Denominations</source>
+        <translation>Darksend denominointien luonti</translation>
     </message>
     <message>
-        <source>Ramsend Denominate</source>
-        <translation>Ramsend denominointi</translation>
+        <source>Darksend Denominate</source>
+        <translation>Darksend denominointi</translation>
     </message>
     <message>
-        <source>Ramsend Collateral Payment</source>
-        <translation>Ramsend vakuus maksu</translation>
+        <source>Darksend Collateral Payment</source>
+        <translation>Darksend vakuus maksu</translation>
     </message>
     <message>
         <source>To yourself</source>
@@ -3335,8 +3335,8 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
         <translation>Ei voida lukita data hakemistoa %s. Braincoin Core on luultavasti jo käynnissä.</translation>
     </message>
     <message>
-        <source>Ramsend uses exact denominated amounts to send funds, you might simply need to anonymize some more coins.</source>
-        <translation>Ramsend käyttää tarkalleen denominoituja syötteitä lähettäessään varoja, saatat tarvita anonymisoida lisää varoja.</translation>
+        <source>Darksend uses exact denominated amounts to send funds, you might simply need to anonymize some more coins.</source>
+        <translation>Darksend käyttää tarkalleen denominoituja syötteitä lähettäessään varoja, saatat tarvita anonymisoida lisää varoja.</translation>
     </message>
     <message>
         <source>Enter regression test mode, which uses a special chain in which blocks can be solved instantly.</source>
@@ -3391,12 +3391,12 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
         <translation>Ei voida yhdistää %s tässä tietokoneessa. Braincoin Core on luultavasti jo käynnissä.</translation>
     </message>
     <message>
-        <source>Unable to locate enough Ramsend denominated funds for this transaction.</source>
-        <translation>Ei tarpeeksi Ramsend anonymisoituja varoja tälle siirtotapahtumalle.</translation>
+        <source>Unable to locate enough Darksend denominated funds for this transaction.</source>
+        <translation>Ei tarpeeksi Darksend anonymisoituja varoja tälle siirtotapahtumalle.</translation>
     </message>
     <message>
-        <source>Unable to locate enough Ramsend non-denominated funds for this transaction that are not equal 1000 BRAINCOIN.</source>
-        <translation>Ei tarpeeksi Ramsend ei-anonymisoituja varoja tälle siirtotapahtumalle, joka ei ole 1000 BRAINCOIN.</translation>
+        <source>Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 1000 BRAINCOIN.</source>
+        <translation>Ei tarpeeksi Darksend ei-anonymisoituja varoja tälle siirtotapahtumalle, joka ei ole 1000 BRAINCOIN.</translation>
     </message>
     <message>
         <source>Warning: -paytxfee is set very high! This is the transaction fee you will pay if you send a transaction.</source>
@@ -3495,8 +3495,8 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
         <translation>Vioittunut lohkotietokanta havaittu</translation>
     </message>
     <message>
-        <source>Ramsend options:</source>
-        <translation>Ramsend valinnat:</translation>
+        <source>Darksend options:</source>
+        <translation>Darksend valinnat:</translation>
     </message>
     <message>
         <source>Debugging/Testing options:</source>
@@ -3567,8 +3567,8 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
         <translation>Virhe: Lompakko on lukittu, siirtotapahtumaa ei voida luoda!</translation>
     </message>
     <message>
-        <source>Error: You already have pending entries in the Ramsend pool</source>
-        <translation>Virhe: Sinulla on jo odottavia merkintöjä Ramsend varannossa</translation>
+        <source>Error: You already have pending entries in the Darksend pool</source>
+        <translation>Virhe: Sinulla on jo odottavia merkintöjä Darksend varannossa</translation>
     </message>
     <message>
         <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
@@ -3619,8 +3619,8 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
         <translation>Poista kaikki lompakon siirtotapahtumat ja palauta vain nuo osat lohkoketjusta -rescan valinnan avulla käynnistyksessä</translation>
     </message>
     <message>
-        <source>Disable all Braincoin specific functionality (Masternodes, Ramsend, InstantX, Budgeting) (0-1, default: %u)</source>
-        <translation>Kytke pois käytöstä kaikki Braincoin:in erityistoiminnot (Masternodet, Ramsend, InstantX, Budjetointi) (0-1, oletus: %u)</translation>
+        <source>Disable all Braincoin specific functionality (Masternodes, Darksend, InstantX, Budgeting) (0-1, default: %u)</source>
+        <translation>Kytke pois käytöstä kaikki Braincoin:in erityistoiminnot (Masternodet, Darksend, InstantX, Budjetointi) (0-1, oletus: %u)</translation>
     </message>
     <message>
         <source>Distributed under the MIT software license, see the accompanying file COPYING or &lt;http://www.opensource.org/licenses/mit-license.php&gt;.</source>
@@ -3631,8 +3631,8 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
         <translation>Ota instantx käyttöön, näytä lukittujen siirtojen vahvistukset (bool, oletus: %s)</translation>
     </message>
     <message>
-        <source>Enable use of automated ramsend for funds stored in this wallet (0-1, default: %u)</source>
-        <translation>Ota käyttöön automaattinen Ramsend rahavaroille tässä lompakossa  (0-1, oletus: %u)</translation>
+        <source>Enable use of automated darksend for funds stored in this wallet (0-1, default: %u)</source>
+        <translation>Ota käyttöön automaattinen Darksend rahavaroille tässä lompakossa  (0-1, oletus: %u)</translation>
     </message>
     <message>
         <source>Error: Unsupported argument -socks found. Setting SOCKS version isn't possible anymore, only SOCKS5 proxies are supported.</source>
@@ -3691,8 +3691,8 @@ Näillä toiminnoilla voit korjata korruptoituneen lohkoketjun tai puuttuvat/van
         <translation>Tulosta debuggaustieto (oletus: %u, tarjottava &lt;category&gt; on valinnainen)</translation>
     </message>
     <message>
-        <source>Provide liquidity to Ramsend by infrequently mixing coins on a continual basis (0-100, default: %u, 1=very frequent, high fees, 100=very infrequent, low fees)</source>
-        <translation>Tarjoa Ramsend:ille likviditeettiä jatkuvaa kolikoiden sekoitusta varten (0-100, oletus: %u, 1=usein, isot maksukulut, 100=harvoin, pienet maksukulut)</translation>
+        <source>Provide liquidity to Darksend by infrequently mixing coins on a continual basis (0-100, default: %u, 1=very frequent, high fees, 100=very infrequent, low fees)</source>
+        <translation>Tarjoa Darksend:ille likviditeettiä jatkuvaa kolikoiden sekoitusta varten (0-100, oletus: %u, 1=usein, isot maksukulut, 100=harvoin, pienet maksukulut)</translation>
     </message>
     <message>
         <source>Require high priority for relaying free or low-fee transactions (default:%u)</source>
@@ -3815,16 +3815,16 @@ esimerkiksi: alertnotify=echo %%s | mail -s "Braincoin Hälytys" admin@foo.com
         <translation>Ei voida jäsentää -rpcbind arvoa %s verkko-osoitteena</translation>
     </message>
     <message>
-        <source>Ramsend is idle.</source>
-        <translation>Ramsend odottaa.</translation>
+        <source>Darksend is idle.</source>
+        <translation>Darksend odottaa.</translation>
     </message>
     <message>
-        <source>Ramsend request complete:</source>
-        <translation>Ramsend pyyntö valmis:</translation>
+        <source>Darksend request complete:</source>
+        <translation>Darksend pyyntö valmis:</translation>
     </message>
     <message>
-        <source>Ramsend request incomplete:</source>
-        <translation>Ramsend pyyntö kesken:</translation>
+        <source>Darksend request incomplete:</source>
+        <translation>Darksend pyyntö kesken:</translation>
     </message>
     <message>
         <source>Disable safemode, override a real safe mode event (default: %u)</source>
@@ -3955,8 +3955,8 @@ esimerkiksi: alertnotify=echo %%s | mail -s "Braincoin Hälytys" admin@foo.com
         <translation>Virheellinen määrä -paytxfee=&lt;amount&gt;: '%s'</translation>
     </message>
     <message>
-        <source>Last successful Ramsend action was too recent.</source>
-        <translation>Viimeinen onnistunut Ramsend tapahtuma oli liian äskettäin.</translation>
+        <source>Last successful Darksend action was too recent.</source>
+        <translation>Viimeinen onnistunut Darksend tapahtuma oli liian äskettäin.</translation>
     </message>
     <message>
         <source>Limit size of signature cache to &lt;n&gt; entries (default: %u)</source>
@@ -4231,8 +4231,8 @@ esimerkiksi: alertnotify=echo %%s | mail -s "Braincoin Hälytys" admin@foo.com
         <translation>Pidä enintään &lt;n&gt; ei yhdistettyä siirtotapahtumaa muistissa (oletus: %u)</translation>
     </message>
     <message>
-        <source>Last Ramsend was too recent.</source>
-        <translation>Viimeisin Ramsend oli liian äskettäin.</translation>
+        <source>Last Darksend was too recent.</source>
+        <translation>Viimeisin Darksend oli liian äskettäin.</translation>
     </message>
     <message>
         <source>Line: %d</source>
@@ -4483,8 +4483,8 @@ esimerkiksi: alertnotify=echo %%s | mail -s "Braincoin Hälytys" admin@foo.com
         <translation>Käyttäjätunnus JSON-RPC yhteyksille</translation>
     </message>
     <message>
-        <source>Value more than Ramsend pool maximum allows.</source>
-        <translation>Määrä on enemmän kuin Ramsend varannon maksimi sallii.</translation>
+        <source>Value more than Darksend pool maximum allows.</source>
+        <translation>Määrä on enemmän kuin Darksend varannon maksimi sallii.</translation>
     </message>
     <message>
         <source>Verifying blocks...</source>

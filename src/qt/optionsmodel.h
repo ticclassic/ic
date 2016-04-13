@@ -43,8 +43,8 @@ public:
         ThreadsScriptVerif,     // int
         DatabaseCache,          // int
         SpendZeroConfChange,    // bool
-        RamsendRounds,    // int
-        AnonymizeBraincoinAmount, //int
+        DarksendRounds,    // int
+        AnonymizeDarkcoinAmount, //int
         Listen,                 // bool
         OptionIDRowCount,
     };
@@ -88,8 +88,8 @@ private:
 
 signals:
     void displayUnitChanged(int unit);
-    void ramsendRoundsChanged(int);
-    void anonymizeBraincoinAmountChanged(int);
+    void darksendRoundsChanged(int);
+    void anonymizeDarkcoinAmountChanged(int);
     void coinControlFeaturesChanged(bool);
 };
 

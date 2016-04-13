@@ -8,8 +8,8 @@
 
 #include "bitcoinunits.h"
 #include "clientmodel.h"
-#include "ramsend.h"
-#include "ramsendconfig.h"
+#include "darksend.h"
+#include "darksendconfig.h"
 #include "guiconstants.h"
 #include "guiutil.h"
 #include "optionsmodel.h"
@@ -138,25 +138,25 @@ OverviewPage::OverviewPage(QWidget *parent) :
 
     // init "out of sync" warning labels
     ui->labelWalletStatus->setText("(" + tr("out of sync") + ")");
-    ui->labelRamsendSyncStatus->setText("(" + tr("out of sync") + ")");
+    ui->labelDarksendSyncStatus->setText("(" + tr("out of sync") + ")");
     ui->labelTransactionsStatus->setText("(" + tr("out of sync") + ")");
 
     if(fLiteMode){
-        ui->frameRamsend->setVisible(false);
+        ui->frameDarksend->setVisible(false);
     } else {
         if(fMasterNode){
-            ui->toggleRamsend->setText("(" + tr("Disabled") + ")");
-            ui->ramsendAuto->setText("(" + tr("Disabled") + ")");
-            ui->ramsendReset->setText("(" + tr("Disabled") + ")");
-            ui->frameRamsend->setEnabled(false);
+            ui->toggleDarksend->setText("(" + tr("Disabled") + ")");
+            ui->darksendAuto->setText("(" + tr("Disabled") + ")");
+            ui->darksendReset->setText("(" + tr("Disabled") + ")");
+            ui->frameDarksend->setEnabled(false);
         } else {
-            if(!fEnableRamsend){
-                ui->toggleRamsend->setText(tr("Start Ramsend Mixing"));
+            if(!fEnableDarksend){
+                ui->toggleDarksend->setText(tr("Start Darksend Mixing"));
             } else {
-                ui->toggleRamsend->setText(tr("Stop Ramsend Mixing"));
+                ui->toggleDarksend->setText(tr("Stop Darksend Mixing"));
             }
             timer = new QTimer(this);
-            connect(timer, SIGNAL(timeout()), this, SLOT(ramSendStatus()));
+            connect(timer, SIGNAL(timeout()), this, SLOT(darkSendStatus()));
             timer->start(1000);
         }
     }
@@ -173,7 +173,7 @@ void OverviewPage::handleTransactionClicked(const QModelIndex &index)
 
 OverviewPage::~OverviewPage()
 {
-    if(!fLiteMode && !fMasterNode) disconnect(timer, SIGNAL(timeout()), this, SLOT(ramSendStatus()));
+    if(!fLiteMode && !fMasterNode) disconnect(timer, SIGNAL(timeout()), this, SLOT(darkSendStatus()));
     delete ui;
 }
 
@@ -206,7 +206,7 @@ void OverviewPage::setBalance(const CAmount& balance, const CAmount& unconfirmed
     ui->labelImmatureText->setVisible(showImmature || showWatchOnlyImmature);
     ui->labelWatchImmature->setVisible(showWatchOnlyImmature); // show watch-only immature balance
 
-    updateRamsendProgress();
+    updateDarksendProgress();
 
     static int cachedTxLocks = 0;
 
@@ -272,9 +272,9 @@ void OverviewPage::setWalletModel(WalletModel *model)
 
         connect(model->getOptionsModel(), SIGNAL(displayUnitChanged(int)), this, SLOT(updateDisplayUnit()));
 
-        connect(ui->ramsendAuto, SIGNAL(clicked()), this, SLOT(ramsendAuto()));
-        connect(ui->ramsendReset, SIGNAL(clicked()), this, SLOT(ramsendReset()));
-        connect(ui->toggleRamsend, SIGNAL(clicked()), this, SLOT(toggleRamsend()));
+        connect(ui->darksendAuto, SIGNAL(clicked()), this, SLOT(darksendAuto()));
+        connect(ui->darksendReset, SIGNAL(clicked()), this, SLOT(darksendReset()));
+        connect(ui->toggleDarksend, SIGNAL(clicked()), this, SLOT(toggleDarksend()));
         updateWatchOnlyLabels(model->haveWatchOnly());
         connect(model, SIGNAL(notifyWatchonlyChanged(bool)), this, SLOT(updateWatchOnlyLabels(bool)));
     }
@@ -308,27 +308,27 @@ void OverviewPage::updateAlerts(const QString &warnings)
 void OverviewPage::showOutOfSyncWarning(bool fShow)
 {
     ui->labelWalletStatus->setVisible(fShow);
-    ui->labelRamsendSyncStatus->setVisible(fShow);
+    ui->labelDarksendSyncStatus->setVisible(fShow);
     ui->labelTransactionsStatus->setVisible(fShow);
 }
 
-void OverviewPage::updateRamsendProgress()
+void OverviewPage::updateDarksendProgress()
 {
     if(!masternodeSync.IsBlockchainSynced() || ShutdownRequested()) return;
 
     if(!pwalletMain) return;
 
     QString strAmountAndRounds;
-    QString strAnonymizeBraincoinAmount = BitcoinUnits::formatHtmlWithUnit(nDisplayUnit, nAnonymizeBraincoinAmount * COIN, false, BitcoinUnits::separatorAlways);
+    QString strAnonymizeDarkcoinAmount = BitcoinUnits::formatHtmlWithUnit(nDisplayUnit, nAnonymizeDarkcoinAmount * COIN, false, BitcoinUnits::separatorAlways);
 
     if(currentBalance == 0)
     {
-        ui->ramsendProgress->setValue(0);
-        ui->ramsendProgress->setToolTip(tr("No inputs detected"));
+        ui->darksendProgress->setValue(0);
+        ui->darksendProgress->setToolTip(tr("No inputs detected"));
 
         // when balance is zero just show info from settings
-        strAnonymizeBraincoinAmount = strAnonymizeBraincoinAmount.remove(strAnonymizeBraincoinAmount.indexOf("."), BitcoinUnits::decimals(nDisplayUnit) + 1);
-        strAmountAndRounds = strAnonymizeBraincoinAmount + " / " + tr("%n Rounds", "", nRamsendRounds);
+        strAnonymizeDarkcoinAmount = strAnonymizeDarkcoinAmount.remove(strAnonymizeDarkcoinAmount.indexOf("."), BitcoinUnits::decimals(nDisplayUnit) + 1);
+        strAmountAndRounds = strAnonymizeDarkcoinAmount + " / " + tr("%n Rounds", "", nDarksendRounds);
 
         ui->labelAmountRounds->setToolTip(tr("No inputs detected"));
         ui->labelAmountRounds->setText(strAmountAndRounds);
@@ -355,25 +355,25 @@ void OverviewPage::updateRamsendProgress()
     CAmount nMaxToAnonymize = nAnonymizableBalance + currentAnonymizedBalance + nDenominatedUnconfirmedBalance;
 
     // If it's more than the anon threshold, limit to that.
-    if(nMaxToAnonymize > nAnonymizeBraincoinAmount*COIN) nMaxToAnonymize = nAnonymizeBraincoinAmount*COIN;
+    if(nMaxToAnonymize > nAnonymizeDarkcoinAmount*COIN) nMaxToAnonymize = nAnonymizeDarkcoinAmount*COIN;
 
     if(nMaxToAnonymize == 0) return;
 
-    if(nMaxToAnonymize >= nAnonymizeBraincoinAmount * COIN) {
+    if(nMaxToAnonymize >= nAnonymizeDarkcoinAmount * COIN) {
         ui->labelAmountRounds->setToolTip(tr("Found enough compatible inputs to anonymize %1")
-                                          .arg(strAnonymizeBraincoinAmount));
-        strAnonymizeBraincoinAmount = strAnonymizeBraincoinAmount.remove(strAnonymizeBraincoinAmount.indexOf("."), BitcoinUnits::decimals(nDisplayUnit) + 1);
-        strAmountAndRounds = strAnonymizeBraincoinAmount + " / " + tr("%n Rounds", "", nRamsendRounds);
+                                          .arg(strAnonymizeDarkcoinAmount));
+        strAnonymizeDarkcoinAmount = strAnonymizeDarkcoinAmount.remove(strAnonymizeDarkcoinAmount.indexOf("."), BitcoinUnits::decimals(nDisplayUnit) + 1);
+        strAmountAndRounds = strAnonymizeDarkcoinAmount + " / " + tr("%n Rounds", "", nDarksendRounds);
     } else {
         QString strMaxToAnonymize = BitcoinUnits::formatHtmlWithUnit(nDisplayUnit, nMaxToAnonymize, false, BitcoinUnits::separatorAlways);
         ui->labelAmountRounds->setToolTip(tr("Not enough compatible inputs to anonymize <span style='color:red;'>%1</span>,<br>"
                                              "will anonymize <span style='color:red;'>%2</span> instead")
-                                          .arg(strAnonymizeBraincoinAmount)
+                                          .arg(strAnonymizeDarkcoinAmount)
                                           .arg(strMaxToAnonymize));
         strMaxToAnonymize = strMaxToAnonymize.remove(strMaxToAnonymize.indexOf("."), BitcoinUnits::decimals(nDisplayUnit) + 1);
         strAmountAndRounds = "<span style='color:red;'>" +
                 QString(BitcoinUnits::factor(nDisplayUnit) == 1 ? "" : "~") + strMaxToAnonymize +
-                " / " + tr("%n Rounds", "", nRamsendRounds) + "</span>";
+                " / " + tr("%n Rounds", "", nDarksendRounds) + "</span>";
     }
     ui->labelAmountRounds->setText(strAmountAndRounds);
 
@@ -400,7 +400,7 @@ void OverviewPage::updateRamsendProgress()
 
     // apply some weights to them ...
     float denomWeight = 1;
-    float anonNormWeight = nRamsendRounds;
+    float anonNormWeight = nDarksendRounds;
     float anonFullWeight = 2;
     float fullWeight = denomWeight + anonNormWeight + anonFullWeight;
     // ... and calculate the whole progress
@@ -410,102 +410,102 @@ void OverviewPage::updateRamsendProgress()
     float progress = denomPartCalc + anonNormPartCalc + anonFullPartCalc;
     if(progress >= 100) progress = 100;
 
-    ui->ramsendProgress->setValue(progress);
+    ui->darksendProgress->setValue(progress);
 
     QString strToolPip = ("<b>" + tr("Overall progress") + ": %1%</b><br/>" +
                           tr("Denominated") + ": %2%<br/>" +
                           tr("Mixed") + ": %3%<br/>" +
                           tr("Anonymized") + ": %4%<br/>" +
-                          tr("Denominated inputs have %5 of %n rounds on average", "", nRamsendRounds))
+                          tr("Denominated inputs have %5 of %n rounds on average", "", nDarksendRounds))
             .arg(progress).arg(denomPart).arg(anonNormPart).arg(anonFullPart)
             .arg(nAverageAnonymizedRounds);
-    ui->ramsendProgress->setToolTip(strToolPip);
+    ui->darksendProgress->setToolTip(strToolPip);
 }
 
 
-void OverviewPage::ramSendStatus()
+void OverviewPage::darkSendStatus()
 {
     static int64_t nLastDSProgressBlockTime = 0;
 
     int nBestHeight = chainActive.Tip()->nHeight;
 
     // we we're processing more then 1 block per second, we'll just leave
-    if(((nBestHeight - ramSendPool.cachedNumBlocks) / (GetTimeMillis() - nLastDSProgressBlockTime + 1) > 1)) return;
+    if(((nBestHeight - darkSendPool.cachedNumBlocks) / (GetTimeMillis() - nLastDSProgressBlockTime + 1) > 1)) return;
     nLastDSProgressBlockTime = GetTimeMillis();
 
-    if(!fEnableRamsend) {
-        if(nBestHeight != ramSendPool.cachedNumBlocks)
+    if(!fEnableDarksend) {
+        if(nBestHeight != darkSendPool.cachedNumBlocks)
         {
-            ramSendPool.cachedNumBlocks = nBestHeight;
-            updateRamsendProgress();
+            darkSendPool.cachedNumBlocks = nBestHeight;
+            updateDarksendProgress();
 
-            ui->ramsendEnabled->setText(tr("Disabled"));
-            ui->ramsendStatus->setText("");
-            ui->toggleRamsend->setText(tr("Start Ramsend Mixing"));
+            ui->darksendEnabled->setText(tr("Disabled"));
+            ui->darksendStatus->setText("");
+            ui->toggleDarksend->setText(tr("Start Darksend Mixing"));
         }
 
         return;
     }
 
-    // check ramsend status and unlock if needed
-    if(nBestHeight != ramSendPool.cachedNumBlocks)
+    // check darksend status and unlock if needed
+    if(nBestHeight != darkSendPool.cachedNumBlocks)
     {
         // Balance and number of transactions might have changed
-        ramSendPool.cachedNumBlocks = nBestHeight;
-        updateRamsendProgress();
+        darkSendPool.cachedNumBlocks = nBestHeight;
+        updateDarksendProgress();
 
-        ui->ramsendEnabled->setText(tr("Enabled"));
+        ui->darksendEnabled->setText(tr("Enabled"));
     }
 
-    QString strStatus = QString(ramSendPool.GetStatus().c_str());
+    QString strStatus = QString(darkSendPool.GetStatus().c_str());
 
-    QString s = tr("Last Ramsend message:\n") + strStatus;
+    QString s = tr("Last Darksend message:\n") + strStatus;
 
-    if(s != ui->ramsendStatus->text())
-        LogPrintf("Last Ramsend message: %s\n", strStatus.toStdString());
+    if(s != ui->darksendStatus->text())
+        LogPrintf("Last Darksend message: %s\n", strStatus.toStdString());
 
-    ui->ramsendStatus->setText(s);
+    ui->darksendStatus->setText(s);
 
-    if(ramSendPool.sessionDenom == 0){
+    if(darkSendPool.sessionDenom == 0){
         ui->labelSubmittedDenom->setText(tr("N/A"));
     } else {
         std::string out;
-        ramSendPool.GetDenominationsToString(ramSendPool.sessionDenom, out);
+        darkSendPool.GetDenominationsToString(darkSendPool.sessionDenom, out);
         QString s2(out.c_str());
         ui->labelSubmittedDenom->setText(s2);
     }
 
 }
 
-void OverviewPage::ramsendAuto(){
-    ramSendPool.DoAutomaticDenominating();
+void OverviewPage::darksendAuto(){
+    darkSendPool.DoAutomaticDenominating();
 }
 
-void OverviewPage::ramsendReset(){
-    ramSendPool.Reset();
+void OverviewPage::darksendReset(){
+    darkSendPool.Reset();
 
-    QMessageBox::warning(this, tr("Ramsend"),
-        tr("Ramsend was successfully reset."),
+    QMessageBox::warning(this, tr("Darksend"),
+        tr("Darksend was successfully reset."),
         QMessageBox::Ok, QMessageBox::Ok);
 }
 
-void OverviewPage::toggleRamsend(){
+void OverviewPage::toggleDarksend(){
     QSettings settings;
     // Popup some information on first mixing
     QString hasMixed = settings.value("hasMixed").toString();
     if(hasMixed.isEmpty()){
-        QMessageBox::information(this, tr("Ramsend"),
-                tr("If you don't want to see internal Ramsend fees/transactions select \"Most Common\" as Type on the \"Transactions\" tab."),
+        QMessageBox::information(this, tr("Darksend"),
+                tr("If you don't want to see internal Darksend fees/transactions select \"Most Common\" as Type on the \"Transactions\" tab."),
                 QMessageBox::Ok, QMessageBox::Ok);
         settings.setValue("hasMixed", "hasMixed");
     }
-    if(!fEnableRamsend){
+    if(!fEnableDarksend){
         int64_t balance = currentBalance;
         float minAmount = 1.49 * COIN;
         if(balance < minAmount){
             QString strMinAmount(BitcoinUnits::formatWithUnit(nDisplayUnit, minAmount));
-            QMessageBox::warning(this, tr("Ramsend"),
-                tr("Ramsend requires at least %1 to use.").arg(strMinAmount),
+            QMessageBox::warning(this, tr("Darksend"),
+                tr("Darksend requires at least %1 to use.").arg(strMinAmount),
                 QMessageBox::Ok, QMessageBox::Ok);
             return;
         }
@@ -517,30 +517,30 @@ void OverviewPage::toggleRamsend(){
             if(!ctx.isValid())
             {
                 //unlock was cancelled
-                ramSendPool.cachedNumBlocks = std::numeric_limits<int>::max();
-                QMessageBox::warning(this, tr("Ramsend"),
-                    tr("Wallet is locked and user declined to unlock. Disabling Ramsend."),
+                darkSendPool.cachedNumBlocks = std::numeric_limits<int>::max();
+                QMessageBox::warning(this, tr("Darksend"),
+                    tr("Wallet is locked and user declined to unlock. Disabling Darksend."),
                     QMessageBox::Ok, QMessageBox::Ok);
-                if (fDebug) LogPrintf("Wallet is locked and user declined to unlock. Disabling Ramsend.\n");
+                if (fDebug) LogPrintf("Wallet is locked and user declined to unlock. Disabling Darksend.\n");
                 return;
             }
         }
 
     }
 
-    fEnableRamsend = !fEnableRamsend;
-    ramSendPool.cachedNumBlocks = std::numeric_limits<int>::max();
+    fEnableDarksend = !fEnableDarksend;
+    darkSendPool.cachedNumBlocks = std::numeric_limits<int>::max();
 
-    if(!fEnableRamsend){
-        ui->toggleRamsend->setText(tr("Start Ramsend Mixing"));
-        ramSendPool.UnlockCoins();
+    if(!fEnableDarksend){
+        ui->toggleDarksend->setText(tr("Start Darksend Mixing"));
+        darkSendPool.UnlockCoins();
     } else {
-        ui->toggleRamsend->setText(tr("Stop Ramsend Mixing"));
+        ui->toggleDarksend->setText(tr("Stop Darksend Mixing"));
 
-        /* show ramsend configuration if client has defaults set */
+        /* show darksend configuration if client has defaults set */
 
-        if(nAnonymizeBraincoinAmount == 0){
-            RamsendConfig dlg(this);
+        if(nAnonymizeDarkcoinAmount == 0){
+            DarksendConfig dlg(this);
             dlg.setModel(walletModel);
             dlg.exec();
         }

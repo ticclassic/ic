@@ -6,7 +6,7 @@
 #include "masternode-budget.h"
 #include "masternode-sync.h"
 #include "masternodeman.h"
-#include "ramsend.h"
+#include "darksend.h"
 #include "util.h"
 #include "sync.h"
 #include "spork.h"
@@ -339,11 +339,11 @@ void CMasternodePayments::ProcessMessageMasternodePayments(CNode* pfrom, std::st
 {
     if(!masternodeSync.IsBlockchainSynced()) return;
 
-    if(fLiteMode) return; //disable all Ramsend/Masternode related functionality
+    if(fLiteMode) return; //disable all Darksend/Masternode related functionality
 
 
     if (strCommand == "mnget") { //Masternode Payments Request Sync
-        if(fLiteMode) return; //disable all Ramsend/Masternode related functionality
+        if(fLiteMode) return; //disable all Darksend/Masternode related functionality
 
         int nCountNeeded;
         vRecv >> nCountNeeded;
@@ -422,12 +422,12 @@ bool CMasternodePaymentWinner::Sign(CKey& keyMasternode, CPubKey& pubKeyMasterno
                 boost::lexical_cast<std::string>(nBlockHeight) +
                 payee.ToString();
 
-    if(!ramSendSigner.SignMessage(strMessage, errorMessage, vchSig, keyMasternode)) {
+    if(!darkSendSigner.SignMessage(strMessage, errorMessage, vchSig, keyMasternode)) {
         LogPrintf("CMasternodePing::Sign() - Error: %s\n", errorMessage.c_str());
         return false;
     }
 
-    if(!ramSendSigner.VerifyMessage(pubKeyMasternode, vchSig, strMessage, errorMessage)) {
+    if(!darkSendSigner.VerifyMessage(pubKeyMasternode, vchSig, strMessage, errorMessage)) {
         LogPrintf("CMasternodePing::Sign() - Error: %s\n", errorMessage.c_str());
         return false;
     }
@@ -723,7 +723,7 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
     CPubKey pubKeyMasternode;
     CKey keyMasternode;
 
-    if(!ramSendSigner.SetKey(strMasterNodePrivKey, errorMessage, keyMasternode, pubKeyMasternode))
+    if(!darkSendSigner.SetKey(strMasterNodePrivKey, errorMessage, keyMasternode, pubKeyMasternode))
     {
         LogPrintf("CMasternodePayments::ProcessBlock() - Error upon calling SetKey: %s\n", errorMessage.c_str());
         return false;
@@ -763,7 +763,7 @@ bool CMasternodePaymentWinner::SignatureValid()
                     payee.ToString();
 
         std::string errorMessage = "";
-        if(!ramSendSigner.VerifyMessage(pmn->pubkey2, vchSig, strMessage, errorMessage)){
+        if(!darkSendSigner.VerifyMessage(pmn->pubkey2, vchSig, strMessage, errorMessage)){
             return error("CMasternodePaymentWinner::SignatureValid() - Got bad Masternode address signature %s \n", vinMasternode.ToString().c_str());
         }
 

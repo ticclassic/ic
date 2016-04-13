@@ -714,8 +714,8 @@ Indirizzo: %4
         <translation>Copia resto</translation>
     </message>
     <message>
-        <source>Non-anonymized input selected. &lt;b&gt;Ramsend will be disabled.&lt;/b&gt;&lt;br&gt;&lt;br&gt;If you still want to use Ramsend, please deselect all non-nonymized inputs first and then check Ramsend checkbox again.</source>
-        <translation>Selezionati input non anonimizzati.&lt;b&gt;Ramsend sará disabilitato.&lt;/b&gt;&lt;br&gt;&lt;br&gt;Se vuoi ancora usare Ramsend, per favore per prima cosa togli la selezione a tutti gli inputs non anonimizzati e dopo controlla il Ramsend checkbox di nuovo.</translation>
+        <source>Non-anonymized input selected. &lt;b&gt;Darksend will be disabled.&lt;/b&gt;&lt;br&gt;&lt;br&gt;If you still want to use Darksend, please deselect all non-nonymized inputs first and then check Darksend checkbox again.</source>
+        <translation>Selezionati input non anonimizzati.&lt;b&gt;Darksend sará disabilitato.&lt;/b&gt;&lt;br&gt;&lt;br&gt;Se vuoi ancora usare Darksend, per favore per prima cosa togli la selezione a tutti gli inputs non anonimizzati e dopo controlla il Darksend checkbox di nuovo.</translation>
     </message>
     <message>
         <source>highest</source>
@@ -811,10 +811,10 @@ Indirizzo: %4
     </message>
 </context>
 <context>
-    <name>RamsendConfig</name>
+    <name>DarksendConfig</name>
     <message>
-        <source>Configure Ramsend</source>
-        <translation>Configura Ramsend</translation>
+        <source>Configure Darksend</source>
+        <translation>Configura Darksend</translation>
     </message>
     <message>
         <source>Basic Privacy</source>
@@ -861,20 +861,20 @@ Indirizzo: %4
         <translation>Questa è la più lenta ma più sicura opzione. Usare il massimo grado di anonimizzazione costerà</translation>
     </message>
     <message>
-        <source>Ramsend Configuration</source>
-        <translation>Configurazione Ramsend</translation>
+        <source>Darksend Configuration</source>
+        <translation>Configurazione Darksend</translation>
     </message>
     <message>
-        <source>Ramsend was successfully set to basic (%1 and 2 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
+        <source>Darksend was successfully set to basic (%1 and 2 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
         <translation>Dark send è statto correttamente impostato su base (%1 e 2 round). Puoi cambiare questa impostazione in qualsiasi momento tu lo voglia dalla finestra di configurazione.</translation>
     </message>
     <message>
-        <source>Ramsend was successfully set to high (%1 and 8 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
-        <translation>Ramsend è stata impostata correttamente a elevato (%1 e 8 turni). È possibile modificare in qualsiasi momento aprendo schermata di configurazione di Braincoin.</translation>
+        <source>Darksend was successfully set to high (%1 and 8 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
+        <translation>Darksend è stata impostata correttamente a elevato (%1 e 8 turni). È possibile modificare in qualsiasi momento aprendo schermata di configurazione di Braincoin.</translation>
     </message>
     <message>
-        <source>Ramsend was successfully set to maximum (%1 and 16 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
-        <translation>Ramsend è stato correttamente settato al massimo (%1 e 16 rounds). Puoi cambiarlo quando vuoi aprendo la finestra di configurazione di Braincoin</translation>
+        <source>Darksend was successfully set to maximum (%1 and 16 rounds). You can change this at any time by opening Braincoin's configuration screen.</source>
+        <translation>Darksend è stato correttamente settato al massimo (%1 e 16 rounds). Puoi cambiarlo quando vuoi aprendo la finestra di configurazione di Braincoin</translation>
     </message>
 </context>
 <context>
@@ -1111,12 +1111,12 @@ Indirizzo: %4
         <translation>(0 = automatico, &lt;0 = lascia questo numero di core liberi)</translation>
     </message>
     <message>
-        <source>Ramsend rounds to use</source>
-        <translation>Round ramsend da utilizzare</translation>
+        <source>Darksend rounds to use</source>
+        <translation>Round darksend da utilizzare</translation>
     </message>
     <message>
-        <source>This amount acts as a threshold to turn off Ramsend once it's reached.</source>
-        <translation>Tale importo si comporta come una soglia per spegnere Ramsend una volta che è raggiunto.</translation>
+        <source>This amount acts as a threshold to turn off Darksend once it's reached.</source>
+        <translation>Tale importo si comporta come una soglia per spegnere Darksend una volta che è raggiunto.</translation>
     </message>
     <message>
         <source>Amount of Braincoin to keep anonymized</source>
@@ -1377,8 +1377,8 @@ Più URL vengono separati da una barra verticale |.</translation>
         <translation>Completamento:</translation>
     </message>
     <message>
-        <source>Ramsend Balance:</source>
-        <translation>Bilancio Ramsend:</translation>
+        <source>Darksend Balance:</source>
+        <translation>Bilancio Darksend:</translation>
     </message>
     <message>
         <source>Amount and Rounds:</source>
@@ -1397,8 +1397,8 @@ Più URL vengono separati da una barra verticale |.</translation>
         <translation>n/a</translation>
     </message>
     <message>
-        <source>Ramsend</source>
-        <translation>Ramsend</translation>
+        <source>Darksend</source>
+        <translation>Darksend</translation>
     </message>
     <message>
         <source>Recent transactions</source>
@@ -1417,16 +1417,16 @@ Più URL vengono separati da una barra verticale |.</translation>
         <translation>(Ultimo messaggio)</translation>
     </message>
     <message>
-        <source>Try to manually submit a Ramsend request.</source>
-        <translation>Prova ad inserire una richiesta Ramsend manualmente.</translation>
+        <source>Try to manually submit a Darksend request.</source>
+        <translation>Prova ad inserire una richiesta Darksend manualmente.</translation>
     </message>
     <message>
         <source>Try Mix</source>
         <translation>Prova il Mix</translation>
     </message>
     <message>
-        <source>Reset the current status of Ramsend (can interrupt Ramsend if it's in the process of Mixing, which can cost you money!)</source>
-        <translation>Resetta lo stato corrente del Ramsend (può interrompere il Ramsend se è nel processo di mixaggio, costandoti una perdita economica!)</translation>
+        <source>Reset the current status of Darksend (can interrupt Darksend if it's in the process of Mixing, which can cost you money!)</source>
+        <translation>Resetta lo stato corrente del Darksend (può interrompere il Darksend se è nel processo di mixaggio, costandoti una perdita economica!)</translation>
     </message>
     <message>
         <source>Reset</source>
@@ -1441,12 +1441,12 @@ Più URL vengono separati da una barra verticale |.</translation>
         <translation>Disabilita</translation>
     </message>
     <message>
-        <source>Start Ramsend Mixing</source>
-        <translation>Avvia Ramsend mix</translation>
+        <source>Start Darksend Mixing</source>
+        <translation>Avvia Darksend mix</translation>
     </message>
     <message>
-        <source>Stop Ramsend Mixing</source>
-        <translation>Ferma Ramsend mix</translation>
+        <source>Stop Darksend Mixing</source>
+        <translation>Ferma Darksend mix</translation>
     </message>
     <message>
         <source>No inputs detected</source>
@@ -1465,9 +1465,9 @@ Più URL vengono separati da una barra verticale |.</translation>
         <translation>Abilitato</translation>
     </message>
     <message>
-        <source>Last Ramsend message:
+        <source>Last Darksend message:
 </source>
-        <translation>Ultimo messaggio Ramsend
+        <translation>Ultimo messaggio Darksend
 </translation>
     </message>
     <message>
@@ -1475,16 +1475,16 @@ Più URL vengono separati da una barra verticale |.</translation>
         <translation>N/D</translation>
     </message>
     <message>
-        <source>Ramsend was successfully reset.</source>
-        <translation>Ramsend è stato resettato con successo</translation>
+        <source>Darksend was successfully reset.</source>
+        <translation>Darksend è stato resettato con successo</translation>
     </message>
     <message>
-        <source>Ramsend requires at least %1 to use.</source>
-        <translation>Ramsend ha bisogno almeno dell' %1 per essere usato.</translation>
+        <source>Darksend requires at least %1 to use.</source>
+        <translation>Darksend ha bisogno almeno dell' %1 per essere usato.</translation>
     </message>
     <message>
-        <source>Wallet is locked and user declined to unlock. Disabling Ramsend.</source>
-        <translation>Portafoglio è bloccato e l'utente ha rifiutato di sbloccare. Disattivazione Ramsend.</translation>
+        <source>Wallet is locked and user declined to unlock. Disabling Darksend.</source>
+        <translation>Portafoglio è bloccato e l'utente ha rifiutato di sbloccare. Disattivazione Darksend.</translation>
     </message>
 </context>
 <context>
@@ -2218,8 +2218,8 @@ Più URL vengono separati da una barra verticale |.</translation>
         <translation>&amp;Aggiungi beneficiario</translation>
     </message>
     <message>
-        <source>Ramsend</source>
-        <translation>Ramsend</translation>
+        <source>Darksend</source>
+        <translation>Darksend</translation>
     </message>
     <message>
         <source>InstantX</source>
@@ -2266,8 +2266,8 @@ Più URL vengono separati da una barra verticale |.</translation>
         <translation>fondi anonimi</translation>
     </message>
     <message>
-        <source>(ramsend requires this amount to be rounded up to the nearest %1).</source>
-        <translation>(ramsend richiede questo importo da arrotondato al più vicino %1).</translation>
+        <source>(darksend requires this amount to be rounded up to the nearest %1).</source>
+        <translation>(darksend richiede questo importo da arrotondato al più vicino %1).</translation>
     </message>
     <message>
         <source>any available funds (not recommended)</source>
@@ -2862,8 +2862,8 @@ Più URL vengono separati da una barra verticale |.</translation>
         <translation>Ricevuto da</translation>
     </message>
     <message>
-        <source>Received via Ramsend</source>
-        <translation>Ricevuto via Ramsend</translation>
+        <source>Received via Darksend</source>
+        <translation>Ricevuto via Darksend</translation>
     </message>
     <message>
         <source>Sent to</source>
@@ -2878,20 +2878,20 @@ Più URL vengono separati da una barra verticale |.</translation>
         <translation>Ottenuto dal mining</translation>
     </message>
     <message>
-        <source>Ramsend Denominate</source>
-        <translation>Ramsend Denominazione</translation>
+        <source>Darksend Denominate</source>
+        <translation>Darksend Denominazione</translation>
     </message>
     <message>
-        <source>Ramsend Collateral Payment</source>
-        <translation>Ramsend Collaterale Pagamento</translation>
+        <source>Darksend Collateral Payment</source>
+        <translation>Darksend Collaterale Pagamento</translation>
     </message>
     <message>
-        <source>Ramsend Make Collateral Inputs</source>
-        <translation>Ramsend Fa Ingressi Collaterali</translation>
+        <source>Darksend Make Collateral Inputs</source>
+        <translation>Darksend Fa Ingressi Collaterali</translation>
     </message>
     <message>
-        <source>Ramsend Create Denominations</source>
-        <translation>Ramsend Crea Denominazioni</translation>
+        <source>Darksend Create Denominations</source>
+        <translation>Darksend Crea Denominazioni</translation>
     </message>
     <message>
         <source>Darksent</source>
@@ -2977,20 +2977,20 @@ Più URL vengono separati da una barra verticale |.</translation>
         <translation>Darksent</translation>
     </message>
     <message>
-        <source>Ramsend Make Collateral Inputs</source>
-        <translation>Ramsend Fa Ingressi Collaterali</translation>
+        <source>Darksend Make Collateral Inputs</source>
+        <translation>Darksend Fa Ingressi Collaterali</translation>
     </message>
     <message>
-        <source>Ramsend Create Denominations</source>
-        <translation>Ramsend Crea Denominazioni</translation>
+        <source>Darksend Create Denominations</source>
+        <translation>Darksend Crea Denominazioni</translation>
     </message>
     <message>
-        <source>Ramsend Denominate</source>
-        <translation>Ramsend Denominazione</translation>
+        <source>Darksend Denominate</source>
+        <translation>Darksend Denominazione</translation>
     </message>
     <message>
-        <source>Ramsend Collateral Payment</source>
-        <translation>Ramsend Collaterale Pagamento</translation>
+        <source>Darksend Collateral Payment</source>
+        <translation>Darksend Collaterale Pagamento</translation>
     </message>
     <message>
         <source>To yourself</source>
@@ -3168,8 +3168,8 @@ Più URL vengono separati da una barra verticale |.</translation>
         <translation>Impossibile ottenere un blocco sulla data directory %s. Braincoin Core è probabilmente già in esecuzione.</translation>
     </message>
     <message>
-        <source>Ramsend uses exact denominated amounts to send funds, you might simply need to anonymize some more coins.</source>
-        <translation>Ramsend utilizza esatto denominato importo a inviare fondi, si potrebbe semplicemente bisogno di anonimizzare alcuni più monete.</translation>
+        <source>Darksend uses exact denominated amounts to send funds, you might simply need to anonymize some more coins.</source>
+        <translation>Darksend utilizza esatto denominato importo a inviare fondi, si potrebbe semplicemente bisogno di anonimizzare alcuni più monete.</translation>
     </message>
     <message>
         <source>Enter regression test mode, which uses a special chain in which blocks can be solved instantly.</source>
@@ -3224,12 +3224,12 @@ Più URL vengono separati da una barra verticale |.</translation>
         <translation>Incapace di legare al %s su questo computer. Braincoin Core è probabilmente già funzionato.</translation>
     </message>
     <message>
-        <source>Unable to locate enough Ramsend denominated funds for this transaction.</source>
-        <translation>Impossibile trovare fondi sufficienti Ramsend denominati per questa transazione.</translation>
+        <source>Unable to locate enough Darksend denominated funds for this transaction.</source>
+        <translation>Impossibile trovare fondi sufficienti Darksend denominati per questa transazione.</translation>
     </message>
     <message>
-        <source>Unable to locate enough Ramsend non-denominated funds for this transaction that are not equal 1000 BRAINCOIN.</source>
-        <translation>Impossibile trovare un numero sufficiente di non denominati fondi Ramsend per questa operazione che non sono uguali a 1000 BRAINCOIN.</translation>
+        <source>Unable to locate enough Darksend non-denominated funds for this transaction that are not equal 1000 BRAINCOIN.</source>
+        <translation>Impossibile trovare un numero sufficiente di non denominati fondi Darksend per questa operazione che non sono uguali a 1000 BRAINCOIN.</translation>
     </message>
     <message>
         <source>Warning: -paytxfee is set very high! This is the transaction fee you will pay if you send a transaction.</source>
@@ -3328,8 +3328,8 @@ Più URL vengono separati da una barra verticale |.</translation>
         <translation>Rilevato database blocchi corrotto</translation>
     </message>
     <message>
-        <source>Ramsend options:</source>
-        <translation>Opzioni Ramsend:</translation>
+        <source>Darksend options:</source>
+        <translation>Opzioni Darksend:</translation>
     </message>
     <message>
         <source>Debugging/Testing options:</source>
@@ -3400,8 +3400,8 @@ Più URL vengono separati da una barra verticale |.</translation>
         <translation>Errore: portafoglio bloccato, impossibile creare la transazione!</translation>
     </message>
     <message>
-        <source>Error: You already have pending entries in the Ramsend pool</source>
-        <translation>Errore: è già voci in sospeso in piscina Ramsend</translation>
+        <source>Error: You already have pending entries in the Darksend pool</source>
+        <translation>Errore: è già voci in sospeso in piscina Darksend</translation>
     </message>
     <message>
         <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
@@ -3436,8 +3436,8 @@ Più URL vengono separati da una barra verticale |.</translation>
         <translation>Abilita instantx, mostra conferme per le transazioni bloccate (bool, predefinito: %s)</translation>
     </message>
     <message>
-        <source>Enable use of automated ramsend for funds stored in this wallet (0-1, default: %u)</source>
-        <translation>Abilita utilizzo di ramsend automatizzato per i fondi conservati in questo portafoglio (0-1, predefinito: %u)</translation>
+        <source>Enable use of automated darksend for funds stored in this wallet (0-1, default: %u)</source>
+        <translation>Abilita utilizzo di darksend automatizzato per i fondi conservati in questo portafoglio (0-1, predefinito: %u)</translation>
     </message>
     <message>
         <source>Fees (in BRAINCOIN/Kb) smaller than this are considered zero fee for relaying (default: %s)</source>
@@ -3452,16 +3452,16 @@ Più URL vengono separati da una barra verticale |.</translation>
         <translation>Uscite denominate non confermati trovati, saranno aspettare che confermano per continua.</translation>
     </message>
     <message>
-        <source>Ramsend is idle.</source>
+        <source>Darksend is idle.</source>
         <translation>Nessun Masternode trovato.</translation>
     </message>
     <message>
-        <source>Ramsend request complete:</source>
-        <translation>Richiesta di Ramsend completa:</translation>
+        <source>Darksend request complete:</source>
+        <translation>Richiesta di Darksend completa:</translation>
     </message>
     <message>
-        <source>Ramsend request incomplete:</source>
-        <translation>Richiesta di Ramsend incompleta:</translation>
+        <source>Darksend request incomplete:</source>
+        <translation>Richiesta di Darksend incompleta:</translation>
     </message>
     <message>
         <source>Error connecting to Masternode.</source>
@@ -3588,8 +3588,8 @@ Più URL vengono separati da una barra verticale |.</translation>
         <translation>Mantenere al massimo &lt;n&gt; le operazioni in collegabile in memoria (predefinito: %u)</translation>
     </message>
     <message>
-        <source>Last Ramsend was too recent.</source>
-        <translation>L'ultima ramsend è troppo recente</translation>
+        <source>Last Darksend was too recent.</source>
+        <translation>L'ultima darksend è troppo recente</translation>
     </message>
     <message>
         <source>Loading addresses...</source>
@@ -3797,8 +3797,8 @@ Più URL vengono separati da una barra verticale |.</translation>
 </translation>
     </message>
     <message>
-        <source>Value more than Ramsend pool maximum allows.</source>
-        <translation>Più valore di Ramsend piscina massima permette.</translation>
+        <source>Value more than Darksend pool maximum allows.</source>
+        <translation>Più valore di Darksend piscina massima permette.</translation>
     </message>
     <message>
         <source>Verifying blocks...</source>

@@ -92,8 +92,8 @@ BITCOIN_CORE_H = \
   primitives/transaction.h \
   core_io.h \
   crypter.h \
-  ramsend.h \
-  ramsend-relay.h \
+  darksend.h \
+  darksend-relay.h \
   db.h \
   eccryptoverify.h \
   ecwrapper.h \
@@ -207,8 +207,8 @@ libbitcoin_server_a_SOURCES = \
 libbitcoin_wallet_a_CPPFLAGS = $(BITCOIN_INCLUDES)
 libbitcoin_wallet_a_SOURCES = \
   activemasternode.cpp \
-  ramsend.cpp \
-  ramsend-relay.cpp \
+  darksend.cpp \
+  darksend-relay.cpp \
   db.cpp \
   crypter.cpp \
   instantx.cpp \

@@ -23,8 +23,8 @@ Build-Depends: debhelper,
  libprotobuf-dev, protobuf-compiler
 Standards-Version: 3.9.2
 Homepage: http://www.axelxod.io/
-Vcs-Git: git://https://github.com/axelxod/braincoin.git
-Vcs-Browser: http://https://github.com/axelxod/braincoin
+Vcs-Git: git://github.com/axelxod/braincoin.git
+Vcs-Browser: http://github.com/axelxod/braincoin
 
 Package: braincoind
 Architecture: any

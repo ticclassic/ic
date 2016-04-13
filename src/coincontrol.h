@@ -12,7 +12,7 @@ class CCoinControl
 {
 public:
     CTxDestination destChange;
-    bool useRamSend;
+    bool useDarkSend;
     bool useInstantX;
 
     CCoinControl()
@@ -25,7 +25,7 @@ public:
         destChange = CNoDestination();
         setSelected.clear();
         useInstantX = false;
-        useRamSend = true;
+        useDarkSend = true;
     }
 
     bool HasSelected() const

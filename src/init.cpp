@@ -378,7 +378,7 @@ std::string HelpMessage(HelpMessageMode mode)
     strUsage += "                         " + _("If <category> is not supplied, output all debugging information.") + "\n";
     strUsage += "                         " + _("<category> can be:\n");
     strUsage += "                           addrman, alert, bench, coindb, db, lock, rand, rpc, selectcoins, mempool, net,\n"; // Don't translate these and qt below
-    strUsage += "                           braincoin (or specifically: ramsend, instantx, masternode, keepass, mnpayments, mnbudget)"; // Don't translate these and qt below
+    strUsage += "                           braincoin (or specifically: darksend, instantx, masternode, keepass, mnpayments, mnbudget)"; // Don't translate these and qt below
     if (mode == HMM_BITCOIN_QT)
         strUsage += ", qt";
     strUsage += ".\n";
@@ -407,7 +407,7 @@ std::string HelpMessage(HelpMessageMode mode)
     }
     strUsage += "  -shrinkdebugfile       " + _("Shrink debug.log file on client startup (default: 1 when no -debug)") + "\n";
     strUsage += "  -testnet               " + _("Use the test network") + "\n";
-    strUsage += "  -litemode=<n>          " + strprintf(_("Disable all Braincoin specific functionality (Masternodes, Ramsend, InstantX, Budgeting) (0-1, default: %u)"), 0) + "\n";
+    strUsage += "  -litemode=<n>          " + strprintf(_("Disable all Braincoin specific functionality (Masternodes, Darksend, InstantX, Budgeting) (0-1, default: %u)"), 0) + "\n";
 
     strUsage += "\n" + _("Masternode options:") + "\n";
     strUsage += "  -masternode=<n>            " + strprintf(_("Enable the client to act as a masternode (0-1, default: %u)"), 0) + "\n";
@@ -417,15 +417,15 @@ std::string HelpMessage(HelpMessageMode mode)
     strUsage += "  -masternodeaddr=<n>        " + strprintf(_("Set external address:port to get to this masternode (example: %s)"), "128.127.106.235:6390") + "\n";
     strUsage += "  -budgetvotemode=<mode>     " + _("Change automatic finalized budget voting behavior. mode=auto: Vote for only exact finalized budget match to my generated budget. (string, default: auto)") + "\n";
 
-    strUsage += "\n" + _("Ramsend options:") + "\n";
-    strUsage += "  -enableramsend=<n>          " + strprintf(_("Enable use of automated ramsend for funds stored in this wallet (0-1, default: %u)"), 0) + "\n";
-    strUsage += "  -ramsendrounds=<n>          " + strprintf(_("Use N separate masternodes to anonymize funds  (2-8, default: %u)"), 2) + "\n";
+    strUsage += "\n" + _("Darksend options:") + "\n";
+    strUsage += "  -enabledarksend=<n>          " + strprintf(_("Enable use of automated darksend for funds stored in this wallet (0-1, default: %u)"), 0) + "\n";
+    strUsage += "  -darksendrounds=<n>          " + strprintf(_("Use N separate masternodes to anonymize funds  (2-8, default: %u)"), 2) + "\n";
     strUsage += "  -anonymizebraincoinamount=<n>     " + strprintf(_("Keep N BRAINCOIN anonymized (default: %u)"), 0) + "\n";
-    strUsage += "  -liquidityprovider=<n>       " + strprintf(_("Provide liquidity to Ramsend by infrequently mixing coins on a continual basis (0-100, default: %u, 1=very frequent, high fees, 100=very infrequent, low fees)"), 0) + "\n";
+    strUsage += "  -liquidityprovider=<n>       " + strprintf(_("Provide liquidity to Darksend by infrequently mixing coins on a continual basis (0-100, default: %u, 1=very frequent, high fees, 100=very infrequent, low fees)"), 0) + "\n";
 
     strUsage += "\n" + _("InstantX options:") + "\n";
     strUsage += "  -enableinstantx=<n>    " + strprintf(_("Enable instantx, show confirmations for locked transactions (bool, default: %s)"), "true") + "\n";
-    strUsage += "  -instantxdepth=<n>     " + strprintf(_("Show N confirmations for a successfully locked transaction (0-6390, default: %u)"), nInstantXDepth) + "\n";
+    strUsage += "  -instantxdepth=<n>     " + strprintf(_("Show N confirmations for a successfully locked transaction (0-9999, default: %u)"), nInstantXDepth) + "\n";
 
     strUsage += "\n" + _("Node relay options:") + "\n";
     strUsage += "  -datacarrier           " + strprintf(_("Relay and mine data carrier transactions (default: %u)"), 1) + "\n";
@@ -1414,7 +1414,7 @@ bool AppInit2(boost::thread_group& threadGroup)
             MilliSleep(10);
     }
 
-    // ********************************************************* Step 10: setup RamSend
+    // ********************************************************* Step 10: setup DarkSend
 
     uiInterface.InitMessage(_("Loading masternode cache..."));
 
@@ -1476,7 +1476,7 @@ bool AppInit2(boost::thread_group& threadGroup)
     }
 
     if(fMasterNode) {
-        LogPrintf("IS RAMSEND MASTER NODE\n");
+        LogPrintf("IS DARKSEND MASTER NODE\n");
         strMasterNodeAddr = GetArg("-masternodeaddr", "");
 
         LogPrintf(" addr %s\n", strMasterNodeAddr.c_str());
@@ -1495,7 +1495,7 @@ bool AppInit2(boost::thread_group& threadGroup)
             CKey key;
             CPubKey pubkey;
 
-            if(!ramSendSigner.SetKey(strMasterNodePrivKey, errorMessage, key, pubkey))
+            if(!darkSendSigner.SetKey(strMasterNodePrivKey, errorMessage, key, pubkey))
             {
                 return InitError(_("Invalid masternodeprivkey. Please see documenation."));
             }
@@ -1522,28 +1522,28 @@ bool AppInit2(boost::thread_group& threadGroup)
         }
     }
 
-    fEnableRamsend = GetBoolArg("-enableramsend", false);
+    fEnableDarksend = GetBoolArg("-enabledarksend", false);
 
-    nRamsendRounds = GetArg("-ramsendrounds", 2);
-    if(nRamsendRounds > 16) nRamsendRounds = 16;
-    if(nRamsendRounds < 1) nRamsendRounds = 1;
+    nDarksendRounds = GetArg("-darksendrounds", 2);
+    if(nDarksendRounds > 16) nDarksendRounds = 16;
+    if(nDarksendRounds < 1) nDarksendRounds = 1;
 
     nLiquidityProvider = GetArg("-liquidityprovider", 0); //0-100
     if(nLiquidityProvider != 0) {
-        ramSendPool.SetMinBlockSpacing(std::min(nLiquidityProvider,100)*15);
-        fEnableRamsend = true;
-        nRamsendRounds = 99999;
+        darkSendPool.SetMinBlockSpacing(std::min(nLiquidityProvider,100)*15);
+        fEnableDarksend = true;
+        nDarksendRounds = 99999;
     }
 
-    nAnonymizeBraincoinAmount = GetArg("-anonymizebraincoinamount", 0);
-    if(nAnonymizeBraincoinAmount > 999999) nAnonymizeBraincoinAmount = 999999;
-    if(nAnonymizeBraincoinAmount < 2) nAnonymizeBraincoinAmount = 2;
+    nAnonymizeDarkcoinAmount = GetArg("-anonymizebraincoinamount", 0);
+    if(nAnonymizeDarkcoinAmount > 999999) nAnonymizeDarkcoinAmount = 999999;
+    if(nAnonymizeDarkcoinAmount < 2) nAnonymizeDarkcoinAmount = 2;
 
     fEnableInstantX = GetBoolArg("-enableinstantx", fEnableInstantX);
     nInstantXDepth = GetArg("-instantxdepth", nInstantXDepth);
     nInstantXDepth = std::min(std::max(nInstantXDepth, 0), 60);
 
-    //lite mode disables all Masternode and Ramsend related functionality
+    //lite mode disables all Masternode and Darksend related functionality
     fLiteMode = GetBoolArg("-litemode", false);
     if(fMasterNode && fLiteMode){
         return InitError("You can not start a masternode in litemode");
@@ -1551,31 +1551,31 @@ bool AppInit2(boost::thread_group& threadGroup)
 
     LogPrintf("fLiteMode %d\n", fLiteMode);
     LogPrintf("nInstantXDepth %d\n", nInstantXDepth);
-    LogPrintf("Ramsend rounds %d\n", nRamsendRounds);
-    LogPrintf("Anonymize Braincoin Amount %d\n", nAnonymizeBraincoinAmount);
+    LogPrintf("Darksend rounds %d\n", nDarksendRounds);
+    LogPrintf("Anonymize Braincoin Amount %d\n", nAnonymizeDarkcoinAmount);
     LogPrintf("Budget Mode %s\n", strBudgetMode.c_str());
 
     /* Denominations
 
-       A note about convertability. Within Ramsend pools, each denomination
+       A note about convertability. Within Darksend pools, each denomination
        is convertable to another.
 
        For example:
        1DRK+1000 == (.1DRK+100)*10
        10DRK+10000 == (1DRK+1000)*10
     */
-    ramSendDenominations.push_back( (100      * COIN)+100000 );
-    ramSendDenominations.push_back( (10       * COIN)+10000 );
-    ramSendDenominations.push_back( (1        * COIN)+1000 );
-    ramSendDenominations.push_back( (.1       * COIN)+100 );
+    darkSendDenominations.push_back( (100      * COIN)+100000 );
+    darkSendDenominations.push_back( (10       * COIN)+10000 );
+    darkSendDenominations.push_back( (1        * COIN)+1000 );
+    darkSendDenominations.push_back( (.1       * COIN)+100 );
     /* Disabled till we need them
-    ramSendDenominations.push_back( (.01      * COIN)+10 );
-    ramSendDenominations.push_back( (.001     * COIN)+1 );
+    darkSendDenominations.push_back( (.01      * COIN)+10 );
+    darkSendDenominations.push_back( (.001     * COIN)+1 );
     */
 
-    ramSendPool.InitCollateralAddress();
+    darkSendPool.InitCollateralAddress();
 
-    threadGroup.create_thread(boost::bind(&ThreadCheckRamSendPool));
+    threadGroup.create_thread(boost::bind(&ThreadCheckDarkSendPool));
 
     // ********************************************************* Step 11: start node
 

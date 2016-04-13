@@ -34,10 +34,10 @@ public:
     void setClientModel(ClientModel *clientModel);
     void setWalletModel(WalletModel *walletModel);
     void showOutOfSyncWarning(bool fShow);
-    void updateRamsendProgress();
+    void updateDarksendProgress();
 
 public slots:
-    void ramSendStatus();
+    void darkSendStatus();
     void setBalance(const CAmount& balance, const CAmount& unconfirmedBalance, const CAmount& immatureBalance, const CAmount& anonymizedBalance,
                     const CAmount& watchOnlyBalance, const CAmount& watchUnconfBalance, const CAmount& watchImmatureBalance);
 
@@ -62,9 +62,9 @@ private:
     TransactionFilterProxy *filter;
 
 private slots:
-    void toggleRamsend();
-    void ramsendAuto();
-    void ramsendReset();
+    void toggleDarksend();
+    void darksendAuto();
+    void darksendReset();
     void updateDisplayUnit();
     void handleTransactionClicked(const QModelIndex &index);
     void updateAlerts(const QString &warnings);

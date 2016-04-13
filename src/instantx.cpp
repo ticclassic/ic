@@ -10,7 +10,7 @@
 #include "instantx.h"
 #include "activemasternode.h"
 #include "masternodeman.h"
-#include "ramsend.h"
+#include "darksend.h"
 #include "spork.h"
 #include <boost/lexical_cast.hpp>
 
@@ -34,7 +34,7 @@ int nCompleteTXLocks;
 
 void ProcessMessageInstantX(CNode* pfrom, std::string& strCommand, CDataStream& vRecv)
 {
-    if(fLiteMode) return; //disable all ramsend/masternode related functionality
+    if(fLiteMode) return; //disable all darksend/masternode related functionality
     if(!IsSporkActive(SPORK_2_INSTANTX)) return;
     if(!masternodeSync.IsBlockchainSynced()) return;
 
@@ -480,7 +480,7 @@ bool CConsensusVote::SignatureValid()
         return false;
     }
 
-    if(!ramSendSigner.VerifyMessage(pmn->pubkey2, vchMasterNodeSignature, strMessage, errorMessage)) {
+    if(!darkSendSigner.VerifyMessage(pmn->pubkey2, vchMasterNodeSignature, strMessage, errorMessage)) {
         LogPrintf("InstantX::CConsensusVote::SignatureValid() - Verify message failed\n");
         return false;
     }
@@ -498,18 +498,18 @@ bool CConsensusVote::Sign()
     //LogPrintf("signing strMessage %s \n", strMessage.c_str());
     //LogPrintf("signing privkey %s \n", strMasterNodePrivKey.c_str());
 
-    if(!ramSendSigner.SetKey(strMasterNodePrivKey, errorMessage, key2, pubkey2))
+    if(!darkSendSigner.SetKey(strMasterNodePrivKey, errorMessage, key2, pubkey2))
     {
         LogPrintf("CConsensusVote::Sign() - ERROR: Invalid masternodeprivkey: '%s'\n", errorMessage.c_str());
         return false;
     }
 
-    if(!ramSendSigner.SignMessage(strMessage, errorMessage, vchMasterNodeSignature, key2)) {
+    if(!darkSendSigner.SignMessage(strMessage, errorMessage, vchMasterNodeSignature, key2)) {
         LogPrintf("CConsensusVote::Sign() - Sign message failed");
         return false;
     }
 
-    if(!ramSendSigner.VerifyMessage(pubkey2, vchMasterNodeSignature, strMessage, errorMessage)) {
+    if(!darkSendSigner.VerifyMessage(pubkey2, vchMasterNodeSignature, strMessage, errorMessage)) {
         LogPrintf("CConsensusVote::Sign() - Verify message failed");
         return false;
     }

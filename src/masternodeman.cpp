@@ -5,7 +5,7 @@
 #include "masternodeman.h"
 #include "masternode.h"
 #include "activemasternode.h"
-#include "ramsend.h"
+#include "darksend.h"
 #include "util.h"
 #include "addrman.h"
 #include "spork.h"
@@ -664,8 +664,8 @@ void CMasternodeMan::ProcessMasternodeConnections()
 
     LOCK(cs_vNodes);
     BOOST_FOREACH(CNode* pnode, vNodes) {
-        if(pnode->fRamSendMaster){
-            if(ramSendPool.pSubmittedToMasternode != NULL && pnode->addr == ramSendPool.pSubmittedToMasternode->addr) continue;
+        if(pnode->fDarkSendMaster){
+            if(darkSendPool.pSubmittedToMasternode != NULL && pnode->addr == darkSendPool.pSubmittedToMasternode->addr) continue;
             LogPrintf("Closing Masternode connection %s \n", pnode->addr.ToString());
             pnode->fDisconnect = true;
         }
@@ -675,7 +675,7 @@ void CMasternodeMan::ProcessMasternodeConnections()
 void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDataStream& vRecv)
 {
 
-    if(fLiteMode) return; //disable all Ramsend/Masternode related functionality
+    if(fLiteMode) return; //disable all Darksend/Masternode related functionality
     if(!masternodeSync.IsBlockchainSynced()) return;
 
     LOCK(cs_process_message);
@@ -702,14 +702,14 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
 
         // make sure the vout that was signed is related to the transaction that spawned the Masternode
         //  - this is expensive, so it's only done once per Masternode
-        if(!ramSendSigner.IsVinAssociatedWithPubkey(mnb.vin, mnb.pubkey)) {
+        if(!darkSendSigner.IsVinAssociatedWithPubkey(mnb.vin, mnb.pubkey)) {
             LogPrintf("mnb - Got mismatched pubkey and vin\n");
             Misbehaving(pfrom->GetId(), 33);
             return;
         }
 
         // make sure it's still unspent
-        //  - this is checked later by .check() in many places and by ThreadCheckRamSendPool()
+        //  - this is checked later by .check() in many places and by ThreadCheckDarkSendPool()
         if(mnb.CheckInputsAndAdd(nDoS)) {
             // use this as a peer
             addrman.Add(CAddress(mnb.addr), pfrom->addr, 2*60*60);
@@ -807,7 +807,7 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
      */
 
     // Light version for OLD MASSTERNODES - fake pings, no self-activation
-    else if (strCommand == "dsee") { //RamSend Election Entry
+    else if (strCommand == "dsee") { //DarkSend Election Entry
 
         if(IsSporkActive(SPORK_10_MASTERNODE_PAY_UPDATED_NODES)) return;
 
@@ -870,7 +870,7 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
         }
 
         std::string errorMessage = "";
-        if(!ramSendSigner.VerifyMessage(pubkey, vchSig, strMessage, errorMessage)){
+        if(!darkSendSigner.VerifyMessage(pubkey, vchSig, strMessage, errorMessage)){
             LogPrintf("dsee - Got bad Masternode address signature\n");
             Misbehaving(pfrom->GetId(), 100);
             return;
@@ -924,7 +924,7 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
         mapSeenDsee.insert(make_pair(vin.prevout, pubkey));
         // make sure the vout that was signed is related to the transaction that spawned the Masternode
         //  - this is expensive, so it's only done once per Masternode
-        if(!ramSendSigner.IsVinAssociatedWithPubkey(vin, pubkey)) {
+        if(!darkSendSigner.IsVinAssociatedWithPubkey(vin, pubkey)) {
             LogPrintf("dsee - Got mismatched pubkey and vin\n");
             Misbehaving(pfrom->GetId(), 100);
             return;
@@ -934,11 +934,11 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
         LogPrint("masternode", "dsee - Got NEW OLD Masternode entry %s\n", addr.ToString().c_str());
 
         // make sure it's still unspent
-        //  - this is checked later by .check() in many places and by ThreadCheckRamSendPool()
+        //  - this is checked later by .check() in many places and by ThreadCheckDarkSendPool()
 
         CValidationState state;
         CMutableTransaction tx = CMutableTransaction();
-        CTxOut vout = CTxOut(999.99*COIN, ramSendPool.collateralPubKey);
+        CTxOut vout = CTxOut(999.99*COIN, darkSendPool.collateralPubKey);
         tx.vin.push_back(vin);
         tx.vout.push_back(vout);
 
@@ -964,7 +964,7 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
             BlockMap::iterator mi = mapBlockIndex.find(hashBlock);
             if (mi != mapBlockIndex.end() && (*mi).second)
             {
-                CBlockIndex* pMNIndex = (*mi).second; // block for 50000 BRAINCOIN tx -> 1 confirmation
+                CBlockIndex* pMNIndex = (*mi).second; // block for 1000 BRAINCOIN tx -> 1 confirmation
                 CBlockIndex* pConfIndex = chainActive[pMNIndex->nHeight + MASTERNODE_MIN_CONFIRMATIONS - 1]; // block where tx got MASTERNODE_MIN_CONFIRMATIONS
                 if(pConfIndex->GetBlockTime() > sigTime)
                 {
@@ -1015,7 +1015,7 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
         }
     }
 
-    else if (strCommand == "dseep") { //RamSend Election Entry Ping
+    else if (strCommand == "dseep") { //DarkSend Election Entry Ping
 
         if(IsSporkActive(SPORK_10_MASTERNODE_PAY_UPDATED_NODES)) return;
 
@@ -1057,7 +1057,7 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
                 std::string strMessage = pmn->addr.ToString() + boost::lexical_cast<std::string>(sigTime) + boost::lexical_cast<std::string>(stop);
 
                 std::string errorMessage = "";
-                if(!ramSendSigner.VerifyMessage(pmn->pubkey2, vchSig, strMessage, errorMessage))
+                if(!darkSendSigner.VerifyMessage(pmn->pubkey2, vchSig, strMessage, errorMessage))
                 {
                     LogPrintf("dseep - Got bad Masternode address signature %s \n", vin.ToString().c_str());
                     //Misbehaving(pfrom->GetId(), 100);

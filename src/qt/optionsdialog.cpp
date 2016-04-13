@@ -12,7 +12,7 @@
 #include "bitcoinunits.h"
 #include "guiutil.h"
 #include "optionsmodel.h"
-#include "ramsend.h"
+#include "darksend.h"
 
 #include "main.h" // for MAX_SCRIPTCHECK_THREADS
 #include "netbase.h"
@@ -207,9 +207,9 @@ void OptionsDialog::setMapper()
     mapper->addMapping(ui->thirdPartyTxUrls, OptionsModel::ThirdPartyTxUrls);
 
 
-    /* Ramsend Rounds */
-    mapper->addMapping(ui->ramsendRounds, OptionsModel::RamsendRounds);
-    mapper->addMapping(ui->anonymizeBraincoin, OptionsModel::AnonymizeBraincoinAmount);
+    /* Darksend Rounds */
+    mapper->addMapping(ui->darksendRounds, OptionsModel::DarksendRounds);
+    mapper->addMapping(ui->anonymizeDarkcoin, OptionsModel::AnonymizeDarkcoinAmount);
 
 }
 
@@ -251,7 +251,7 @@ void OptionsDialog::on_resetButton_clicked()
 void OptionsDialog::on_okButton_clicked()
 {
     mapper->submit();
-    ramSendPool.cachedNumBlocks = std::numeric_limits<int>::max();
+    darkSendPool.cachedNumBlocks = std::numeric_limits<int>::max();
     pwalletMain->MarkDirty();
     accept();
 }
