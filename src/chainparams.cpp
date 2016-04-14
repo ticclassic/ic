@@ -165,7 +165,7 @@ public:
         nPoolMaxTransactions = 3;
         strSporkKey = "0429cc152d9d6254db7ebb0a0e8565e7836ba8949afac4f2927bc22207e05509d64320e61345423bd1fb6b7ca8e048101c1cda8f5682e9faaa08268ad380679261";
         strMasternodePaymentsPubKey = "0429cc152d9d6254db7ebb0a0e8565e7836ba8949afac4f2927bc22207e05509d64320e61345423bd1fb6b7ca8e048101c1cda8f5682e9faaa08268ad380679261";
-        strRamsendPoolDummyAddress = "XymEwiQrZnyZYzXUFgieTwKnzPefeTF8ud";
+        strDarksendPoolDummyAddress = "XymEwiQrZnyZYzXUFgieTwKnzPefeTF8ud";
         nStartMasternodePayments = 1459519200; //Wed, 25 Jun 2014 20:36:16 GMT
     }
 
@@ -231,7 +231,7 @@ public:
         nPoolMaxTransactions = 2;
         strSporkKey = "0444cc30a6cdd35801b165c6420e0dcc2caceb8113fc8b3f48f09cb978d633b1487140e0763db24c3e344b20c64158d6481ba8c73c5997794461221056ee73a80e";
         strMasternodePaymentsPubKey = "0444cc30a6cdd35801b165c6420e0dcc2caceb8113fc8b3f48f09cb978d633b1487140e0763db24c3e344b20c64158d6481ba8c73c5997794461221056ee73a80e";
-        strRamsendPoolDummyAddress = "y1EZuxhhNMAUofTBEeLqGE1bJrpC2TWRNp";
+        strDarksendPoolDummyAddress = "y1EZuxhhNMAUofTBEeLqGE1bJrpC2TWRNp";
         nStartMasternodePayments = 1459519201; //Fri, 09 Jan 2015 21:05:58 GMT
     }
     const Checkpoints::CCheckpointData& Checkpoints() const 
