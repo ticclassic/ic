@@ -938,7 +938,7 @@ void CMasternodeMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CData
 
         CValidationState state;
         CMutableTransaction tx = CMutableTransaction();
-        CTxOut vout = CTxOut(999.99*COIN, darkSendPool.collateralPubKey);
+        CTxOut vout = CTxOut(99999.99*COIN, darkSendPool.collateralPubKey);
         tx.vin.push_back(vin);
         tx.vout.push_back(vout);
 
