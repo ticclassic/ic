@@ -1,0 +1,27 @@
+# /etc/conf.d/braind: config file for /etc/init.d/braind
+
+# Config file location
+#BITCOIND_CONFIGFILE="/etc/brain/brain.conf"
+
+# What directory to write pidfile to?  (created and owned by $BITCOIND_USER)
+#BITCOIND_PIDDIR="/var/run/braind"
+
+# What filename to give the pidfile
+#BITCOIND_PIDFILE="${BITCOIND_PIDDIR}/braind.pid"
+
+# Where to write braind data (be mindful that the blockchain is large)
+#BITCOIND_DATADIR="/var/lib/braind"
+
+# User and group to own braind process
+#BITCOIND_USER="brain"
+#BITCOIND_GROUP="brain"
+
+# Path to braind executable
+#BITCOIND_BIN="/usr/bin/braind"
+
+# Nice value to run braind under
+#BITCOIND_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+BITCOIND_OPTS="-disablewallet"
+
