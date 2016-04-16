@@ -10,10 +10,10 @@
 
 /**
  * Name of client reported in the 'version' message. Report the same name
- * for both braincoind and braincoin-qt, to make it harder for attackers to
+ * for both braind and brain-qt, to make it harder for attackers to
  * target servers or GUI users specifically.
  */
-const std::string CLIENT_NAME("Braincoin Core");
+const std::string CLIENT_NAME("Brain Core");
 
 /**
  * Client version number

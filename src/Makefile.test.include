@@ -1,7 +1,7 @@
-TESTS += test/test_braincoin test/bitcoin-util-test.py
-bin_PROGRAMS += test/test_braincoin
+TESTS += test/test_brain test/bitcoin-util-test.py
+bin_PROGRAMS += test/test_brain
 TEST_SRCDIR = test
-TEST_BINARY=test/test_braincoin$(EXEEXT)
+TEST_BINARY=test/test_brain$(EXEEXT)
 
 
 EXTRA_DIST += \
@@ -66,7 +66,7 @@ BITCOIN_TESTS =\
   test/sighash_tests.cpp \
   test/sigopcount_tests.cpp \
   test/skiplist_tests.cpp \
-  test/test_braincoin.cpp \
+  test/test_brain.cpp \
   test/timedata_tests.cpp \
   test/transaction_tests.cpp \
   test/uint256_tests.cpp \
@@ -80,18 +80,18 @@ BITCOIN_TESTS += \
   test/rpc_wallet_tests.cpp
 endif
 
-test_test_braincoin_SOURCES = $(BITCOIN_TESTS) $(JSON_TEST_FILES) $(RAW_TEST_FILES)
-test_test_braincoin_CPPFLAGS = $(BITCOIN_INCLUDES) -I$(builddir)/test/ $(TESTDEFS)
-test_test_braincoin_LDADD = $(LIBBITCOIN_SERVER) $(LIBBITCOIN_CLI) $(LIBBITCOIN_COMMON) $(LIBBITCOIN_UTIL) $(LIBBITCOIN_CRYPTO) $(LIBBITCOIN_UNIVALUE) $(LIBLEVELDB) $(LIBMEMENV) \
+test_test_brain_SOURCES = $(BITCOIN_TESTS) $(JSON_TEST_FILES) $(RAW_TEST_FILES)
+test_test_brain_CPPFLAGS = $(BITCOIN_INCLUDES) -I$(builddir)/test/ $(TESTDEFS)
+test_test_brain_LDADD = $(LIBBITCOIN_SERVER) $(LIBBITCOIN_CLI) $(LIBBITCOIN_COMMON) $(LIBBITCOIN_UTIL) $(LIBBITCOIN_CRYPTO) $(LIBBITCOIN_UNIVALUE) $(LIBLEVELDB) $(LIBMEMENV) \
   $(BOOST_LIBS) $(BOOST_UNIT_TEST_FRAMEWORK_LIB) $(LIBSECP256K1)
 if ENABLE_WALLET
-test_test_braincoin_LDADD += $(LIBBITCOIN_WALLET)
+test_test_brain_LDADD += $(LIBBITCOIN_WALLET)
 endif
 
-test_test_braincoin_LDADD += $(LIBBITCOIN_CONSENSUS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS)
-test_test_braincoin_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) -static
+test_test_brain_LDADD += $(LIBBITCOIN_CONSENSUS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS)
+test_test_brain_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) -static
 
-nodist_test_test_braincoin_SOURCES = $(GENERATED_TEST_FILES)
+nodist_test_test_brain_SOURCES = $(GENERATED_TEST_FILES)
 
 $(BITCOIN_TESTS): $(GENERATED_TEST_FILES)
 
@@ -99,13 +99,13 @@ CLEAN_BITCOIN_TEST = test/*.gcda test/*.gcno $(GENERATED_TEST_FILES)
 
 CLEANFILES += $(CLEAN_BITCOIN_TEST)
 
-braincoin_test: $(TEST_BINARY)
+brain_test: $(TEST_BINARY)
 
-braincoin_test_check: $(TEST_BINARY) FORCE
+brain_test_check: $(TEST_BINARY) FORCE
 	$(MAKE) check-TESTS TESTS=$^
 
-braincoin_test_clean : FORCE
-	rm -f $(CLEAN_BITCOIN_TEST) $(test_test_braincoin_OBJECTS) $(TEST_BINARY)
+brain_test_clean : FORCE
+	rm -f $(CLEAN_BITCOIN_TEST) $(test_test_brain_OBJECTS) $(TEST_BINARY)
 
 check-local:
 	$(AM_V_at)$(MAKE) $(AM_MAKEFLAGS) -C secp256k1 check

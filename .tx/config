@@ -1,7 +1,7 @@
 [main]
 host = https://www.transifex.com
 
-[braincoin.qt-translation-010x]
-file_filter = src/qt/locale/braincoin_<lang>.ts
-source_file = src/qt/locale/braincoin_en.ts
+[brain.qt-translation-010x]
+file_filter = src/qt/locale/brain_<lang>.ts
+source_file = src/qt/locale/brain_en.ts
 source_lang = en

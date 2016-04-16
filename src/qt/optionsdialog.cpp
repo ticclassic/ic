@@ -3,7 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include "config/braincoin-config.h"
+#include "config/brain-config.h"
 #endif
 
 #include "optionsdialog.h"
@@ -82,8 +82,8 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     }
     
     /* Theme selector */
-    ui->theme->addItem(QString("BRAINCOIN-blue"), QVariant("drkblue"));
-    ui->theme->addItem(QString("BRAINCOIN-traditional"), QVariant("trad"));
+    ui->theme->addItem(QString("BRAIN-blue"), QVariant("drkblue"));
+    ui->theme->addItem(QString("BRAIN-traditional"), QVariant("trad"));
 
     
     /* Language selector */

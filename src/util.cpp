@@ -1,11 +1,11 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2014-2015 The Braincoin developers
+// Copyright (c) 2014-2015 The Brain developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include "config/braincoin-config.h"
+#include "config/brain-config.h"
 #endif
 
 #include "util.h"
@@ -103,7 +103,7 @@ namespace boost {
 
 using namespace std;
 
-//Braincoin only features
+//Brain only features
 bool fMasterNode = false;
 string strMasterNodePrivKey = "";
 string strMasterNodeAddr = "";
@@ -232,8 +232,8 @@ bool LogAcceptCategory(const char* category)
             const vector<string>& categories = mapMultiArgs["-debug"];
             ptrCategory.reset(new set<string>(categories.begin(), categories.end()));
             // thread_specific_ptr automatically deletes the set when the thread ends.
-            // "braincoin" is a composite category enabling all Braincoin-related debug output
-            if(ptrCategory->count(string("braincoin"))) {
+            // "brain" is a composite category enabling all Brain-related debug output
+            if(ptrCategory->count(string("brain"))) {
                 ptrCategory->insert(string("darksend"));
                 ptrCategory->insert(string("instantx"));
                 ptrCategory->insert(string("masternode"));
@@ -396,7 +396,7 @@ static std::string FormatException(std::exception* pex, const char* pszThread)
     char pszModule[MAX_PATH] = "";
     GetModuleFileNameA(NULL, pszModule, sizeof(pszModule));
 #else
-    const char* pszModule = "braincoin";
+    const char* pszModule = "brain";
 #endif
     if (pex)
         return strprintf(
@@ -417,13 +417,13 @@ void PrintExceptionContinue(std::exception* pex, const char* pszThread)
 boost::filesystem::path GetDefaultDataDir()
 {
     namespace fs = boost::filesystem;
-    // Windows < Vista: C:\Documents and Settings\Username\Application Data\Braincoin
-    // Windows >= Vista: C:\Users\Username\AppData\Roaming\Braincoin
-    // Mac: ~/Library/Application Support/Braincoin
-    // Unix: ~/.braincoin
+    // Windows < Vista: C:\Documents and Settings\Username\Application Data\Brain
+    // Windows >= Vista: C:\Users\Username\AppData\Roaming\Brain
+    // Mac: ~/Library/Application Support/Brain
+    // Unix: ~/.brain
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "Braincoin";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "Brain";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -435,10 +435,10 @@ boost::filesystem::path GetDefaultDataDir()
     // Mac
     pathRet /= "Library/Application Support";
     TryCreateDirectory(pathRet);
-    return pathRet / "Braincoin";
+    return pathRet / "Brain";
 #else
     // Unix
-    return pathRet / ".braincoin";
+    return pathRet / ".brain";
 #endif
 #endif
 }
@@ -485,7 +485,7 @@ void ClearDatadirCache()
 
 boost::filesystem::path GetConfigFile()
 {
-    boost::filesystem::path pathConfigFile(GetArg("-conf", "braincoin.conf"));
+    boost::filesystem::path pathConfigFile(GetArg("-conf", "brain.conf"));
     if (!pathConfigFile.is_complete())
         pathConfigFile = GetDataDir(false) / pathConfigFile;
 
@@ -504,7 +504,7 @@ void ReadConfigFile(map<string, string>& mapSettingsRet,
 {
     boost::filesystem::ifstream streamConfig(GetConfigFile());
     if (!streamConfig.good()){
-        // Create empty braincoin.conf if it does not excist
+        // Create empty brain.conf if it does not excist
         FILE* configFile = fopen(GetConfigFile().string().c_str(), "a");
         if (configFile != NULL)
             fclose(configFile);
@@ -516,7 +516,7 @@ void ReadConfigFile(map<string, string>& mapSettingsRet,
 
     for (boost::program_options::detail::config_file_iterator it(streamConfig, setOptions), end; it != end; ++it)
     {
-        // Don't overwrite existing settings so command line settings override braincoin.conf
+        // Don't overwrite existing settings so command line settings override brain.conf
         string strKey = string("-") + it->string_key;
         if (mapSettingsRet.count(strKey) == 0)
         {
@@ -533,7 +533,7 @@ void ReadConfigFile(map<string, string>& mapSettingsRet,
 #ifndef WIN32
 boost::filesystem::path GetPidFile()
 {
-    boost::filesystem::path pathPidFile(GetArg("-pid", "braincoind.pid"));
+    boost::filesystem::path pathPidFile(GetArg("-pid", "braind.pid"));
     if (!pathPidFile.is_complete()) pathPidFile = GetDataDir() / pathPidFile;
     return pathPidFile;
 }

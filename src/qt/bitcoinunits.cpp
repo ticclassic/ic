@@ -1,5 +1,5 @@
 // Copyright (c) 2011-2014 The Bitcoin developers
-// Copyright (c) 2014-2015 The Braincoin developers
+// Copyright (c) 2014-2015 The Brain developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -19,9 +19,9 @@ BitcoinUnits::BitcoinUnits(QObject *parent):
 QList<BitcoinUnits::Unit> BitcoinUnits::availableUnits()
 {
     QList<BitcoinUnits::Unit> unitlist;
-    unitlist.append(BRAINCOIN);
-    unitlist.append(mBRAINCOIN);
-    unitlist.append(uBRAINCOIN);
+    unitlist.append(BRAIN);
+    unitlist.append(mBRAIN);
+    unitlist.append(uBRAIN);
     unitlist.append(duffs);
     return unitlist;
 }
@@ -30,9 +30,9 @@ bool BitcoinUnits::valid(int unit)
 {
     switch(unit)
     {
-    case BRAINCOIN:
-    case mBRAINCOIN:
-    case uBRAINCOIN:
+    case BRAIN:
+    case mBRAIN:
+    case uBRAIN:
     case duffs:
         return true;
     default:
@@ -44,9 +44,9 @@ QString BitcoinUnits::id(int unit)
 {
     switch(unit)
     {
-        case BRAINCOIN: return QString("braincoin");
-        case mBRAINCOIN: return QString("mbraincoin");
-        case uBRAINCOIN: return QString::fromUtf8("ubraincoin");
+        case BRAIN: return QString("brain");
+        case mBRAIN: return QString("mbrain");
+        case uBRAIN: return QString::fromUtf8("ubrain");
         case duffs: return QString("duffs");
         default: return QString("???");
     }
@@ -58,9 +58,9 @@ QString BitcoinUnits::name(int unit)
     {
         switch(unit)
         {
-            case BRAINCOIN: return QString("BRAINCOIN");
-            case mBRAINCOIN: return QString("mBRAINCOIN");
-            case uBRAINCOIN: return QString::fromUtf8("μBRAINCOIN");
+            case BRAIN: return QString("BRAIN");
+            case mBRAIN: return QString("mBRAIN");
+            case uBRAIN: return QString::fromUtf8("μBRAIN");
             case duffs: return QString("duffs");
             default: return QString("???");
         }
@@ -69,9 +69,9 @@ QString BitcoinUnits::name(int unit)
     {
         switch(unit)
         {
-            case BRAINCOIN: return QString("tBRAINCOIN");
-            case mBRAINCOIN: return QString("mtBRAINCOIN");
-            case uBRAINCOIN: return QString::fromUtf8("μtBRAINCOIN");
+            case BRAIN: return QString("tBRAIN");
+            case mBRAIN: return QString("mtBRAIN");
+            case uBRAIN: return QString::fromUtf8("μtBRAIN");
             case duffs: return QString("tduffs");
             default: return QString("???");
         }
@@ -84,10 +84,10 @@ QString BitcoinUnits::description(int unit)
     {
         switch(unit)
         {
-            case BRAINCOIN: return QString("Braincoin");
-            case mBRAINCOIN: return QString("Milli-Braincoin (1 / 1" THIN_SP_UTF8 "000)");
-            case uBRAINCOIN: return QString("Micro-Braincoin (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
-            case duffs: return QString("Ten Nano-Braincoin (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case BRAIN: return QString("Brain");
+            case mBRAIN: return QString("Milli-Brain (1 / 1" THIN_SP_UTF8 "000)");
+            case uBRAIN: return QString("Micro-Brain (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case duffs: return QString("Ten Nano-Brain (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
             default: return QString("???");
         }
     }
@@ -95,10 +95,10 @@ QString BitcoinUnits::description(int unit)
     {
         switch(unit)
         {
-            case BRAINCOIN: return QString("TestBraincoins");
-            case mBRAINCOIN: return QString("Milli-TestBraincoin (1 / 1" THIN_SP_UTF8 "000)");
-            case uBRAINCOIN: return QString("Micro-TestBraincoin (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
-            case duffs: return QString("Ten Nano-TestBraincoin (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case BRAIN: return QString("TestBrains");
+            case mBRAIN: return QString("Milli-TestBrain (1 / 1" THIN_SP_UTF8 "000)");
+            case uBRAIN: return QString("Micro-TestBrain (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case duffs: return QString("Ten Nano-TestBrain (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
             default: return QString("???");
         }
     }
@@ -108,9 +108,9 @@ qint64 BitcoinUnits::factor(int unit)
 {
     switch(unit)
     {
-    case BRAINCOIN:  return 100000000;
-    case mBRAINCOIN: return 100000;
-    case uBRAINCOIN: return 100;
+    case BRAIN:  return 100000000;
+    case mBRAIN: return 100000;
+    case uBRAIN: return 100;
     case duffs: return 1;
     default:   return 100000000;
     }
@@ -120,9 +120,9 @@ int BitcoinUnits::decimals(int unit)
 {
     switch(unit)
     {
-    case BRAINCOIN: return 8;
-    case mBRAINCOIN: return 5;
-    case uBRAINCOIN: return 2;
+    case BRAIN: return 8;
+    case mBRAIN: return 5;
+    case uBRAIN: return 2;
     case duffs: return 0;
     default: return 0;
     }

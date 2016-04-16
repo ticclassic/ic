@@ -9,8 +9,8 @@
 #include <vector>
 
 /**
- * CBaseChainParams defines the base parameters (shared between braincoin-cli and braincoind)
- * of a given instance of the Braincoin system.
+ * CBaseChainParams defines the base parameters (shared between brain-cli and braind)
+ * of a given instance of the Brain system.
  */
 class CBaseChainParams
 {

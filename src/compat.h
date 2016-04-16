@@ -7,7 +7,7 @@
 #define BITCOIN_COMPAT_H
 
 #if defined(HAVE_CONFIG_H)
-#include "config/braincoin-config.h"
+#include "config/brain-config.h"
 #endif
 
 #ifdef WIN32

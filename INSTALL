@@ -1,4 +1,4 @@
-Building Braincoin
+Building Brain
 
 Use the autogen script to prepare the build environment.
 
@@ -7,10 +7,10 @@ Use the autogen script to prepare the build environment.
     make
 
 Precompiled binaries are available at github, see
-https://github.com/braincoinproject/braincoin-binaries
+https://github.com/brainproject/brain-binaries
 
 Always verify the signatures and checksums.
 
-See doc/build-*.md for instructions on building braincoind,
+See doc/build-*.md for instructions on building braind,
 the intended-for-services, no-graphical-interface, reference
-implementation of Braincoin.
+implementation of Brain.

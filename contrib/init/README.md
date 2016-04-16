@@ -1,9 +1,9 @@
 Sample configuration files for:
 
-SystemD: braincoind.service
-Upstart: braincoind.conf
-OpenRC:  braincoind.openrc
-         braincoind.openrcconf
+SystemD: braind.service
+Upstart: braind.conf
+OpenRC:  braind.openrc
+         braind.openrcconf
 
 have been made available to assist packagers in creating node packages here.
 

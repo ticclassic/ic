@@ -90,7 +90,7 @@ public slots:
     void showPeers();
     /** Switch to wallet-repair tab and show */
     void showRepair();
-    /** Open external (default) editor with braincoin.conf */
+    /** Open external (default) editor with brain.conf */
     void showConfEditor();	
     /** Handle selection of peer in peers list */
     void peerSelected(const QItemSelection &selected, const QItemSelection &deselected);

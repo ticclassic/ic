@@ -60,15 +60,15 @@ bin_PROGRAMS =
 TESTS =
 
 if BUILD_BITCOIND
-  bin_PROGRAMS += braincoind
+  bin_PROGRAMS += braind
 endif
 
 if BUILD_BITCOIN_UTILS
-  bin_PROGRAMS += braincoin-cli braincoin-tx
+  bin_PROGRAMS += brain-cli brain-tx
 endif
 
 .PHONY: FORCE
-# braincoin core #
+# brain core #
 BITCOIN_CORE_H = \
   activemasternode.h \
   addrman.h \
@@ -170,7 +170,7 @@ obj/build.h: FORCE
 	  $(abs_top_srcdir)
 libbitcoin_util_a-clientversion.$(OBJEXT): obj/build.h
 
-# server: shared between braincoind and braincoin-qt
+# server: shared between braind and brain-qt
 libbitcoin_server_a_CPPFLAGS = $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS)
 libbitcoin_server_a_SOURCES = \
   addrman.cpp \
@@ -202,7 +202,7 @@ libbitcoin_server_a_SOURCES = \
   $(JSON_H) \
   $(BITCOIN_CORE_H)
 
-# wallet: shared between braincoind and braincoin-qt, but only linked
+# wallet: shared between braind and brain-qt, but only linked
 # when wallet enabled
 libbitcoin_wallet_a_CPPFLAGS = $(BITCOIN_INCLUDES)
 libbitcoin_wallet_a_SOURCES = \
@@ -278,7 +278,7 @@ univalue_libbitcoin_univalue_a_SOURCES = \
   univalue/univalue_escapes.h \
   univalue/univalue.h
 
-# common: shared between braincoind, and braincoin-qt and non-server tools
+# common: shared between braind, and brain-qt and non-server tools
 libbitcoin_common_a_CPPFLAGS = $(BITCOIN_INCLUDES)
 libbitcoin_common_a_SOURCES = \
   allocators.cpp \
@@ -333,7 +333,7 @@ libbitcoin_util_a_SOURCES += compat/glibc_compat.cpp
 libbitcoin_util_a_SOURCES += compat/glibcxx_compat.cpp
 endif
 
-# cli: shared between braincoin-cli and braincoin-qt
+# cli: shared between brain-cli and brain-qt
 libbitcoin_cli_a_CPPFLAGS = $(BITCOIN_INCLUDES)
 libbitcoin_cli_a_SOURCES = \
   rpcclient.cpp \
@@ -343,7 +343,7 @@ nodist_libbitcoin_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
 # bitcoind binary #
-braincoind_LDADD = \
+braind_LDADD = \
   $(LIBBITCOIN_SERVER) \
   $(LIBBITCOIN_COMMON) \
   $(LIBBITCOIN_UNIVALUE) \
@@ -354,35 +354,35 @@ braincoind_LDADD = \
   $(LIBSECP256K1)
 
 if ENABLE_WALLET
-braincoind_LDADD += libbitcoin_wallet.a
+braind_LDADD += libbitcoin_wallet.a
 endif
-braincoind_SOURCES = braincoind.cpp
+braind_SOURCES = braind.cpp
 #
 
 if TARGET_WINDOWS
-braincoind_SOURCES += braincoind-res.rc
+braind_SOURCES += braind-res.rc
 endif
 
-braincoind_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS)
-braincoind_CPPFLAGS = $(BITCOIN_INCLUDES)
-braincoind_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+braind_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS)
+braind_CPPFLAGS = $(BITCOIN_INCLUDES)
+braind_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
-# braincoin-cli binary #
-braincoin_cli_LDADD = \
+# brain-cli binary #
+brain_cli_LDADD = \
   $(LIBBITCOIN_CLI) \
   $(LIBBITCOIN_UTIL) \
   $(BOOST_LIBS) \
   $(SSL_LIBS) \
   $(CRYPTO_LIBS)
 
-braincoin_cli_SOURCES = \
-  braincoin-cli.cpp
+brain_cli_SOURCES = \
+  brain-cli.cpp
 
-braincoin_cli_CPPFLAGS = $(BITCOIN_INCLUDES)
+brain_cli_CPPFLAGS = $(BITCOIN_INCLUDES)
 #
 
-# braincoin-tx binary #
-braincoin_tx_LDADD = \
+# brain-tx binary #
+brain_tx_LDADD = \
   $(LIBBITCOIN_UNIVALUE) \
   $(LIBBITCOIN_COMMON) \
   $(LIBBITCOIN_UTIL) \
@@ -391,15 +391,15 @@ braincoin_tx_LDADD = \
   $(BOOST_LIBS) \
   $(CRYPTO_LIBS)
 
-braincoin_tx_SOURCES = braincoin-tx.cpp
-braincoin_tx_CPPFLAGS = $(BITCOIN_INCLUDES)
+brain_tx_SOURCES = brain-tx.cpp
+brain_tx_CPPFLAGS = $(BITCOIN_INCLUDES)
 #
-braincoin_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+brain_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-braincoin_cli_SOURCES += braincoin-cli-res.rc
+brain_cli_SOURCES += brain-cli-res.rc
 endif
-braincoin_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+brain_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if BUILD_BITCOIN_LIBS
 include_HEADERS = script/bitcoinconsensus.h

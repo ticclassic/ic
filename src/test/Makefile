@@ -1,6 +1,6 @@
 all:
-	$(MAKE) -C .. braincoin_test
+	$(MAKE) -C .. brain_test
 clean:
-	$(MAKE) -C .. braincoin_test_clean
+	$(MAKE) -C .. brain_test_clean
 check:
-	$(MAKE) -C .. braincoin_test_check
+	$(MAKE) -C .. brain_test_check

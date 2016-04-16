@@ -3,7 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include "config/braincoin-config.h"
+#include "config/brain-config.h"
 #endif
 
 #include <cstddef>

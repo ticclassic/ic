@@ -17,7 +17,7 @@
   <string>APPL</string>
 
   <key>CFBundleGetInfoString</key>
-  <string>@CLIENT_VERSION_MAJOR@.@CLIENT_VERSION_MINOR@.@CLIENT_VERSION_REVISION@, Copyright © 2009-@COPYRIGHT_YEAR@ The Bitcoin Core developers, 2014-@COPYRIGHT_YEAR@ The Braincoin Core developers</string>
+  <string>@CLIENT_VERSION_MAJOR@.@CLIENT_VERSION_MINOR@.@CLIENT_VERSION_REVISION@, Copyright © 2009-@COPYRIGHT_YEAR@ The Bitcoin Core developers, 2014-@COPYRIGHT_YEAR@ The Brain Core developers</string>
 
   <key>CFBundleShortVersionString</key>
   <string>@CLIENT_VERSION_MAJOR@.@CLIENT_VERSION_MINOR@.@CLIENT_VERSION_REVISION@</string>
@@ -29,10 +29,10 @@
   <string>????</string>
 
   <key>CFBundleExecutable</key>
-  <string>Braincoin-Qt</string>
+  <string>Brain-Qt</string>
 
   <key>CFBundleIdentifier</key>
-  <string>io.axelxod.Braincoin-Qt</string>
+  <string>io.axelxod.Brain-Qt</string>
 
   <key>CFBundleURLTypes</key>
   <array>
@@ -40,10 +40,10 @@
       <key>CFBundleTypeRole</key>
       <string>Editor</string>
       <key>CFBundleURLName</key>
-      <string>io.braincoin.BraincoinPayment</string>
+      <string>io.brain.BrainPayment</string>
       <key>CFBundleURLSchemes</key>
       <array>
-        <string>braincoin</string>
+        <string>brain</string>
       </array>
     </dict>
   </array>
@@ -52,9 +52,9 @@
   <array>
     <dict>
       <key>UTTypeIdentifier</key>
-      <string>io.braincoin.paymentrequest</string>
+      <string>io.brain.paymentrequest</string>
       <key>UTTypeDescription</key>
-      <string>Braincoin payment request</string>
+      <string>Brain payment request</string>
       <key>UTTypeConformsTo</key>
       <array>
         <string>public.data</string>
@@ -62,7 +62,7 @@
       <key>UTTypeTagSpecification</key>
       <dict>
         <key>public.mime-type</key>
-        <string>application/x-braincoin-payment-request</string>
+        <string>application/x-brain-payment-request</string>
         <key>public.filename-extension</key>
         <array>
           <string>axelxodmentrequest</string>
@@ -78,7 +78,7 @@
       <string>Editor</string>
       <key>LSItemContentTypes</key>
       <array>
-        <string>io.braincoin.paymentrequest</string>
+        <string>io.brain.paymentrequest</string>
       </array>
       <key>LSHandlerRank</key>
       <string>Owner</string>

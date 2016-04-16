@@ -13,7 +13,7 @@
 - (NSString *)__bundleIdentifier
 {
     if (self == [NSBundle mainBundle]) {
-        return @"io.axelxod.Braincoin-Qt";
+        return @"io.axelxod.Brain-Qt";
     } else {
         return [self __bundleIdentifier];
     }

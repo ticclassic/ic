@@ -93,7 +93,7 @@ public:
 };
 
 /**
- * Braincoin RPC command dispatcher.
+ * Brain RPC command dispatcher.
  */
 class CRPCTable
 {

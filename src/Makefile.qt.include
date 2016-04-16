@@ -1,24 +1,24 @@
-bin_PROGRAMS += qt/braincoin-qt
+bin_PROGRAMS += qt/brain-qt
 EXTRA_LIBRARIES += qt/libbitcoinqt.a
 
-# braincoin qt core #
+# brain qt core #
 QT_TS = \
-  qt/locale/braincoin_bg.ts \
-  qt/locale/braincoin_de.ts \
-  qt/locale/braincoin_en.ts \
-  qt/locale/braincoin_es.ts \
-  qt/locale/braincoin_fi.ts \
-  qt/locale/braincoin_fr.ts \
-  qt/locale/braincoin_it.ts \
-  qt/locale/braincoin_ja.ts \
-  qt/locale/braincoin_pl.ts \
-  qt/locale/braincoin_pt.ts \
-  qt/locale/braincoin_ru.ts \
-  qt/locale/braincoin_sk.ts \
-  qt/locale/braincoin_sv.ts \
-  qt/locale/braincoin_vi.ts \
-  qt/locale/braincoin_zh_CN.ts \
-  qt/locale/braincoin_zh_TW.ts
+  qt/locale/brain_bg.ts \
+  qt/locale/brain_de.ts \
+  qt/locale/brain_en.ts \
+  qt/locale/brain_es.ts \
+  qt/locale/brain_fi.ts \
+  qt/locale/brain_fr.ts \
+  qt/locale/brain_it.ts \
+  qt/locale/brain_ja.ts \
+  qt/locale/brain_pl.ts \
+  qt/locale/brain_pt.ts \
+  qt/locale/brain_ru.ts \
+  qt/locale/brain_sk.ts \
+  qt/locale/brain_sv.ts \
+  qt/locale/brain_vi.ts \
+  qt/locale/brain_zh_CN.ts \
+  qt/locale/brain_zh_TW.ts
 
 QT_FORMS_UI = \
   qt/forms/addressbookpage.ui \
@@ -90,16 +90,16 @@ BITCOIN_MM = \
   qt/macnotificationhandler.mm
 
 QT_MOC = \
-  qt/braincoin.moc \
+  qt/brain.moc \
   qt/bitcoinamountfield.moc \
   qt/intro.moc \
   qt/overviewpage.moc \
   qt/rpcconsole.moc
 
-QT_QRC_CPP = qt/qrc_braincoin.cpp
-QT_QRC = qt/braincoin.qrc
-QT_QRC_LOCALE_CPP = qt/qrc_braincoin_locale.cpp
-QT_QRC_LOCALE = qt/braincoin_locale.qrc
+QT_QRC_CPP = qt/qrc_brain.cpp
+QT_QRC = qt/brain.qrc
+QT_QRC_LOCALE_CPP = qt/qrc_brain_locale.cpp
+QT_QRC_LOCALE = qt/brain_locale.qrc
 
 PROTOBUF_CC = qt/paymentrequest.pb.cc
 PROTOBUF_H = qt/paymentrequest.pb.h
@@ -207,13 +207,13 @@ RES_ICONS = \
   qt/res/icons/tx_input.png \
   qt/res/icons/tx_output.png \
   qt/res/icons/tx_mined.png \
-  qt/res/icons/unit_braincoin.png \
-  qt/res/icons/unit_mbraincoin.png \
-  qt/res/icons/unit_ubraincoin.png \
+  qt/res/icons/unit_brain.png \
+  qt/res/icons/unit_mbrain.png \
+  qt/res/icons/unit_ubrain.png \
   qt/res/icons/unit_duffs.png \
-  qt/res/icons/unit_tbraincoin.png \
-  qt/res/icons/unit_tmbraincoin.png \
-  qt/res/icons/unit_tubraincoin.png \
+  qt/res/icons/unit_tbrain.png \
+  qt/res/icons/unit_tmbrain.png \
+  qt/res/icons/unit_tubrain.png \
   qt/res/icons/unit_tduffs.png
 
 BITCOIN_QT_CPP = \
@@ -273,7 +273,7 @@ RES_IMAGES = \
   qt/res/images/about.png \
   qt/res/images/splash.png \
   qt/res/images/splash_testnet.png \
-  qt/res/images/braincoin_logo_horizontal.png \
+  qt/res/images/brain_logo_horizontal.png \
   qt/res/images/drkblue_downArrow.png \
   qt/res/images/drkblue_downArrow_small.png \
   qt/res/images/drkblue_upArrow_small.png \
@@ -288,7 +288,7 @@ RES_CSS = \
 
 RES_MOVIES = $(wildcard qt/res/movies/spinner-*.png)
 
-BITCOIN_RC = qt/res/braincoin-qt-res.rc
+BITCOIN_RC = qt/res/brain-qt-res.rc
 
 BITCOIN_QT_INCLUDES = -I$(builddir)/qt -I$(srcdir)/qt -I$(srcdir)/qt/forms \
   -I$(builddir)/qt/forms
@@ -308,65 +308,65 @@ QT_FORMS_H=$(join $(dir $(QT_FORMS_UI)),$(addprefix ui_, $(notdir $(QT_FORMS_UI:
 # Most files will depend on the forms and moc files as includes. Generate them
 # before anything else.
 $(QT_MOC): $(QT_FORMS_H)
-$(qt_libbitcoinqt_a_OBJECTS) $(qt_braincoin_qt_OBJECTS) : | $(QT_MOC)
+$(qt_libbitcoinqt_a_OBJECTS) $(qt_brain_qt_OBJECTS) : | $(QT_MOC)
 
 #Generating these with a half-written protobuf header leads to wacky results.
 #This makes sure it's done.
 $(QT_MOC): $(PROTOBUF_H)
 $(QT_MOC_CPP): $(PROTOBUF_H)
 
-# braincoin-qt binary #
-qt_braincoin_qt_CPPFLAGS = $(BITCOIN_INCLUDES) $(BITCOIN_QT_INCLUDES) \
+# brain-qt binary #
+qt_brain_qt_CPPFLAGS = $(BITCOIN_INCLUDES) $(BITCOIN_QT_INCLUDES) \
   $(QT_INCLUDES) $(PROTOBUF_CFLAGS) $(QR_CFLAGS)
 
-qt_braincoin_qt_SOURCES = qt/braincoin.cpp
+qt_brain_qt_SOURCES = qt/brain.cpp
 if TARGET_DARWIN
-  qt_braincoin_qt_SOURCES += $(BITCOIN_MM)
+  qt_brain_qt_SOURCES += $(BITCOIN_MM)
 endif
 if TARGET_WINDOWS
-  qt_braincoin_qt_SOURCES += $(BITCOIN_RC)
+  qt_brain_qt_SOURCES += $(BITCOIN_RC)
 endif
-qt_braincoin_qt_LDADD = qt/libbitcoinqt.a $(LIBBITCOIN_SERVER)
+qt_brain_qt_LDADD = qt/libbitcoinqt.a $(LIBBITCOIN_SERVER)
 if ENABLE_WALLET
-qt_braincoin_qt_LDADD += $(LIBBITCOIN_WALLET)
+qt_brain_qt_LDADD += $(LIBBITCOIN_WALLET)
 endif
-qt_braincoin_qt_LDADD += $(LIBBITCOIN_CLI) $(LIBBITCOIN_COMMON) $(LIBBITCOIN_UTIL) $(LIBBITCOIN_CRYPTO) $(LIBBITCOIN_UNIVALUE) $(LIBLEVELDB) $(LIBMEMENV) \
+qt_brain_qt_LDADD += $(LIBBITCOIN_CLI) $(LIBBITCOIN_COMMON) $(LIBBITCOIN_UTIL) $(LIBBITCOIN_CRYPTO) $(LIBBITCOIN_UNIVALUE) $(LIBLEVELDB) $(LIBMEMENV) \
   $(BOOST_LIBS) $(QT_LIBS) $(QT_DBUS_LIBS) $(QR_LIBS) $(PROTOBUF_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(LIBSECP256K1)
-qt_braincoin_qt_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(QT_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
-qt_braincoin_qt_LIBTOOLFLAGS = --tag CXX
+qt_brain_qt_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(QT_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+qt_brain_qt_LIBTOOLFLAGS = --tag CXX
 
 #locale/foo.ts -> locale/foo.qm
 QT_QM=$(QT_TS:.ts=.qm)
 
 .SECONDARY: $(QT_QM)
 
-qt/braincoinstrings.cpp: $(libbitcoin_server_a_SOURCES) $(libbitcoin_wallet_a_SOURCES) $(libbitcoin_common_a_SOURCES)
+qt/brainstrings.cpp: $(libbitcoin_server_a_SOURCES) $(libbitcoin_wallet_a_SOURCES) $(libbitcoin_common_a_SOURCES)
 	@test -n $(XGETTEXT) || echo "xgettext is required for updating translations"
 	$(AM_V_GEN) cd $(srcdir); XGETTEXT=$(XGETTEXT) ../share/qt/extract_strings_qt.py $^
 
-translate: qt/braincoinstrings.cpp $(QT_FORMS_UI) $(QT_FORMS_UI) $(BITCOIN_QT_CPP) $(BITCOIN_QT_H) $(BITCOIN_MM)
+translate: qt/brainstrings.cpp $(QT_FORMS_UI) $(QT_FORMS_UI) $(BITCOIN_QT_CPP) $(BITCOIN_QT_H) $(BITCOIN_MM)
 	@test -n $(LUPDATE) || echo "lupdate is required for updating translations"
-	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(LUPDATE) $^ -locations relative -no-obsolete -ts qt/locale/braincoin_en.ts
+	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(LUPDATE) $^ -locations relative -no-obsolete -ts qt/locale/brain_en.ts
 
 $(QT_QRC_LOCALE_CPP): $(QT_QRC_LOCALE) $(QT_QM)
 	@test -f $(RCC)
 	@test -f $(@D)/$(<F) || cp -f $< $(@D)
-	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name braincoin_locale $(@D)/$(<F) | \
+	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name brain_locale $(@D)/$(<F) | \
 	  $(SED) -e '/^\*\*.*Created:/d' -e '/^\*\*.*by:/d' > $@
 
 $(QT_QRC_CPP): $(QT_QRC) $(QT_FORMS_H) $(RES_ICONS) $(RES_IMAGES) $(RES_CSS) $(RES_MOVIES) $(PROTOBUF_H)
 	@test -f $(RCC)
-	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name braincoin $< | \
+	$(AM_V_GEN) QT_SELECT=$(QT_SELECT) $(RCC) -name brain $< | \
 	  $(SED) -e '/^\*\*.*Created:/d' -e '/^\*\*.*by:/d' > $@
 
 CLEAN_QT = $(nodist_qt_libbitcoinqt_a_SOURCES) $(QT_QM) $(QT_FORMS_H) qt/*.gcda qt/*.gcno
 
 CLEANFILES += $(CLEAN_QT)
 
-braincoin_qt_clean: FORCE
-	rm -f $(CLEAN_QT) $(qt_libbitcoinqt_a_OBJECTS) $(qt_braincoin_qt_OBJECTS) qt/braincoin-qt$(EXEEXT) $(LIBBITCOINQT)
+brain_qt_clean: FORCE
+	rm -f $(CLEAN_QT) $(qt_libbitcoinqt_a_OBJECTS) $(qt_brain_qt_OBJECTS) qt/brain-qt$(EXEEXT) $(LIBBITCOINQT)
 
-braincoin_qt : qt/braincoin-qt$(EXEEXT)
+brain_qt : qt/brain-qt$(EXEEXT)
 
 ui_%.h: %.ui
 	@test -f $(UIC)
