@@ -15,7 +15,7 @@
 
 //! These need to be macros, as clientversion.cpp's and brain*-res.rc's voodoo requires it
 #define CLIENT_VERSION_MAJOR 1
-#define CLIENT_VERSION_MINOR 3
+#define CLIENT_VERSION_MINOR 4
 #define CLIENT_VERSION_REVISION 2
 #define CLIENT_VERSION_BUILD 8
 
