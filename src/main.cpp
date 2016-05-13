@@ -1543,7 +1543,7 @@ int64_t GetBlockValue(int nBits, int nHeight, const CAmount& nFees)
 
     int64_t nSubsidy = 0;
     if(nHeight >= 5465) {
-        if((nHeight >= 19000 && dDiff > 75) || nHeight >= 24000) { // GPU/ASIC difficulty calc
+        if((nHeight >= 23000 && dDiff > 75) || nHeight >= 24000) { // GPU/ASIC difficulty calc
             // 2222222/(((x+2600)/9)^2)
             nSubsidy = (2222222.0 / (pow((dDiff+2600.0)/9.0,2.0)));
             if (nSubsidy > 25) nSubsidy = 25;

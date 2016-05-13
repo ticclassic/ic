@@ -1,5 +1,5 @@
 ---
-name: "brain-win-1.4.2.8"
+name: "brain-win-1.5.0.0"
 enable_cache: true
 suites:
 - "precise"
