@@ -9,8 +9,8 @@
 #include <vector>
 
 /**
- * CBaseChainParams defines the base parameters (shared between brain-cli and braind)
- * of a given instance of the Brain system.
+ * CBaseChainParams defines the base parameters (shared between putic-cli and puticd)
+ * of a given instance of the Putic system.
  */
 class CBaseChainParams
 {

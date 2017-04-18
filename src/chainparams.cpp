@@ -1,6 +1,6 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2014-2015 The brain developers
+// Copyright (c) 2014-2015 The putic developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -56,11 +56,11 @@ static void convertSeed6(std::vector<CAddress> &vSeedsOut, const SeedSpec6 *data
 
 static Checkpoints::MapCheckpoints mapCheckpoints =
         boost::assign::map_list_of
-        (  0, uint256("0x00000ffb5418e4197815b6f582dc639fb42ac6fe98baa24e3fca431e2291b5aa"))
+        (  0, uint256("0x00000b5425f8f17435355326cc48edb3bbfbf481b7cd7e80dbc804dde8fca1e7"))
         ;
 static const Checkpoints::CCheckpointData data = {
         &mapCheckpoints,
-        1459519200, // * UNIX timestamp of last checkpoint block
+        1489104000, // * UNIX timestamp of last checkpoint block
         0,     // * total number of transactions between genesis and last checkpoint
                     //   (the tx=... number in the SetBestChain debug.log lines)
         2800        // * estimated number of transactions per day after checkpoint
@@ -68,18 +68,18 @@ static const Checkpoints::CCheckpointData data = {
 
 static Checkpoints::MapCheckpoints mapCheckpointsTestnet =
         boost::assign::map_list_of
-        ( 0, uint256("00000e0a54ea7a8baabb1934c1d59a939f177257fbef00738daf8d92be8f8a5c"))
+        ( 0, uint256("00000426b08e1717566097fcaedd0d971ae90b1a5b8dd646a3801953a36ff192"))
         ;
 static const Checkpoints::CCheckpointData dataTestnet = {
         &mapCheckpointsTestnet,
-        1459519201,
+        1489104001,
         0,
         500
     };
 
 static Checkpoints::MapCheckpoints mapCheckpointsRegtest =
         boost::assign::map_list_of
-        ( 0, uint256("0x520b7f84cec8f7cdc3cbc0b574e195b4d867a45a2b23cff855eabd0cea30c647"))
+        ( 0, uint256("0x3083171569ec37ea400c2bc4ebacc18b18de5811a99fe75040cad6811e5e27bc"))
         ;
 static const Checkpoints::CCheckpointData dataRegtest = {
         &mapCheckpointsRegtest,
@@ -99,19 +99,19 @@ public:
          * a large 4-byte int at any alignment.
          */
         pchMessageStart[0] = 0x1c;
-        pchMessageStart[1] = 0xbd;
-        pchMessageStart[2] = 0xcb;
-        pchMessageStart[3] = 0x4f;
-        vAlertPubKey = ParseHex("04981232fe6debfc178558371a3dcf488f1fee31ae31d9da0337bfadf9611203954b7ab8df7b47a00b8e92936ef424a48a9f6626d962ac186a234160b3d215ebf9");
-        nDefaultPort = 6390;
-        bnProofOfWorkLimit = ~uint256(0) >> 20;  // brain starting difficulty is 1 / 2^12
+        pchMessageStart[1] = 0xdb;
+        pchMessageStart[2] = 0xbc;
+        pchMessageStart[3] = 0xf4;
+        vAlertPubKey = ParseHex("0492770dd85347a60cb859231c63d609172a1752f33cef8085c31dbcc392350df898b4faa1bd6a9101724a6f4c40e5d3f1e2179ac76206bf03766714e6b66ec40d");
+        nDefaultPort = 2290;
+        bnProofOfWorkLimit = ~uint256(0) >> 20;  // putic starting difficulty is 1 / 2^12
         nSubsidyHalvingInterval = 210000;
         nEnforceBlockUpgradeMajority = 750;
         nRejectBlockOutdatedMajority = 950;
         nToCheckBlockUpgradeMajority = 1000;
         nMinerThreads = 0;
-        nTargetTimespan = 24 * 60 * 60; // brain: 1 day
-        nTargetSpacing = 2.5 * 60; // brain: 2.5 minutes
+        nTargetTimespan = 24 * 60 * 60; // putic: 1 day
+        nTargetSpacing = 2.5 * 60; // putic: 2.5 minutes
 
         /**
          * Build the genesis block. Note that the output of the genesis coinbase cannot
@@ -123,33 +123,33 @@ public:
          *     CTxOut(nValue=50.00000000, scriptPubKey=0xA9037BAC7050C479B121CF)
          *   vMerkleTree: e0028e
          */
-        const char* pszTimestamp = "this coin for my wife and sun.";
+        const char* pszTimestamp = "Best coin in the world";
         CMutableTransaction txNew;
         txNew.vin.resize(1);
         txNew.vout.resize(1);
         txNew.vin[0].scriptSig = CScript() << 486604799 << CScriptNum(4) << vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp));
         txNew.vout[0].nValue = 50 * COIN;
-        txNew.vout[0].scriptPubKey = CScript() << ParseHex("0495966296d1a7a4994647b965419444656b9423aab04925e6fbd900b2c6f132c9eda4bdcb446ed7c2a7b4e657e57231b1704eb569095e4c14e53495e462882dae") << OP_CHECKSIG;
+        txNew.vout[0].scriptPubKey = CScript() << ParseHex("04d2b3d92676c785cb3694ad5df6f8ca6abe50a8662360ded23afd2d48d9743ec2c5abb87741a4a27e1bfcdf0352ef79267456c5e358b052615d1d2dd09a8c6939") << OP_CHECKSIG;
         genesis.vtx.push_back(txNew);
         genesis.hashPrevBlock = 0;
         genesis.hashMerkleRoot = genesis.BuildMerkleTree();
         genesis.nVersion = 1;
-        genesis.nTime    = 1459519200;
+        genesis.nTime    = 1489104000;
         genesis.nBits    = 0x1e0ffff0;
-        genesis.nNonce   = 581871;
+        genesis.nNonce   = 1150822;
 
         hashGenesisBlock = genesis.GetHash();
-        assert(hashGenesisBlock == uint256("0x00000ffb5418e4197815b6f582dc639fb42ac6fe98baa24e3fca431e2291b5aa"));
-        assert(genesis.hashMerkleRoot == uint256("0xe3b0406e7ec6e96127004db7acbe7cd8c9eee8a56cfb1357c6fa73f8a8048810"));
+        assert(hashGenesisBlock == uint256("0x00000b5425f8f17435355326cc48edb3bbfbf481b7cd7e80dbc804dde8fca1e7"));
+        assert(genesis.hashMerkleRoot == uint256("0xeb1531c7cc0a3bc072768f9c74548428400693aa9915a9d32acf80a01e316eaf9"));
 
         vSeeds.clear();
 
-        base58Prefixes[PUBKEY_ADDRESS] = list_of( 76);                    // brain addresses start with 'X'
-        base58Prefixes[SCRIPT_ADDRESS] = list_of( 16);                    // brain script addresses start with '7'
-        base58Prefixes[SECRET_KEY] =     list_of(204);                    // brain private keys start with '7' or 'X'
-        base58Prefixes[EXT_PUBLIC_KEY] = list_of(0x02)(0xFE)(0x52)(0xF8); // brain BIP32 pubkeys start with 'drkv'
-        base58Prefixes[EXT_SECRET_KEY] = list_of(0x02)(0xFE)(0x52)(0xCC); // brain BIP32 prvkeys start with 'drkp'
-        base58Prefixes[EXT_COIN_TYPE]  = list_of(0x80000005);             // brain BIP44 coin type is '5'
+        base58Prefixes[PUBKEY_ADDRESS] = list_of( 56);                    // putic addresses start with 'P'
+        base58Prefixes[SCRIPT_ADDRESS] = list_of( 16);                    // putic script addresses start with '7'
+        base58Prefixes[SECRET_KEY] =     list_of( 56);                    // putic private keys start with '7' or 'X'
+        base58Prefixes[EXT_PUBLIC_KEY] = list_of(0x02)(0xFE)(0x52)(0xF8); // putic BIP32 pubkeys start with 'drkv'
+        base58Prefixes[EXT_SECRET_KEY] = list_of(0x02)(0xFE)(0x52)(0xCC); // putic BIP32 prvkeys start with 'drkp'
+        base58Prefixes[EXT_COIN_TYPE]  = list_of(0x80000005);             // putic BIP44 coin type is '5'
 
         convertSeed6(vFixedSeeds, pnSeed6_main, ARRAYLEN(pnSeed6_main));
 
@@ -163,10 +163,10 @@ public:
         fTestnetToBeDeprecatedFieldRPC = false;
 
         nPoolMaxTransactions = 3;
-        strSporkKey = "0429cc152d9d6254db7ebb0a0e8565e7836ba8949afac4f2927bc22207e05509d64320e61345423bd1fb6b7ca8e048101c1cda8f5682e9faaa08268ad380679261";
-        strMasternodePaymentsPubKey = "0429cc152d9d6254db7ebb0a0e8565e7836ba8949afac4f2927bc22207e05509d64320e61345423bd1fb6b7ca8e048101c1cda8f5682e9faaa08268ad380679261";
+        strSporkKey = "043d343844866a2b88f2d0821e48ce7d6a0ec2d885b7a5744fc6e7e25b8b00624b61081271b464d3fe5503e14f544ebae2fd24b59cb79424322f92359a3bd5804c";
+        strMasternodePaymentsPubKey = "043d343844866a2b88f2d0821e48ce7d6a0ec2d885b7a5744fc6e7e25b8b00624b61081271b464d3fe5503e14f544ebae2fd24b59cb79424322f92359a3bd5804c";
         strDarksendPoolDummyAddress = "XymEwiQrZnyZYzXUFgieTwKnzPefeTF8ud";
-        nStartMasternodePayments = 1459519200; //Wed, 25 Jun 2014 20:36:16 GMT
+        nStartMasternodePayments = 1489104000; //Wed, 25 Jun 2014 20:36:16 GMT
     }
 
     const Checkpoints::CCheckpointData& Checkpoints() const 
@@ -184,39 +184,39 @@ public:
     CTestNetParams() {
         networkID = CBaseChainParams::TESTNET;
         strNetworkID = "test";
-        pchMessageStart[0] = 0x1f;
+        pchMessageStart[0] = 0xf1;
         pchMessageStart[1] = 0xbc;
-        pchMessageStart[2] = 0xc7;
+        pchMessageStart[2] = 0x7c;
         pchMessageStart[3] = 0x4c;
-        vAlertPubKey = ParseHex("04f9ea714a6a8ab2e4dd18c3ba2c15f93b6b2c78bbce95ff44db3eb5afca92550869e1ed2ac29b7aa97add677fae0ff80e69976582363ca269678d6f29982b4069");
-        nDefaultPort = 16390;
+        vAlertPubKey = ParseHex("04757d7f8e496e16509ac3fba9396fe5da722d2e391f8d219d4b57d6f4644773657025bfd06b4f5ef86dfa39ba0530a603d5a36b81fc71a93fd746fb4066d69cde");
+        nDefaultPort = 12290;
         nEnforceBlockUpgradeMajority = 51;
         nRejectBlockOutdatedMajority = 75;
         nToCheckBlockUpgradeMajority = 100;
         nMinerThreads = 0;
-        nTargetTimespan = 24 * 60 * 60; // brain: 1 day
-        nTargetSpacing = 2.5 * 60; // brain: 2.5 minutes
+        nTargetTimespan = 24 * 60 * 60; // putic: 1 day
+        nTargetSpacing = 2.5 * 60; // putic: 2.5 minutes
 
         //! Modify the testnet genesis block so the timestamp is valid for a later start.
-        genesis.nTime = 1459519201;
-        genesis.nNonce = 2095708;
+        genesis.nTime = 1489104001;
+        genesis.nNonce = 22471;
 
         hashGenesisBlock = genesis.GetHash();
-        assert(hashGenesisBlock == uint256("0x00000e0a54ea7a8baabb1934c1d59a939f177257fbef00738daf8d92be8f8a5c"));
+        assert(hashGenesisBlock == uint256("0x00000426b08e1717566097fcaedd0d971ae90b1a5b8dd646a3801953a36ff192"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
         /*vSeeds.push_back(CDNSSeedData("mycointest.io", "testnet-seed.mycointest.io"));
-        vSeeds.push_back(CDNSSeedData("brain.qa", "testnet-seed.brain.qa"));
+        vSeeds.push_back(CDNSSeedData("putic.qa", "testnet-seed.putic.qa"));
         *///legacy seeders
         vSeeds.clear();
 
-        base58Prefixes[PUBKEY_ADDRESS] = list_of(139);                    // Testnet brain addresses start with 'x' or 'y'
-        base58Prefixes[SCRIPT_ADDRESS] = list_of( 19);                    // Testnet brain script addresses start with '8' or '9'
-        base58Prefixes[SECRET_KEY]     = list_of(239);                    // Testnet private keys start with '9' or 'c' (Bitcoin defaults)
-        base58Prefixes[EXT_PUBLIC_KEY] = list_of(0x3a)(0x80)(0x61)(0xa0); // Testnet brain BIP32 pubkeys start with 'DRKV'
-        base58Prefixes[EXT_SECRET_KEY] = list_of(0x3a)(0x80)(0x58)(0x37); // Testnet brain BIP32 prvkeys start with 'DRKP'
-        base58Prefixes[EXT_COIN_TYPE]  = list_of(0x80000001);             // Testnet brain BIP44 coin type is '5' (All coin's testnet default)
+        base58Prefixes[PUBKEY_ADDRESS] = list_of( 56);                    // Testnet putic addresses start with 'x' or 'y'
+        base58Prefixes[SCRIPT_ADDRESS] = list_of( 19);                    // Testnet putic script addresses start with '8' or '9'
+        base58Prefixes[SECRET_KEY]     = list_of( 56);                    // Testnet private keys start with '9' or 'c' (Bitcoin defaults)
+        base58Prefixes[EXT_PUBLIC_KEY] = list_of(0x3a)(0x80)(0x61)(0xa0); // Testnet putic BIP32 pubkeys start with 'DRKV'
+        base58Prefixes[EXT_SECRET_KEY] = list_of(0x3a)(0x80)(0x58)(0x37); // Testnet putic BIP32 prvkeys start with 'DRKP'
+        base58Prefixes[EXT_COIN_TYPE]  = list_of(0x80000001);             // Testnet putic BIP44 coin type is '5' (All coin's testnet default)
 
         convertSeed6(vFixedSeeds, pnSeed6_test, ARRAYLEN(pnSeed6_test));
 
@@ -229,10 +229,10 @@ public:
         fTestnetToBeDeprecatedFieldRPC = true;
 
         nPoolMaxTransactions = 2;
-        strSporkKey = "0444cc30a6cdd35801b165c6420e0dcc2caceb8113fc8b3f48f09cb978d633b1487140e0763db24c3e344b20c64158d6481ba8c73c5997794461221056ee73a80e";
-        strMasternodePaymentsPubKey = "0444cc30a6cdd35801b165c6420e0dcc2caceb8113fc8b3f48f09cb978d633b1487140e0763db24c3e344b20c64158d6481ba8c73c5997794461221056ee73a80e";
+        strSporkKey = "0483ea5e322827d238785b03805fc7eae6cf5657173308f1d25b5c420a3e90a0c323e8e155ea98aafc70f33259bc064805381884b4c38c11089c95ff8e173fca06";
+        strMasternodePaymentsPubKey = "0483ea5e322827d238785b03805fc7eae6cf5657173308f1d25b5c420a3e90a0c323e8e155ea98aafc70f33259bc064805381884b4c38c11089c95ff8e173fca06";
         strDarksendPoolDummyAddress = "y1EZuxhhNMAUofTBEeLqGE1bJrpC2TWRNp";
-        nStartMasternodePayments = 1459519201; //Fri, 09 Jan 2015 21:05:58 GMT
+        nStartMasternodePayments = 1489104001; //Fri, 09 Jan 2015 21:05:58 GMT
     }
     const Checkpoints::CCheckpointData& Checkpoints() const 
     {
@@ -258,15 +258,15 @@ public:
         nRejectBlockOutdatedMajority = 950;
         nToCheckBlockUpgradeMajority = 1000;
         nMinerThreads = 1;
-        nTargetTimespan = 24 * 60 * 60; // brain: 1 day
-        nTargetSpacing = 2.5 * 60; // brain: 2.5 minutes
+        nTargetTimespan = 24 * 60 * 60; // putic: 1 day
+        nTargetSpacing = 2.5 * 60; // putic: 2.5 minutes
         bnProofOfWorkLimit = ~uint256(0) >> 1;
-        genesis.nTime = 1459519202;
+        genesis.nTime = 1489104002;
         genesis.nBits = 0x207fffff;
         genesis.nNonce = 2;
         hashGenesisBlock = genesis.GetHash();
         nDefaultPort = 19883;
-        assert(hashGenesisBlock == uint256("0x520b7f84cec8f7cdc3cbc0b574e195b4d867a45a2b23cff855eabd0cea30c647"));
+        assert(hashGenesisBlock == uint256("0x3083171569ec37ea400c2bc4ebacc18b18de5811a99fe75040cad6811e5e27bc"));
 
         vFixedSeeds.clear(); //! Regtest mode doesn't have any fixed seeds.
         vSeeds.clear();  //! Regtest mode doesn't have any DNS seeds.

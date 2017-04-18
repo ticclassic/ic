@@ -1,0 +1,27 @@
+# /etc/conf.d/puticd: config file for /etc/init.d/puticd
+
+# Config file location
+#BITCOIND_CONFIGFILE="/etc/putic/putic.conf"
+
+# What directory to write pidfile to?  (created and owned by $BITCOIND_USER)
+#BITCOIND_PIDDIR="/var/run/puticd"
+
+# What filename to give the pidfile
+#BITCOIND_PIDFILE="${BITCOIND_PIDDIR}/puticd.pid"
+
+# Where to write puticd data (be mindful that the blockchain is large)
+#BITCOIND_DATADIR="/var/lib/puticd"
+
+# User and group to own puticd process
+#BITCOIND_USER="putic"
+#BITCOIND_GROUP="putic"
+
+# Path to puticd executable
+#BITCOIND_BIN="/usr/bin/puticd"
+
+# Nice value to run puticd under
+#BITCOIND_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+BITCOIND_OPTS="-disablewallet"
+

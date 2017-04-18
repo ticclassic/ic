@@ -3,7 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include "config/brain-config.h"
+#include "config/putic-config.h"
 #endif
 
 #include "optionsdialog.h"
@@ -82,8 +82,8 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     }
     
     /* Theme selector */
-    ui->theme->addItem(QString("BRAIN-blue"), QVariant("drkblue"));
-    ui->theme->addItem(QString("BRAIN-traditional"), QVariant("trad"));
+    ui->theme->addItem(QString("PUTIC-blue"), QVariant("drkblue"));
+    ui->theme->addItem(QString("PUTIC-traditional"), QVariant("trad"));
 
     
     /* Language selector */

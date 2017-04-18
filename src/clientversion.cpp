@@ -10,10 +10,10 @@
 
 /**
  * Name of client reported in the 'version' message. Report the same name
- * for both braind and brain-qt, to make it harder for attackers to
+ * for both puticd and putic-qt, to make it harder for attackers to
  * target servers or GUI users specifically.
  */
-const std::string CLIENT_NAME("Brain Core");
+const std::string CLIENT_NAME("Putic Core");
 
 /**
  * Client version number

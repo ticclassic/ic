@@ -1,6 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2014-2015 The Brain developers
+// Copyright (c) 2014-2015 The Putic developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -28,7 +28,7 @@ using namespace std;
 
 //////////////////////////////////////////////////////////////////////////////
 //
-// BrainMiner
+// PuticMiner
 //
 
 //
@@ -377,7 +377,7 @@ void IncrementExtraNonce(CBlock* pblock, CBlockIndex* pindexPrev, unsigned int& 
 double dHashesPerSec = 0.0;
 int64_t nHPSTimerStart = 0;
 
-// ***TODO*** ScanHash is not yet used in Brain
+// ***TODO*** ScanHash is not yet used in Putic
 //
 // ScanHash scans nonces looking for a hash with at least some zero bits.
 // The nonce is usually preserved between calls, but periodically or if the
@@ -432,7 +432,7 @@ bool ProcessBlockFound(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
     {
         LOCK(cs_main);
         if (pblock->hashPrevBlock != chainActive.Tip()->GetBlockHash())
-            return error("BrainMiner : generated block is stale");
+            return error("PuticMiner : generated block is stale");
     }
 
     // Remove key from key pool
@@ -447,7 +447,7 @@ bool ProcessBlockFound(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
     // Process this block the same as if we had received it from another node
     CValidationState state;
     if (!ProcessNewBlock(state, NULL, pblock))
-        return error("BrainMiner : ProcessNewBlock, block not accepted");
+        return error("PuticMiner : ProcessNewBlock, block not accepted");
 
     return true;
 }
@@ -455,9 +455,9 @@ bool ProcessBlockFound(CBlock* pblock, CWallet& wallet, CReserveKey& reservekey)
 // ***TODO*** that part changed in bitcoin, we are using a mix with old one here for now
 void static BitcoinMiner(CWallet *pwallet)
 {
-    LogPrintf("BrainMiner started\n");
+    LogPrintf("PuticMiner started\n");
     SetThreadPriority(THREAD_PRIORITY_LOWEST);
-    RenameThread("brain-miner");
+    RenameThread("putic-miner");
 
     // Each thread has its own key and counter
     CReserveKey reservekey(pwallet);
@@ -490,13 +490,13 @@ void static BitcoinMiner(CWallet *pwallet)
             auto_ptr<CBlockTemplate> pblocktemplate(CreateNewBlockWithKey(reservekey));
             if (!pblocktemplate.get())
             {
-                LogPrintf("Error in BrainMiner: Keypool ran out, please call keypoolrefill before restarting the mining thread\n");
+                LogPrintf("Error in PuticMiner: Keypool ran out, please call keypoolrefill before restarting the mining thread\n");
                 return;
             }
             CBlock *pblock = &pblocktemplate->block;
             IncrementExtraNonce(pblock, pindexPrev, nExtraNonce);
 
-            LogPrintf("Running BrainMiner with %u transactions in block (%u bytes)\n", pblock->vtx.size(),
+            LogPrintf("Running PuticMiner with %u transactions in block (%u bytes)\n", pblock->vtx.size(),
                 ::GetSerializeSize(*pblock, SER_NETWORK, PROTOCOL_VERSION));
 
             //
@@ -587,7 +587,7 @@ void static BitcoinMiner(CWallet *pwallet)
     }
     catch (boost::thread_interrupted)
     {
-        LogPrintf("BrainMiner terminated\n");
+        LogPrintf("PuticMiner terminated\n");
         throw;
     }
     catch (const std::runtime_error &e)

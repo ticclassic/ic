@@ -1,6 +1,6 @@
 all:
-	$(MAKE) -C .. brain_test
+	$(MAKE) -C .. putic_test
 clean:
-	$(MAKE) -C .. brain_test_clean
+	$(MAKE) -C .. putic_test_clean
 check:
-	$(MAKE) -C .. brain_test_check
+	$(MAKE) -C .. putic_test_check

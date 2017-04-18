@@ -1,5 +1,5 @@
 // Copyright (c) 2011-2014 The Bitcoin developers
-// Copyright (c) 2014-2015 The Brain developers
+// Copyright (c) 2014-2015 The Putic developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -19,9 +19,9 @@ BitcoinUnits::BitcoinUnits(QObject *parent):
 QList<BitcoinUnits::Unit> BitcoinUnits::availableUnits()
 {
     QList<BitcoinUnits::Unit> unitlist;
-    unitlist.append(BRAIN);
-    unitlist.append(mBRAIN);
-    unitlist.append(uBRAIN);
+    unitlist.append(PUTIC);
+    unitlist.append(mPUTIC);
+    unitlist.append(uPUTIC);
     unitlist.append(duffs);
     return unitlist;
 }
@@ -30,9 +30,9 @@ bool BitcoinUnits::valid(int unit)
 {
     switch(unit)
     {
-    case BRAIN:
-    case mBRAIN:
-    case uBRAIN:
+    case PUTIC:
+    case mPUTIC:
+    case uPUTIC:
     case duffs:
         return true;
     default:
@@ -44,9 +44,9 @@ QString BitcoinUnits::id(int unit)
 {
     switch(unit)
     {
-        case BRAIN: return QString("brain");
-        case mBRAIN: return QString("mbrain");
-        case uBRAIN: return QString::fromUtf8("ubrain");
+        case PUTIC: return QString("putic");
+        case mPUTIC: return QString("mputic");
+        case uPUTIC: return QString::fromUtf8("uputic");
         case duffs: return QString("duffs");
         default: return QString("???");
     }
@@ -58,9 +58,9 @@ QString BitcoinUnits::name(int unit)
     {
         switch(unit)
         {
-            case BRAIN: return QString("BRAIN");
-            case mBRAIN: return QString("mBRAIN");
-            case uBRAIN: return QString::fromUtf8("μBRAIN");
+            case PUTIC: return QString("PUTIC");
+            case mPUTIC: return QString("mPUTIC");
+            case uPUTIC: return QString::fromUtf8("μPUTIC");
             case duffs: return QString("duffs");
             default: return QString("???");
         }
@@ -69,9 +69,9 @@ QString BitcoinUnits::name(int unit)
     {
         switch(unit)
         {
-            case BRAIN: return QString("tBRAIN");
-            case mBRAIN: return QString("mtBRAIN");
-            case uBRAIN: return QString::fromUtf8("μtBRAIN");
+            case PUTIC: return QString("tPUTIC");
+            case mPUTIC: return QString("mtPUTIC");
+            case uPUTIC: return QString::fromUtf8("μtPUTIC");
             case duffs: return QString("tduffs");
             default: return QString("???");
         }
@@ -84,10 +84,10 @@ QString BitcoinUnits::description(int unit)
     {
         switch(unit)
         {
-            case BRAIN: return QString("Brain");
-            case mBRAIN: return QString("Milli-Brain (1 / 1" THIN_SP_UTF8 "000)");
-            case uBRAIN: return QString("Micro-Brain (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
-            case duffs: return QString("Ten Nano-Brain (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case PUTIC: return QString("Putic");
+            case mPUTIC: return QString("Milli-Putic (1 / 1" THIN_SP_UTF8 "000)");
+            case uPUTIC: return QString("Micro-Putic (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case duffs: return QString("Ten Nano-Putic (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
             default: return QString("???");
         }
     }
@@ -95,10 +95,10 @@ QString BitcoinUnits::description(int unit)
     {
         switch(unit)
         {
-            case BRAIN: return QString("TestBrains");
-            case mBRAIN: return QString("Milli-TestBrain (1 / 1" THIN_SP_UTF8 "000)");
-            case uBRAIN: return QString("Micro-TestBrain (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
-            case duffs: return QString("Ten Nano-TestBrain (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case PUTIC: return QString("TestPutics");
+            case mPUTIC: return QString("Milli-TestPutic (1 / 1" THIN_SP_UTF8 "000)");
+            case uPUTIC: return QString("Micro-TestPutic (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case duffs: return QString("Ten Nano-TestPutic (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
             default: return QString("???");
         }
     }
@@ -108,9 +108,9 @@ qint64 BitcoinUnits::factor(int unit)
 {
     switch(unit)
     {
-    case BRAIN:  return 100000000;
-    case mBRAIN: return 100000;
-    case uBRAIN: return 100;
+    case PUTIC:  return 100000000;
+    case mPUTIC: return 100000;
+    case uPUTIC: return 100;
     case duffs: return 1;
     default:   return 100000000;
     }
@@ -120,9 +120,9 @@ int BitcoinUnits::decimals(int unit)
 {
     switch(unit)
     {
-    case BRAIN: return 8;
-    case mBRAIN: return 5;
-    case uBRAIN: return 2;
+    case PUTIC: return 8;
+    case mPUTIC: return 5;
+    case uPUTIC: return 2;
     case duffs: return 0;
     default: return 0;
     }

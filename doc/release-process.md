@@ -2,7 +2,7 @@ Release Process
 ====================
 
 * update translations (ping wumpus, Diapolo or tcatm on IRC)
-* see https://github.com/axelxod/braincoin/blob/master/doc/translation_process.md#syncing-with-transifex
+* see https://github.com/putinclassic/putic/blob/master/doc/translation_process.md#syncing-with-transifex
 
 * * *
 
@@ -33,7 +33,7 @@ Release Process
 
 	export SIGNER=(your gitian key, ie bluematt, sipa, etc)
 	export VERSION=(new version, e.g. 0.8.0)
-	pushd ./brain
+	pushd ./putic
 	git checkout v${VERSION}
 	popd
 	pushd ./gitian-builder
@@ -54,29 +54,29 @@ Release Process
 
   By default, gitian will fetch source files as needed. For offline builds, they can be fetched ahead of time:
 
-	make -C ../brain/depends download SOURCES_PATH=`pwd`/cache/common
+	make -C ../putic/depends download SOURCES_PATH=`pwd`/cache/common
 
   Only missing files will be fetched, so this is safe to re-run for each build.
 
-###Build Brain Core for Linux, Windows, and OS X:
+###Build Putic Core for Linux, Windows, and OS X:
 
-	./bin/gbuild --commit brain=v${VERSION} ../brain/contrib/gitian-descriptors/gitian-linux.yml
-	./bin/gsign --signer $SIGNER --release ${VERSION}-linux --destination ../gitian.sigs/ ../brain/contrib/gitian-descriptors/gitian-linux.yml
-	mv build/out/brain-*.tar.gz build/out/src/brain-*.tar.gz ../
-	./bin/gbuild --commit brain=v${VERSION} ../brain/contrib/gitian-descriptors/gitian-win.yml
-	./bin/gsign --signer $SIGNER --release ${VERSION}-win --destination ../gitian.sigs/ ../brain/contrib/gitian-descriptors/gitian-win.yml
-	mv build/out/brain-*.zip build/out/brain-*.exe ../
-	./bin/gbuild --commit bitcoin=v${VERSION} ../brain/contrib/gitian-descriptors/gitian-osx.yml
-	./bin/gsign --signer $SIGNER --release ${VERSION}-osx-unsigned --destination ../gitian.sigs/ ../brain/contrib/gitian-descriptors/gitian-osx.yml
-	mv build/out/brain-*-unsigned.tar.gz inputs/brain-osx-unsigned.tar.gz
-	mv build/out/brain-*.tar.gz build/out/brain-*.dmg ../
+	./bin/gbuild --commit putic=v${VERSION} ../putic/contrib/gitian-descriptors/gitian-linux.yml
+	./bin/gsign --signer $SIGNER --release ${VERSION}-linux --destination ../gitian.sigs/ ../putic/contrib/gitian-descriptors/gitian-linux.yml
+	mv build/out/putic-*.tar.gz build/out/src/putic-*.tar.gz ../
+	./bin/gbuild --commit putic=v${VERSION} ../putic/contrib/gitian-descriptors/gitian-win.yml
+	./bin/gsign --signer $SIGNER --release ${VERSION}-win --destination ../gitian.sigs/ ../putic/contrib/gitian-descriptors/gitian-win.yml
+	mv build/out/putic-*.zip build/out/putic-*.exe ../
+	./bin/gbuild --commit bitcoin=v${VERSION} ../putic/contrib/gitian-descriptors/gitian-osx.yml
+	./bin/gsign --signer $SIGNER --release ${VERSION}-osx-unsigned --destination ../gitian.sigs/ ../putic/contrib/gitian-descriptors/gitian-osx.yml
+	mv build/out/putic-*-unsigned.tar.gz inputs/putic-osx-unsigned.tar.gz
+	mv build/out/putic-*.tar.gz build/out/putic-*.dmg ../
 	popd
   Build output expected:
 
-  1. source tarball (brain-${VERSION}.tar.gz)
-  2. linux 32-bit and 64-bit binaries dist tarballs (brain-${VERSION}-linux[32|64].tar.gz)
-  3. windows 32-bit and 64-bit installers and dist zips (brain-${VERSION}-win[32|64]-setup.exe, brain-${VERSION}-win[32|64].zip)
-  4. OSX unsigned installer (brain-${VERSION}-osx-unsigned.dmg)
+  1. source tarball (putic-${VERSION}.tar.gz)
+  2. linux 32-bit and 64-bit binaries dist tarballs (putic-${VERSION}-linux[32|64].tar.gz)
+  3. windows 32-bit and 64-bit installers and dist zips (putic-${VERSION}-win[32|64]-setup.exe, putic-${VERSION}-win[32|64].zip)
+  4. OSX unsigned installer (putic-${VERSION}-osx-unsigned.dmg)
   5. Gitian signatures (in gitian.sigs/${VERSION}-<linux|win|osx-unsigned>/(your gitian key)/
 
 ###Next steps:
@@ -100,9 +100,9 @@ Commit your signature to gitian.sigs:
 	pushd ./gitian-builder
 	# Fetch the signature as instructed by Evan
 	cp signature.tar.gz inputs/
-	./bin/gbuild -i ../brain/contrib/gitian-descriptors/gitian-osx-signer.yml
-	./bin/gsign --signer $SIGNER --release ${VERSION}-osx-signed --destination ../gitian.sigs/ ../brain/contrib/gitian-descriptors/gitian-osx-signer.yml
-	mv build/out/brain-osx-signed.dmg ../brain-${VERSION}-osx.dmg
+	./bin/gbuild -i ../putic/contrib/gitian-descriptors/gitian-osx-signer.yml
+	./bin/gsign --signer $SIGNER --release ${VERSION}-osx-signed --destination ../gitian.sigs/ ../putic/contrib/gitian-descriptors/gitian-osx-signer.yml
+	mv build/out/putic-osx-signed.dmg ../putic-${VERSION}-osx.dmg
 	popd
 
 Commit your signature for the signed OSX binary:
@@ -134,9 +134,9 @@ rm SHA256SUMS
 - Upload zips and installers, as well as `SHA256SUMS.asc` from last step, to the bitcoin.org server
   into `/var/www/bin/bitcoin-core-${VERSION}`
 
-- Update axelxod.io version ***TODO***
+- Update putinclassic.io version ***TODO***
 
-  - First, check to see if the axelxod.io maintainers have prepared a
+  - First, check to see if the putinclassic.io maintainers have prepared a
     release: https://github.com/bitcoin/bitcoin.org/labels/Releases
 
       - If they have, it will have previously failed their Travis CI
@@ -151,15 +151,15 @@ rm SHA256SUMS
 
 - Announce the release:
 
-  - Release sticky on braintalk: https://braintalk.org/index.php?board=1.0 ***TODO***
+  - Release sticky on putictalk: https://putictalk.org/index.php?board=1.0 ***TODO***
 
-  - Brain-development mailing list
+  - Putic-development mailing list
 
-  - Update title of #axelxod on Freenode IRC
+  - Update title of #putinclassic on Freenode IRC
 
-  - Optionally reddit /r/Axelxod, ... but this will usually sort out itself
+  - Optionally reddit /r/Putinclassic, ... but this will usually sort out itself
 
-- Notify Flare (?) ***TODO*** so that he can start building [https://launchpad.net/~axelxod/+archive/ubuntu/brain](the PPAs) ***TODO***
+- Notify Flare (?) ***TODO*** so that he can start building [https://launchpad.net/~putinclassic/+archive/ubuntu/putic](the PPAs) ***TODO***
 
 - Add release notes for the new version to the directory `doc/release-notes` in git master
 

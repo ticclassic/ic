@@ -7,7 +7,7 @@
 #define BITCOIN_COMPAT_H
 
 #if defined(HAVE_CONFIG_H)
-#include "config/brain-config.h"
+#include "config/putic-config.h"
 #endif
 
 #ifdef WIN32

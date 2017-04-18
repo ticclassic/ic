@@ -12,14 +12,14 @@ MIN_BLOCKS = 200000
 # These are hosts that have been observed to be behaving strangely (e.g.
 # aggressively connecting to every node).
 SUSPICIOUS_HOSTS = set([
-    "78.153.4.77"
+    "217.117.29.78"
 ])
 
 import re
 import sys
 import dns.resolver
 
-PATTERN_IPV4 = re.compile(r"^((\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})):6390$")
+PATTERN_IPV4 = re.compile(r"^((\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})):2290$")
 PATTERN_AGENT = re.compile(r"^(\/Satoshi:0.8.6\/|\/Satoshi:0.9.(2|3)\/|\/Core:0.1(0|1|2).\d{1,2}.\d{1,2}\/)$")
 
 def parseline(line):

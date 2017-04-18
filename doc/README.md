@@ -1,4 +1,4 @@
-Brain Core 0.12.0
+Putic Core 0.12.0
 =====================
 
 Setup
@@ -7,46 +7,46 @@ Setup
 
 Running
 ---------------------
-The following are some helpful notes on how to run Brain on your native platform.
+The following are some helpful notes on how to run Putic on your native platform.
 
 ### Unix
 
-You need the Qt4 run-time libraries to run Brain-Qt. On Debian or Ubuntu:
+You need the Qt4 run-time libraries to run Putic-Qt. On Debian or Ubuntu:
 
 	sudo apt-get install libqtgui4
 
 Unpack the files into a directory and run:
 
-- bin/32/brain-qt (GUI, 32-bit) or bin/32/braind (headless, 32-bit)
-- bin/64/brain-qt (GUI, 64-bit) or bin/64/braind (headless, 64-bit)
+- bin/32/putic-qt (GUI, 32-bit) or bin/32/puticd (headless, 32-bit)
+- bin/64/putic-qt (GUI, 64-bit) or bin/64/puticd (headless, 64-bit)
 
 
 
 ### Windows
 
-Unpack the files into a directory, and then run brain-qt.exe.
+Unpack the files into a directory, and then run putic-qt.exe.
 
 ### OSX
 
-Drag Brain-Qt to your applications folder, and then run Brain-Qt.
+Drag Putic-Qt to your applications folder, and then run Putic-Qt.
 
 ### Need Help?
 
-* See the documentation at the [Brain Wiki](https://en.bitcoin.it/wiki/Main_Page) ***TODO***
+* See the documentation at the [Putic Wiki](https://en.bitcoin.it/wiki/Main_Page) ***TODO***
 for help and more information.
-* Ask for help on [#axelxod](http://webchat.freenode.net?channels=axelxod) on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net?channels=axelxod).
-* Ask for help on the [BrainTalk](https://braintalk.org/) forums.
+* Ask for help on [#putinclassic](http://webchat.freenode.net?channels=putinclassic) on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net?channels=putinclassic).
+* Ask for help on the [PuticTalk](https://putictalk.org/) forums.
 
 Building
 ---------------------
-The following are developer notes on how to build Brain on your native platform. They are not complete guides, but include notes on the necessary libraries, compile flags, etc.
+The following are developer notes on how to build Putic on your native platform. They are not complete guides, but include notes on the necessary libraries, compile flags, etc.
 
 - [OSX Build Notes](build-osx.md)
 - [Unix Build Notes](build-unix.md)
 
 Development
 ---------------------
-The Brain repo's [root README](https://github.com/axelxod/braincoin/blob/master/README.md) contains relevant information on the development process and automated testing.
+The Putic repo's [root README](https://github.com/putinclassic/putic/blob/master/README.md) contains relevant information on the development process and automated testing.
 
 - [Coding Guidelines](coding.md)
 - [Multiwallet Qt Development](multiwallet-qt.md)
@@ -57,8 +57,8 @@ The Brain repo's [root README](https://github.com/axelxod/braincoin/blob/master/
 - [Unit Tests](unit-tests.md)
 
 ### Resources
-* Discuss on the [BrainTalk](https://braintalk.org/) forums, in the Development & Technical Discussion board.
-* Discuss on [#axelxod](http://webchat.freenode.net/?channels=axelxod) on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net/?channels=axelxod).
+* Discuss on the [PuticTalk](https://putictalk.org/) forums, in the Development & Technical Discussion board.
+* Discuss on [#putinclassic](http://webchat.freenode.net/?channels=putinclassic) on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net/?channels=putinclassic).
 
 ### Miscellaneous
 - [Assets Attribution](assets-attribution.md)

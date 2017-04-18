@@ -1,9 +1,9 @@
 Sample configuration files for:
 
-SystemD: braind.service
-Upstart: braind.conf
-OpenRC:  braind.openrc
-         braind.openrcconf
+SystemD: puticd.service
+Upstart: puticd.conf
+OpenRC:  puticd.openrc
+         puticd.openrcconf
 
 have been made available to assist packagers in creating node packages here.
 

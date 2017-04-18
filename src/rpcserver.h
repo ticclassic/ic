@@ -93,7 +93,7 @@ public:
 };
 
 /**
- * Brain RPC command dispatcher.
+ * Putic RPC command dispatcher.
  */
 class CRPCTable
 {

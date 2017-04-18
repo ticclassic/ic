@@ -6,13 +6,13 @@ and tests weren't explicitly disabled.
 
 After configuring, they can be run with 'make check'.
 
-To run the braind tests manually, launch src/test/test_brain .
+To run the puticd tests manually, launch src/test/test_putic .
 
-To add more braind tests, add `BOOST_AUTO_TEST_CASE` functions to the existing
+To add more puticd tests, add `BOOST_AUTO_TEST_CASE` functions to the existing
 .cpp files in the test/ directory or add new .cpp files that
 implement new BOOST_AUTO_TEST_SUITE sections.
 
-To run the brain-qt tests manually, launch src/qt/test/brain-qt_test
+To run the putic-qt tests manually, launch src/qt/test/putic-qt_test
 
-To add more brain-qt tests, add them to the `src/qt/test/` directory and
+To add more putic-qt tests, add them to the `src/qt/test/` directory and
 the `src/qt/test/test_main.cpp` file.

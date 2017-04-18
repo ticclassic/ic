@@ -60,15 +60,15 @@ bin_PROGRAMS =
 TESTS =
 
 if BUILD_BITCOIND
-  bin_PROGRAMS += braind
+  bin_PROGRAMS += puticd
 endif
 
 if BUILD_BITCOIN_UTILS
-  bin_PROGRAMS += brain-cli brain-tx
+  bin_PROGRAMS += putic-cli putic-tx
 endif
 
 .PHONY: FORCE
-# brain core #
+# putic core #
 BITCOIN_CORE_H = \
   activemasternode.h \
   addrman.h \
@@ -170,7 +170,7 @@ obj/build.h: FORCE
 	  $(abs_top_srcdir)
 libbitcoin_util_a-clientversion.$(OBJEXT): obj/build.h
 
-# server: shared between braind and brain-qt
+# server: shared between puticd and putic-qt
 libbitcoin_server_a_CPPFLAGS = $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS)
 libbitcoin_server_a_SOURCES = \
   addrman.cpp \
@@ -202,7 +202,7 @@ libbitcoin_server_a_SOURCES = \
   $(JSON_H) \
   $(BITCOIN_CORE_H)
 
-# wallet: shared between braind and brain-qt, but only linked
+# wallet: shared between puticd and putic-qt, but only linked
 # when wallet enabled
 libbitcoin_wallet_a_CPPFLAGS = $(BITCOIN_INCLUDES)
 libbitcoin_wallet_a_SOURCES = \
@@ -278,7 +278,7 @@ univalue_libbitcoin_univalue_a_SOURCES = \
   univalue/univalue_escapes.h \
   univalue/univalue.h
 
-# common: shared between braind, and brain-qt and non-server tools
+# common: shared between puticd, and putic-qt and non-server tools
 libbitcoin_common_a_CPPFLAGS = $(BITCOIN_INCLUDES)
 libbitcoin_common_a_SOURCES = \
   allocators.cpp \
@@ -333,7 +333,7 @@ libbitcoin_util_a_SOURCES += compat/glibc_compat.cpp
 libbitcoin_util_a_SOURCES += compat/glibcxx_compat.cpp
 endif
 
-# cli: shared between brain-cli and brain-qt
+# cli: shared between putic-cli and putic-qt
 libbitcoin_cli_a_CPPFLAGS = $(BITCOIN_INCLUDES)
 libbitcoin_cli_a_SOURCES = \
   rpcclient.cpp \
@@ -343,7 +343,7 @@ nodist_libbitcoin_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
 # bitcoind binary #
-braind_LDADD = \
+puticd_LDADD = \
   $(LIBBITCOIN_SERVER) \
   $(LIBBITCOIN_COMMON) \
   $(LIBBITCOIN_UNIVALUE) \
@@ -354,35 +354,35 @@ braind_LDADD = \
   $(LIBSECP256K1)
 
 if ENABLE_WALLET
-braind_LDADD += libbitcoin_wallet.a
+puticd_LDADD += libbitcoin_wallet.a
 endif
-braind_SOURCES = braind.cpp
+puticd_SOURCES = puticd.cpp
 #
 
 if TARGET_WINDOWS
-braind_SOURCES += braind-res.rc
+puticd_SOURCES += puticd-res.rc
 endif
 
-braind_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS)
-braind_CPPFLAGS = $(BITCOIN_INCLUDES)
-braind_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+puticd_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS)
+puticd_CPPFLAGS = $(BITCOIN_INCLUDES)
+puticd_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
-# brain-cli binary #
-brain_cli_LDADD = \
+# putic-cli binary #
+putic_cli_LDADD = \
   $(LIBBITCOIN_CLI) \
   $(LIBBITCOIN_UTIL) \
   $(BOOST_LIBS) \
   $(SSL_LIBS) \
   $(CRYPTO_LIBS)
 
-brain_cli_SOURCES = \
-  brain-cli.cpp
+putic_cli_SOURCES = \
+  putic-cli.cpp
 
-brain_cli_CPPFLAGS = $(BITCOIN_INCLUDES)
+putic_cli_CPPFLAGS = $(BITCOIN_INCLUDES)
 #
 
-# brain-tx binary #
-brain_tx_LDADD = \
+# putic-tx binary #
+putic_tx_LDADD = \
   $(LIBBITCOIN_UNIVALUE) \
   $(LIBBITCOIN_COMMON) \
   $(LIBBITCOIN_UTIL) \
@@ -391,15 +391,15 @@ brain_tx_LDADD = \
   $(BOOST_LIBS) \
   $(CRYPTO_LIBS)
 
-brain_tx_SOURCES = brain-tx.cpp
-brain_tx_CPPFLAGS = $(BITCOIN_INCLUDES)
+putic_tx_SOURCES = putic-tx.cpp
+putic_tx_CPPFLAGS = $(BITCOIN_INCLUDES)
 #
-brain_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+putic_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-brain_cli_SOURCES += brain-cli-res.rc
+putic_cli_SOURCES += putic-cli-res.rc
 endif
-brain_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+putic_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if BUILD_BITCOIN_LIBS
 include_HEADERS = script/bitcoinconsensus.h

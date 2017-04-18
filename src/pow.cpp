@@ -80,7 +80,7 @@ unsigned int static KimotoGravityWell(const CBlockIndex* pindexLast) {
 }
 
 unsigned int static DarkGravityWave(const CBlockIndex* pindexLast) {
-    /* current difficulty formula, brain - DarkGravity v3, written by Evan Duffield - evan@axelxod.io */
+    /* current difficulty formula, putic - DarkGravity v3, written by Evan Duffield - evan@putinclassic.io */
     const CBlockIndex *BlockLastSolved = pindexLast;
     const CBlockIndex *BlockReading = pindexLast;
     int64_t nActualTimespan = 0;
@@ -141,10 +141,10 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
 
     if (Params().NetworkID() != CBaseChainParams::TESTNET) {
         if (pindexLast->nHeight + 1 >= 34140) retarget = DIFF_DGW;
-        else if (pindexLast->nHeight + 1 >= 15200) retarget = DIFF_KGW;
+        else if (pindexLast->nHeight + 1 >= 20010) retarget = DIFF_KGW;
         else retarget = DIFF_BTC;
     } else {
-        if (pindexLast->nHeight + 1 >= 2000) retarget = DIFF_DGW;
+        if (pindexLast->nHeight + 1 >= 20000) retarget = DIFF_DGW;
         else retarget = DIFF_BTC;
     }
 
