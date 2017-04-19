@@ -1,5 +1,5 @@
 ---
-name: "putic-raspberry-1.7.0.8"
+name: "putic-raspberry-1.8.0.8"
 enable_cache: true
 suites:
 - "precise"

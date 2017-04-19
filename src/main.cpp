@@ -1546,12 +1546,12 @@ int64_t GetBlockValue(int nBits, int nHeight, const CAmount& nFees)
         if((nHeight >= 20002 && dDiff > 75) || nHeight >= 20003) { // GPU/ASIC difficulty calc
             // 2222222/(((x+2600)/9)^2)
             nSubsidy = (2222222.0 / (pow((dDiff+2600.0)/9.0,2.0)));
-            if (nSubsidy > 25) nSubsidy = 5;
+            if (nSubsidy > 5) nSubsidy = 5;
             if (nSubsidy < 5) nSubsidy = 5;
         } else { // CPU mining calc
             nSubsidy = (11111.0 / (pow((dDiff+51.0)/6.0,2.0)));
-            if (nSubsidy > 500) nSubsidy = 4200;
-            if (nSubsidy < 25) nSubsidy = 5;
+            if (nSubsidy > 500) nSubsidy = 5;
+            if (nSubsidy < 5) nSubsidy = 5;
         }
     } else {
         nSubsidy = 4200;
