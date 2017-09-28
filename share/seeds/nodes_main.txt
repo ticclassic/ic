@@ -2,5 +2,7 @@
 
 # IPv4 nodes (generated using contrib/seeds/makeseeds.py)
 217.117.29.78
-109.200.155.184
+193.29.187.190
+193.29.187.198
+191.101.232.221
 # Onion nodes
