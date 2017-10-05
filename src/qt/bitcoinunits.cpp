@@ -1,5 +1,5 @@
 // Copyright (c) 2011-2014 The Bitcoin developers
-// Copyright (c) 2014-2015 The Putic developers
+// Copyright (c) 2014-2015 The Ic developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -19,9 +19,9 @@ BitcoinUnits::BitcoinUnits(QObject *parent):
 QList<BitcoinUnits::Unit> BitcoinUnits::availableUnits()
 {
     QList<BitcoinUnits::Unit> unitlist;
-    unitlist.append(PUTIC);
-    unitlist.append(mPUTIC);
-    unitlist.append(uPUTIC);
+    unitlist.append(IC);
+    unitlist.append(mIC);
+    unitlist.append(uIC);
     unitlist.append(duffs);
     return unitlist;
 }
@@ -30,9 +30,9 @@ bool BitcoinUnits::valid(int unit)
 {
     switch(unit)
     {
-    case PUTIC:
-    case mPUTIC:
-    case uPUTIC:
+    case IC:
+    case mIC:
+    case uIC:
     case duffs:
         return true;
     default:
@@ -44,9 +44,9 @@ QString BitcoinUnits::id(int unit)
 {
     switch(unit)
     {
-        case PUTIC: return QString("putic");
-        case mPUTIC: return QString("mputic");
-        case uPUTIC: return QString::fromUtf8("uputic");
+        case IC: return QString("ic");
+        case mIC: return QString("mic");
+        case uIC: return QString::fromUtf8("uic");
         case duffs: return QString("duffs");
         default: return QString("???");
     }
@@ -58,9 +58,9 @@ QString BitcoinUnits::name(int unit)
     {
         switch(unit)
         {
-            case PUTIC: return QString("PUTIC");
-            case mPUTIC: return QString("mPUTIC");
-            case uPUTIC: return QString::fromUtf8("μPUTIC");
+            case IC: return QString("IC");
+            case mIC: return QString("mIC");
+            case uIC: return QString::fromUtf8("μIC");
             case duffs: return QString("duffs");
             default: return QString("???");
         }
@@ -69,9 +69,9 @@ QString BitcoinUnits::name(int unit)
     {
         switch(unit)
         {
-            case PUTIC: return QString("tPUTIC");
-            case mPUTIC: return QString("mtPUTIC");
-            case uPUTIC: return QString::fromUtf8("μtPUTIC");
+            case IC: return QString("tIC");
+            case mIC: return QString("mtIC");
+            case uIC: return QString::fromUtf8("μtIC");
             case duffs: return QString("tduffs");
             default: return QString("???");
         }
@@ -84,10 +84,10 @@ QString BitcoinUnits::description(int unit)
     {
         switch(unit)
         {
-            case PUTIC: return QString("Putic");
-            case mPUTIC: return QString("Milli-Putic (1 / 1" THIN_SP_UTF8 "000)");
-            case uPUTIC: return QString("Micro-Putic (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
-            case duffs: return QString("Ten Nano-Putic (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case IC: return QString("Ic");
+            case mIC: return QString("Milli-Ic (1 / 1" THIN_SP_UTF8 "000)");
+            case uIC: return QString("Micro-Ic (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case duffs: return QString("Ten Nano-Ic (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
             default: return QString("???");
         }
     }
@@ -95,10 +95,10 @@ QString BitcoinUnits::description(int unit)
     {
         switch(unit)
         {
-            case PUTIC: return QString("TestPutics");
-            case mPUTIC: return QString("Milli-TestPutic (1 / 1" THIN_SP_UTF8 "000)");
-            case uPUTIC: return QString("Micro-TestPutic (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
-            case duffs: return QString("Ten Nano-TestPutic (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case IC: return QString("TestIcs");
+            case mIC: return QString("Milli-TestIc (1 / 1" THIN_SP_UTF8 "000)");
+            case uIC: return QString("Micro-TestIc (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case duffs: return QString("Ten Nano-TestIc (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
             default: return QString("???");
         }
     }
@@ -108,9 +108,9 @@ qint64 BitcoinUnits::factor(int unit)
 {
     switch(unit)
     {
-    case PUTIC:  return 100000000;
-    case mPUTIC: return 100000;
-    case uPUTIC: return 100;
+    case IC:  return 100000000;
+    case mIC: return 100000;
+    case uIC: return 100;
     case duffs: return 1;
     default:   return 100000000;
     }
@@ -120,9 +120,9 @@ int BitcoinUnits::decimals(int unit)
 {
     switch(unit)
     {
-    case PUTIC: return 8;
-    case mPUTIC: return 5;
-    case uPUTIC: return 2;
+    case IC: return 8;
+    case mIC: return 5;
+    case uIC: return 2;
     case duffs: return 0;
     default: return 0;
     }

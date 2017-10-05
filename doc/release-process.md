@@ -2,7 +2,7 @@ Release Process
 ====================
 
 * update translations (ping wumpus, Diapolo or tcatm on IRC)
-* see https://github.com/putinclassic/putic/blob/master/doc/translation_process.md#syncing-with-transifex
+* see https://github.com/ticclassic/ic/blob/master/doc/translation_process.md#syncing-with-transifex
 
 * * *
 
@@ -33,7 +33,7 @@ Release Process
 
 	export SIGNER=(your gitian key, ie bluematt, sipa, etc)
 	export VERSION=(new version, e.g. 0.8.0)
-	pushd ./putic
+	pushd ./ic
 	git checkout v${VERSION}
 	popd
 	pushd ./gitian-builder
@@ -54,29 +54,29 @@ Release Process
 
   By default, gitian will fetch source files as needed. For offline builds, they can be fetched ahead of time:
 
-	make -C ../putic/depends download SOURCES_PATH=`pwd`/cache/common
+	make -C ../ic/depends download SOURCES_PATH=`pwd`/cache/common
 
   Only missing files will be fetched, so this is safe to re-run for each build.
 
-###Build Putic Core for Linux, Windows, and OS X:
+###Build Ic Core for Linux, Windows, and OS X:
 
-	./bin/gbuild --commit putic=v${VERSION} ../putic/contrib/gitian-descriptors/gitian-linux.yml
-	./bin/gsign --signer $SIGNER --release ${VERSION}-linux --destination ../gitian.sigs/ ../putic/contrib/gitian-descriptors/gitian-linux.yml
-	mv build/out/putic-*.tar.gz build/out/src/putic-*.tar.gz ../
-	./bin/gbuild --commit putic=v${VERSION} ../putic/contrib/gitian-descriptors/gitian-win.yml
-	./bin/gsign --signer $SIGNER --release ${VERSION}-win --destination ../gitian.sigs/ ../putic/contrib/gitian-descriptors/gitian-win.yml
-	mv build/out/putic-*.zip build/out/putic-*.exe ../
-	./bin/gbuild --commit bitcoin=v${VERSION} ../putic/contrib/gitian-descriptors/gitian-osx.yml
-	./bin/gsign --signer $SIGNER --release ${VERSION}-osx-unsigned --destination ../gitian.sigs/ ../putic/contrib/gitian-descriptors/gitian-osx.yml
-	mv build/out/putic-*-unsigned.tar.gz inputs/putic-osx-unsigned.tar.gz
-	mv build/out/putic-*.tar.gz build/out/putic-*.dmg ../
+	./bin/gbuild --commit ic=v${VERSION} ../ic/contrib/gitian-descriptors/gitian-linux.yml
+	./bin/gsign --signer $SIGNER --release ${VERSION}-linux --destination ../gitian.sigs/ ../ic/contrib/gitian-descriptors/gitian-linux.yml
+	mv build/out/ic-*.tar.gz build/out/src/ic-*.tar.gz ../
+	./bin/gbuild --commit ic=v${VERSION} ../ic/contrib/gitian-descriptors/gitian-win.yml
+	./bin/gsign --signer $SIGNER --release ${VERSION}-win --destination ../gitian.sigs/ ../ic/contrib/gitian-descriptors/gitian-win.yml
+	mv build/out/ic-*.zip build/out/ic-*.exe ../
+	./bin/gbuild --commit bitcoin=v${VERSION} ../ic/contrib/gitian-descriptors/gitian-osx.yml
+	./bin/gsign --signer $SIGNER --release ${VERSION}-osx-unsigned --destination ../gitian.sigs/ ../ic/contrib/gitian-descriptors/gitian-osx.yml
+	mv build/out/ic-*-unsigned.tar.gz inputs/ic-osx-unsigned.tar.gz
+	mv build/out/ic-*.tar.gz build/out/ic-*.dmg ../
 	popd
   Build output expected:
 
-  1. source tarball (putic-${VERSION}.tar.gz)
-  2. linux 32-bit and 64-bit binaries dist tarballs (putic-${VERSION}-linux[32|64].tar.gz)
-  3. windows 32-bit and 64-bit installers and dist zips (putic-${VERSION}-win[32|64]-setup.exe, putic-${VERSION}-win[32|64].zip)
-  4. OSX unsigned installer (putic-${VERSION}-osx-unsigned.dmg)
+  1. source tarball (ic-${VERSION}.tar.gz)
+  2. linux 32-bit and 64-bit binaries dist tarballs (ic-${VERSION}-linux[32|64].tar.gz)
+  3. windows 32-bit and 64-bit installers and dist zips (ic-${VERSION}-win[32|64]-setup.exe, ic-${VERSION}-win[32|64].zip)
+  4. OSX unsigned installer (ic-${VERSION}-osx-unsigned.dmg)
   5. Gitian signatures (in gitian.sigs/${VERSION}-<linux|win|osx-unsigned>/(your gitian key)/
 
 ###Next steps:
@@ -100,9 +100,9 @@ Commit your signature to gitian.sigs:
 	pushd ./gitian-builder
 	# Fetch the signature as instructed by Evan
 	cp signature.tar.gz inputs/
-	./bin/gbuild -i ../putic/contrib/gitian-descriptors/gitian-osx-signer.yml
-	./bin/gsign --signer $SIGNER --release ${VERSION}-osx-signed --destination ../gitian.sigs/ ../putic/contrib/gitian-descriptors/gitian-osx-signer.yml
-	mv build/out/putic-osx-signed.dmg ../putic-${VERSION}-osx.dmg
+	./bin/gbuild -i ../ic/contrib/gitian-descriptors/gitian-osx-signer.yml
+	./bin/gsign --signer $SIGNER --release ${VERSION}-osx-signed --destination ../gitian.sigs/ ../ic/contrib/gitian-descriptors/gitian-osx-signer.yml
+	mv build/out/ic-osx-signed.dmg ../ic-${VERSION}-osx.dmg
 	popd
 
 Commit your signature for the signed OSX binary:
@@ -134,9 +134,9 @@ rm SHA256SUMS
 - Upload zips and installers, as well as `SHA256SUMS.asc` from last step, to the bitcoin.org server
   into `/var/www/bin/bitcoin-core-${VERSION}`
 
-- Update putinclassic.io version ***TODO***
+- Update icclassic.io version ***TODO***
 
-  - First, check to see if the putinclassic.io maintainers have prepared a
+  - First, check to see if the icclassic.io maintainers have prepared a
     release: https://github.com/bitcoin/bitcoin.org/labels/Releases
 
       - If they have, it will have previously failed their Travis CI
@@ -151,15 +151,15 @@ rm SHA256SUMS
 
 - Announce the release:
 
-  - Release sticky on putictalk: https://putictalk.org/index.php?board=1.0 ***TODO***
+  - Release sticky on ictalk: https://ictalk.org/index.php?board=1.0 ***TODO***
 
-  - Putic-development mailing list
+  - Ic-development mailing list
 
-  - Update title of #putinclassic on Freenode IRC
+  - Update title of #icclassic on Freenode IRC
 
-  - Optionally reddit /r/Putinclassic, ... but this will usually sort out itself
+  - Optionally reddit /r/icclassic, ... but this will usually sort out itself
 
-- Notify Flare (?) ***TODO*** so that he can start building [https://launchpad.net/~putinclassic/+archive/ubuntu/putic](the PPAs) ***TODO***
+- Notify Flare (?) ***TODO*** so that he can start building [https://launchpad.net/~icclassic/+archive/ubuntu/ic](the PPAs) ***TODO***
 
 - Add release notes for the new version to the directory `doc/release-notes` in git master
 

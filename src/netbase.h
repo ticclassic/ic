@@ -6,7 +6,7 @@
 #define BITCOIN_NETBASE_H
 
 #if defined(HAVE_CONFIG_H)
-#include "config/putic-config.h"
+#include "config/ic-config.h"
 #endif
 
 #include "compat.h"

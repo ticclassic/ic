@@ -10,10 +10,10 @@
 
 /**
  * Name of client reported in the 'version' message. Report the same name
- * for both puticd and putic-qt, to make it harder for attackers to
+ * for both icd and ic-qt, to make it harder for attackers to
  * target servers or GUI users specifically.
  */
-const std::string CLIENT_NAME("Putic Core");
+const std::string CLIENT_NAME("Ic Core");
 
 /**
  * Client version number

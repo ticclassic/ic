@@ -1,6 +1,6 @@
 all:
-	$(MAKE) -C .. putic_test
+	$(MAKE) -C .. ic_test
 clean:
-	$(MAKE) -C .. putic_test_clean
+	$(MAKE) -C .. ic_test_clean
 check:
-	$(MAKE) -C .. putic_test_check
+	$(MAKE) -C .. ic_test_check

@@ -9,8 +9,8 @@
 #include <vector>
 
 /**
- * CBaseChainParams defines the base parameters (shared between putic-cli and puticd)
- * of a given instance of the Putic system.
+ * CBaseChainParams defines the base parameters (shared between ic-cli and icd)
+ * of a given instance of the Ic system.
  */
 class CBaseChainParams
 {

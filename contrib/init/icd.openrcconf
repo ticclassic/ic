@@ -1,0 +1,27 @@
+# /etc/conf.d/icd: config file for /etc/init.d/icd
+
+# Config file location
+#BITCOIND_CONFIGFILE="/etc/ic/ic.conf"
+
+# What directory to write pidfile to?  (created and owned by $BITCOIND_USER)
+#BITCOIND_PIDDIR="/var/run/icd"
+
+# What filename to give the pidfile
+#BITCOIND_PIDFILE="${BITCOIND_PIDDIR}/icd.pid"
+
+# Where to write icd data (be mindful that the blockchain is large)
+#BITCOIND_DATADIR="/var/lib/icd"
+
+# User and group to own icd process
+#BITCOIND_USER="ic"
+#BITCOIND_GROUP="ic"
+
+# Path to icd executable
+#BITCOIND_BIN="/usr/bin/icd"
+
+# Nice value to run icd under
+#BITCOIND_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+BITCOIND_OPTS="-disablewallet"
+

@@ -6,13 +6,13 @@ and tests weren't explicitly disabled.
 
 After configuring, they can be run with 'make check'.
 
-To run the puticd tests manually, launch src/test/test_putic .
+To run the icd tests manually, launch src/test/test_ic .
 
-To add more puticd tests, add `BOOST_AUTO_TEST_CASE` functions to the existing
+To add more icd tests, add `BOOST_AUTO_TEST_CASE` functions to the existing
 .cpp files in the test/ directory or add new .cpp files that
 implement new BOOST_AUTO_TEST_SUITE sections.
 
-To run the putic-qt tests manually, launch src/qt/test/putic-qt_test
+To run the ic-qt tests manually, launch src/qt/test/ic-qt_test
 
-To add more putic-qt tests, add them to the `src/qt/test/` directory and
+To add more ic-qt tests, add them to the `src/qt/test/` directory and
 the `src/qt/test/test_main.cpp` file.

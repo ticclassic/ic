@@ -1,7 +1,7 @@
 [main]
 host = https://www.transifex.com
 
-[putic.qt-translation-010x]
-file_filter = src/qt/locale/putic_<lang>.ts
-source_file = src/qt/locale/putic_en.ts
+[ic.qt-translation-010x]
+file_filter = src/qt/locale/ic_<lang>.ts
+source_file = src/qt/locale/ic_en.ts
 source_lang = en

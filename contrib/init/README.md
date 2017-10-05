@@ -1,9 +1,9 @@
 Sample configuration files for:
 
-SystemD: puticd.service
-Upstart: puticd.conf
-OpenRC:  puticd.openrc
-         puticd.openrcconf
+SystemD: icd.service
+Upstart: icd.conf
+OpenRC:  icd.openrc
+         icd.openrcconf
 
 have been made available to assist packagers in creating node packages here.
 

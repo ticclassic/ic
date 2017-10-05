@@ -1,0 +1,12 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Ic
+Comment=Ic P2P Cryptocurrency
+Comment[fr]=Ic, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=Ic, eşten eşe kriptografik sanal para birimi
+Exec=ic-qt %u
+Terminal=false
+Type=Application
+Icon=ic128
+MimeType=x-scheme-handler/ic;
+Categories=Office;Finance;

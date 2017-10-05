@@ -13,7 +13,7 @@
 - (NSString *)__bundleIdentifier
 {
     if (self == [NSBundle mainBundle]) {
-        return @"io.putinclassic.Putic-Qt";
+        return @"io.icclassic.Ic-Qt";
     } else {
         return [self __bundleIdentifier];
     }

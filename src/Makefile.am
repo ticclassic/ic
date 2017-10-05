@@ -60,15 +60,15 @@ bin_PROGRAMS =
 TESTS =
 
 if BUILD_BITCOIND
-  bin_PROGRAMS += puticd
+  bin_PROGRAMS += icd
 endif
 
 if BUILD_BITCOIN_UTILS
-  bin_PROGRAMS += putic-cli putic-tx
+  bin_PROGRAMS += ic-cli ic-tx
 endif
 
 .PHONY: FORCE
-# putic core #
+# ic core #
 BITCOIN_CORE_H = \
   activemasternode.h \
   addrman.h \
@@ -170,7 +170,7 @@ obj/build.h: FORCE
 	  $(abs_top_srcdir)
 libbitcoin_util_a-clientversion.$(OBJEXT): obj/build.h
 
-# server: shared between puticd and putic-qt
+# server: shared between icd and ic-qt
 libbitcoin_server_a_CPPFLAGS = $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS)
 libbitcoin_server_a_SOURCES = \
   addrman.cpp \
@@ -202,7 +202,7 @@ libbitcoin_server_a_SOURCES = \
   $(JSON_H) \
   $(BITCOIN_CORE_H)
 
-# wallet: shared between puticd and putic-qt, but only linked
+# wallet: shared between icd and ic-qt, but only linked
 # when wallet enabled
 libbitcoin_wallet_a_CPPFLAGS = $(BITCOIN_INCLUDES)
 libbitcoin_wallet_a_SOURCES = \
@@ -278,7 +278,7 @@ univalue_libbitcoin_univalue_a_SOURCES = \
   univalue/univalue_escapes.h \
   univalue/univalue.h
 
-# common: shared between puticd, and putic-qt and non-server tools
+# common: shared between icd, and ic-qt and non-server tools
 libbitcoin_common_a_CPPFLAGS = $(BITCOIN_INCLUDES)
 libbitcoin_common_a_SOURCES = \
   allocators.cpp \
@@ -333,7 +333,7 @@ libbitcoin_util_a_SOURCES += compat/glibc_compat.cpp
 libbitcoin_util_a_SOURCES += compat/glibcxx_compat.cpp
 endif
 
-# cli: shared between putic-cli and putic-qt
+# cli: shared between ic-cli and ic-qt
 libbitcoin_cli_a_CPPFLAGS = $(BITCOIN_INCLUDES)
 libbitcoin_cli_a_SOURCES = \
   rpcclient.cpp \
@@ -343,7 +343,7 @@ nodist_libbitcoin_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
 # bitcoind binary #
-puticd_LDADD = \
+icd_LDADD = \
   $(LIBBITCOIN_SERVER) \
   $(LIBBITCOIN_COMMON) \
   $(LIBBITCOIN_UNIVALUE) \
@@ -354,35 +354,35 @@ puticd_LDADD = \
   $(LIBSECP256K1)
 
 if ENABLE_WALLET
-puticd_LDADD += libbitcoin_wallet.a
+icd_LDADD += libbitcoin_wallet.a
 endif
-puticd_SOURCES = puticd.cpp
+icd_SOURCES = icd.cpp
 #
 
 if TARGET_WINDOWS
-puticd_SOURCES += puticd-res.rc
+icd_SOURCES += icd-res.rc
 endif
 
-puticd_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS)
-puticd_CPPFLAGS = $(BITCOIN_INCLUDES)
-puticd_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+icd_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS)
+icd_CPPFLAGS = $(BITCOIN_INCLUDES)
+icd_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
-# putic-cli binary #
-putic_cli_LDADD = \
+# ic-cli binary #
+ic_cli_LDADD = \
   $(LIBBITCOIN_CLI) \
   $(LIBBITCOIN_UTIL) \
   $(BOOST_LIBS) \
   $(SSL_LIBS) \
   $(CRYPTO_LIBS)
 
-putic_cli_SOURCES = \
-  putic-cli.cpp
+ic_cli_SOURCES = \
+  ic-cli.cpp
 
-putic_cli_CPPFLAGS = $(BITCOIN_INCLUDES)
+ic_cli_CPPFLAGS = $(BITCOIN_INCLUDES)
 #
 
-# putic-tx binary #
-putic_tx_LDADD = \
+# ic-tx binary #
+ic_tx_LDADD = \
   $(LIBBITCOIN_UNIVALUE) \
   $(LIBBITCOIN_COMMON) \
   $(LIBBITCOIN_UTIL) \
@@ -391,15 +391,15 @@ putic_tx_LDADD = \
   $(BOOST_LIBS) \
   $(CRYPTO_LIBS)
 
-putic_tx_SOURCES = putic-tx.cpp
-putic_tx_CPPFLAGS = $(BITCOIN_INCLUDES)
+ic_tx_SOURCES = ic-tx.cpp
+ic_tx_CPPFLAGS = $(BITCOIN_INCLUDES)
 #
-putic_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+ic_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-putic_cli_SOURCES += putic-cli-res.rc
+ic_cli_SOURCES += ic-cli-res.rc
 endif
-putic_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+ic_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if BUILD_BITCOIN_LIBS
 include_HEADERS = script/bitcoinconsensus.h

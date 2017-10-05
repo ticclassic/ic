@@ -1,4 +1,4 @@
-Putic Core 0.12.0
+Ic Core 0.12.0
 =====================
 
 Setup
@@ -7,46 +7,46 @@ Setup
 
 Running
 ---------------------
-The following are some helpful notes on how to run Putic on your native platform.
+The following are some helpful notes on how to run Ic on your native platform.
 
 ### Unix
 
-You need the Qt4 run-time libraries to run Putic-Qt. On Debian or Ubuntu:
+You need the Qt4 run-time libraries to run Ic-Qt. On Debian or Ubuntu:
 
 	sudo apt-get install libqtgui4
 
 Unpack the files into a directory and run:
 
-- bin/32/putic-qt (GUI, 32-bit) or bin/32/puticd (headless, 32-bit)
-- bin/64/putic-qt (GUI, 64-bit) or bin/64/puticd (headless, 64-bit)
+- bin/32/ic-qt (GUI, 32-bit) or bin/32/icd (headless, 32-bit)
+- bin/64/ic-qt (GUI, 64-bit) or bin/64/icd (headless, 64-bit)
 
 
 
 ### Windows
 
-Unpack the files into a directory, and then run putic-qt.exe.
+Unpack the files into a directory, and then run ic-qt.exe.
 
 ### OSX
 
-Drag Putic-Qt to your applications folder, and then run Putic-Qt.
+Drag Ic-Qt to your applications folder, and then run Ic-Qt.
 
 ### Need Help?
 
-* See the documentation at the [Putic Wiki](https://en.bitcoin.it/wiki/Main_Page) ***TODO***
+* See the documentation at the [Ic Wiki](https://en.bitcoin.it/wiki/Main_Page) ***TODO***
 for help and more information.
-* Ask for help on [#putinclassic](http://webchat.freenode.net?channels=putinclassic) on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net?channels=putinclassic).
-* Ask for help on the [PuticTalk](https://putictalk.org/) forums.
+* Ask for help on [#icclassic](http://webchat.freenode.net?channels=icclassic) on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net?channels=icclassic).
+* Ask for help on the [IcTalk](https://ictalk.org/) forums.
 
 Building
 ---------------------
-The following are developer notes on how to build Putic on your native platform. They are not complete guides, but include notes on the necessary libraries, compile flags, etc.
+The following are developer notes on how to build Ic on your native platform. They are not complete guides, but include notes on the necessary libraries, compile flags, etc.
 
 - [OSX Build Notes](build-osx.md)
 - [Unix Build Notes](build-unix.md)
 
 Development
 ---------------------
-The Putic repo's [root README](https://github.com/putinclassic/putic/blob/master/README.md) contains relevant information on the development process and automated testing.
+The Ic repo's [root README](https://github.com/ticclassic/ic/blob/master/README.md) contains relevant information on the development process and automated testing.
 
 - [Coding Guidelines](coding.md)
 - [Multiwallet Qt Development](multiwallet-qt.md)
@@ -57,8 +57,8 @@ The Putic repo's [root README](https://github.com/putinclassic/putic/blob/master
 - [Unit Tests](unit-tests.md)
 
 ### Resources
-* Discuss on the [PuticTalk](https://putictalk.org/) forums, in the Development & Technical Discussion board.
-* Discuss on [#putinclassic](http://webchat.freenode.net/?channels=putinclassic) on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net/?channels=putinclassic).
+* Discuss on the [IcTalk](https://ictalk.org/) forums, in the Development & Technical Discussion board.
+* Discuss on [#icclassic](http://webchat.freenode.net/?channels=icclassic) on Freenode. If you don't have an IRC client use [webchat here](http://webchat.freenode.net/?channels=icclassic).
 
 ### Miscellaneous
 - [Assets Attribution](assets-attribution.md)

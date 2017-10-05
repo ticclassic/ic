@@ -1,6 +1,6 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2014 The Bitcoin developers
-// Copyright (c) 2014-2015 The putic developers
+// Copyright (c) 2014-2015 The ic developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -104,14 +104,14 @@ public:
         pchMessageStart[3] = 0xf4;
         vAlertPubKey = ParseHex("0492770dd85347a60cb859231c63d609172a1752f33cef8085c31dbcc392350df898b4faa1bd6a9101724a6f4c40e5d3f1e2179ac76206bf03766714e6b66ec40d");
         nDefaultPort = 2290;
-        bnProofOfWorkLimit = ~uint256(0) >> 20;  // putic starting difficulty is 1 / 2^12
+        bnProofOfWorkLimit = ~uint256(0) >> 20;  // ic starting difficulty is 1 / 2^12
         nSubsidyHalvingInterval = 210000;
         nEnforceBlockUpgradeMajority = 750;
         nRejectBlockOutdatedMajority = 950;
         nToCheckBlockUpgradeMajority = 1000;
         nMinerThreads = 0;
-        nTargetTimespan = 24 * 60 * 60; // putic: 1 day
-        nTargetSpacing = 2.5 * 60; // putic: 2.5 minutes
+        nTargetTimespan = 24 * 60 * 60; // ic: 1 day
+        nTargetSpacing = 2.5 * 60; // ic: 2.5 minutes
 
         /**
          * Build the genesis block. Note that the output of the genesis coinbase cannot
@@ -144,12 +144,12 @@ public:
 
         vSeeds.clear();
 
-        base58Prefixes[PUBKEY_ADDRESS] = list_of( 56);                    // putic addresses start with 'P'
-        base58Prefixes[SCRIPT_ADDRESS] = list_of( 16);                    // putic script addresses start with '7'
-        base58Prefixes[SECRET_KEY] =     list_of( 56);                    // putic private keys start with '7' or 'X'
-        base58Prefixes[EXT_PUBLIC_KEY] = list_of(0x02)(0xFE)(0x52)(0xF8); // putic BIP32 pubkeys start with 'drkv'
-        base58Prefixes[EXT_SECRET_KEY] = list_of(0x02)(0xFE)(0x52)(0xCC); // putic BIP32 prvkeys start with 'drkp'
-        base58Prefixes[EXT_COIN_TYPE]  = list_of(0x80000005);             // putic BIP44 coin type is '5'
+        base58Prefixes[PUBKEY_ADDRESS] = list_of( 56);                    // ic addresses start with 'P'
+        base58Prefixes[SCRIPT_ADDRESS] = list_of( 16);                    // ic script addresses start with '7'
+        base58Prefixes[SECRET_KEY] =     list_of( 56);                    // ic private keys start with '7' or 'X'
+        base58Prefixes[EXT_PUBLIC_KEY] = list_of(0x02)(0xFE)(0x52)(0xF8); // ic BIP32 pubkeys start with 'drkv'
+        base58Prefixes[EXT_SECRET_KEY] = list_of(0x02)(0xFE)(0x52)(0xCC); // ic BIP32 prvkeys start with 'drkp'
+        base58Prefixes[EXT_COIN_TYPE]  = list_of(0x80000005);             // ic BIP44 coin type is '5'
 
         convertSeed6(vFixedSeeds, pnSeed6_main, ARRAYLEN(pnSeed6_main));
 
@@ -194,8 +194,8 @@ public:
         nRejectBlockOutdatedMajority = 75;
         nToCheckBlockUpgradeMajority = 100;
         nMinerThreads = 0;
-        nTargetTimespan = 24 * 60 * 60; // putic: 1 day
-        nTargetSpacing = 2.5 * 60; // putic: 2.5 minutes
+        nTargetTimespan = 24 * 60 * 60; // ic: 1 day
+        nTargetSpacing = 2.5 * 60; // ic: 2.5 minutes
 
         //! Modify the testnet genesis block so the timestamp is valid for a later start.
         genesis.nTime = 1489104001;
@@ -207,16 +207,16 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();
         /*vSeeds.push_back(CDNSSeedData("mycointest.io", "testnet-seed.mycointest.io"));
-        vSeeds.push_back(CDNSSeedData("putic.qa", "testnet-seed.putic.qa"));
+        vSeeds.push_back(CDNSSeedData("ic.qa", "testnet-seed.ic.qa"));
         *///legacy seeders
         vSeeds.clear();
 
-        base58Prefixes[PUBKEY_ADDRESS] = list_of( 56);                    // Testnet putic addresses start with 'x' or 'y'
-        base58Prefixes[SCRIPT_ADDRESS] = list_of( 19);                    // Testnet putic script addresses start with '8' or '9'
+        base58Prefixes[PUBKEY_ADDRESS] = list_of( 56);                    // Testnet ic addresses start with 'x' or 'y'
+        base58Prefixes[SCRIPT_ADDRESS] = list_of( 19);                    // Testnet ic script addresses start with '8' or '9'
         base58Prefixes[SECRET_KEY]     = list_of( 56);                    // Testnet private keys start with '9' or 'c' (Bitcoin defaults)
-        base58Prefixes[EXT_PUBLIC_KEY] = list_of(0x3a)(0x80)(0x61)(0xa0); // Testnet putic BIP32 pubkeys start with 'DRKV'
-        base58Prefixes[EXT_SECRET_KEY] = list_of(0x3a)(0x80)(0x58)(0x37); // Testnet putic BIP32 prvkeys start with 'DRKP'
-        base58Prefixes[EXT_COIN_TYPE]  = list_of(0x80000001);             // Testnet putic BIP44 coin type is '5' (All coin's testnet default)
+        base58Prefixes[EXT_PUBLIC_KEY] = list_of(0x3a)(0x80)(0x61)(0xa0); // Testnet ic BIP32 pubkeys start with 'DRKV'
+        base58Prefixes[EXT_SECRET_KEY] = list_of(0x3a)(0x80)(0x58)(0x37); // Testnet ic BIP32 prvkeys start with 'DRKP'
+        base58Prefixes[EXT_COIN_TYPE]  = list_of(0x80000001);             // Testnet ic BIP44 coin type is '5' (All coin's testnet default)
 
         convertSeed6(vFixedSeeds, pnSeed6_test, ARRAYLEN(pnSeed6_test));
 
@@ -258,8 +258,8 @@ public:
         nRejectBlockOutdatedMajority = 950;
         nToCheckBlockUpgradeMajority = 1000;
         nMinerThreads = 1;
-        nTargetTimespan = 24 * 60 * 60; // putic: 1 day
-        nTargetSpacing = 2.5 * 60; // putic: 2.5 minutes
+        nTargetTimespan = 24 * 60 * 60; // ic: 1 day
+        nTargetSpacing = 2.5 * 60; // ic: 2.5 minutes
         bnProofOfWorkLimit = ~uint256(0) >> 1;
         genesis.nTime = 1489104002;
         genesis.nBits = 0x207fffff;
