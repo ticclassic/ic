@@ -1,5 +1,5 @@
 ---
-name: "ic-osx-1.9.1.6"
+name: "ic-osx-1.9.1.7"
 enable_cache: true
 suites:
 - "precise"
