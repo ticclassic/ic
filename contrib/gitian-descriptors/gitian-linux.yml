@@ -1,5 +1,5 @@
 ---
-name: "ic-linux-1.9.1.5"
+name: "ic-linux-1.9.1.6"
 enable_cache: true
 suites:
 - "precise"
